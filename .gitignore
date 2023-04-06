@@ -1,0 +1,7 @@
+# Result files
+*.out
+out
+
+# neovim
+tags
+*.swp
