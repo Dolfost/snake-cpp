@@ -1,1 +1,1 @@
-g++ main.cpp -lncurses -o snake
+g++ main.cpp -lncurses -o snake.o
