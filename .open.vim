@@ -1,0 +1,13 @@
+:tabedit include/core/getopt.cpp
+:tabedit include/core/init.cpp
+:tabedit include/core/log.cpp
+:tabedit include/game/game.cpp
+:tabedit include/snake/draw.cpp
+:tabedit include/snake/input.cpp
+:tabedit include/snake/logic.cpp
+:tabedit include/snake/setup.cpp
+:tabedit include/core/core.hpp
+:vsplit include/game/game.hpp
+:split include/snake/snake.hpp
+:wincmd l
+:split main.hpp
