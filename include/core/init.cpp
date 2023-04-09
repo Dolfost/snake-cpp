@@ -5,6 +5,8 @@ Parameters status;
 
 int init(void) {
 	atexit(deinit);
+
+	curs_set(0);
 	
 	if ((window.stdscr = initscr()) == NULL)
 		fatal_error("Could not initialize standart window");
