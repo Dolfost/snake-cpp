@@ -17,3 +17,15 @@ void log_warning(const char* tmp, ...) {
 
 	waddstr(window.log, ".\n");
 }
+
+void log(const char* tmp, ...) {
+	va_list ap1;
+
+	wprintw(window.log, "%s: Status:  ", execname);
+
+	va_start(ap1, tmp);
+	vwprintw(window.log, tmp, ap1);
+	va_end(ap1);
+
+	waddstr(window.log, ".\n");
+}
