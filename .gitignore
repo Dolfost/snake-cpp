@@ -4,6 +4,10 @@
 out
 *.dSYM
 
+# Game
+/data/**
+!/data/.gitkeep
+
 # neovim
 tags
 *.swp
