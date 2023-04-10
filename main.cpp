@@ -14,9 +14,13 @@ int main(int argc, char** argv) {
 	init();
 	process_argv(argc, argv);
 
-	addstr("Hello, nCurses!");
+	printw("Hello, nCurses! - we have %d colors", COLORS);
 	refresh();
 	getch();
+
+	log('s', "Example status");
+	log('w', "Example warning");
+	log('e', "Example error");
 
 	wrefresh(window.log);
 	getch();

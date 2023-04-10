@@ -16,23 +16,24 @@ void process_argv(int argc, char** argv) {
 		switch(opt) {
 			case '?': {
 				if (optopt == 0)
-					log_warning("Unknown long option: '%s'", argv[optind-1]);
+					log('w', "Unknown long option: '%s'", argv[optind-1]);
 				else
-					log_warning("Unknown option: '-%c'", optopt);
-				status.unknown_opts = true;
+					log('w', "Unknown option: '-%c'", optopt);
+				flag.option.unknown = true;
 				break;
 					  }
 
 			case ':': {
 				if (long_options[option_index].has_arg == required_argument)
-					log_warning("No argument(s) provided for '--%s' long option",  long_options[option_index].name);
+					log('w', "No argument(s) provided for '--%s' long option",  long_options[option_index].name);
 				else
-					log_warning("No argument(s) provided for '-%c' option.\n", optopt);
+					log('w', "No argument(s) provided for '-%c' option.\n", optopt);
 				break;
 					  }
 
 			case 'h': {
-				status.show_help = true;
+				flag.option.help = true;
+				log('s', "Recieved [--help | -h]");
 				break;
 					  }
 
