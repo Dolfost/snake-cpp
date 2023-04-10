@@ -36,7 +36,6 @@ void process_argv(int argc, char** argv) {
 				log('s', "Recieved [--help | -h]");
 				break;
 					  }
-
 		}
 	}
 }

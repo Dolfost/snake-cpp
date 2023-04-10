@@ -3,11 +3,24 @@
 Windows window;
 Flags flag;
 Colors color;
+Lengths length;
 
 int init(void) {
 	atexit(deinit);
 
+	flag.core.logpath = "data/log.txt";
+
+	length.window.stdscr.miny = 27;
+	length.window.stdscr.minx = 65;
+	length.subwindow.log.miny = length.window.stdscr.miny;
+	length.subwindow.log.minx = 95;
+	length.subwindow.game.miny = 25;
+	length.subwindow.game.minx = length.window.stdscr.minx;
+	length.subwindow.bar.miny = 1;
+	length.subwindow.bar.minx = length.window.stdscr.minx;
+
 	window.stdscr = initscr();
+
 
 	if ((window.log = newwin(0,0,0,0)) == NULL)
 		fatal_error("Could not initialize log window");
@@ -15,6 +28,8 @@ int init(void) {
 		log('s', "Initialized standart window succsessfully");
 		log('s', "Initialized log window succsessfully");
 	}
+
+	scrollok(window.log, TRUE);
 
 	if (!(flag.curses.color = has_colors()))
 		log('s', "This terminal does not support color");
@@ -25,6 +40,7 @@ int init(void) {
 		log('e', "Could not initialize color");
 	else
 		log('s', "Initialized colors successfully");
+
 
 	// log colors
 	color.log.background = COLOR_BLACK;
@@ -38,6 +54,25 @@ int init(void) {
 	color.log.msg[3] = COLOR_PAIR(4);
 	init_pair(5, COLOR_BLUE, color.log.background);
 	color.log.msg[4] = COLOR_PAIR(5);
+
+
+	if (LINES < length.window.stdscr.miny) {
+		log('w', "The terminal widndow is too small. It has %d lines that is %d less tnan min. req. %d lines",
+				LINES, length.window.stdscr.miny - LINES, length.window.stdscr.miny);
+		flag.curses.small_window = true;
+	}
+	if (COLS < length.window.stdscr.minx) {
+		log('w', "The terminal widndow is too small. It has %d columns that is %d less tnan min. req. %d columns",
+				COLS, length.window.stdscr.minx - COLS, length.window.stdscr.minx);
+		flag.curses.small_window = true;
+	}
+	if (flag.curses.small_window == true) {
+		log('e', "Could not fit all iterface in such small window (%d lines by %d columns). Please, increase terminal size to at least %d lines by %d columns",
+				LINES, COLS, length.window.stdscr.miny, length.window.stdscr.minx);
+ 		wrefresh(window.log);
+ 		wgetch(window.log);
+ 		fatal_error("Terminal is too small");
+	}
 
 
 	if ((window.help = newwin(0,0,0,0)) == NULL)
@@ -60,7 +95,7 @@ void deinit(void) {
 	FILE* dump;
 	if ((dump = fopen("data/log.txt", "w")) == NULL)
 		error("Could not write log to disk");
-	else {
+	else if (window.log != NULL) {
 		log('s', "Dumped log to data/log.txt");
 		putwin(window.log, dump);
 	}

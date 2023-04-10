@@ -21,7 +21,7 @@ void log(char type, const char* tmp, ...) {
 					  };
 
 	signed short index;
-
+	
 	switch(type) {
 		case 'w': {
 					  index = 0;
