@@ -10,4 +10,5 @@ out
 
 # neovim
 tags
+tags.lock
 *.swp
