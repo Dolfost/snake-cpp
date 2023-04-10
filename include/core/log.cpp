@@ -30,37 +30,54 @@ void log(char type, const char* tmp, ...) {
 					  };
 
 	signed short index;
+	char* string = NULL;
+	char* msg;
+	int len = 0;
+	int stop = 0;
 	static FILE* logfile = fopen(flag.core.logpath, "w+");
-	if (logfile == NULL) {
+	if (logfile == NULL)
 		fatal_error("Could not open %s", flag.core.logpath);
-	}
 	
 	switch(type) {
-		case 'w': {
+		case 'w':
 					  index = 0;
 					  break;
-				  }
-		case 's': {
+		case 's':
 					  index = 1;
 					  break;
-				  }
-		case 'e': {
+		case 'e':
 					  index = 2;
 					  break;
-				  }
-		default: {
+		default:
 					 index = 0;
-				 }
 	}
 
+	// make string with the entire message
+	va_list ap;
+	va_start(ap, tmp);
+	
+	len += snprintf(NULL, 0, "%lfs %s: %s", time, execname, preffix[index]);
+	len += vsnprintf(NULL, 0, tmp, ap);
+	len += snprintf(NULL, 0, ".\n");
 
+	if ((string = (char*)malloc(sizeof(char)*len)) == NULL)
+		fatal_error("Could not allocate memory for log string (%d chars).", len);
+	
+	stop += snprintf(string, len, "%lfs %s: %s", time, execname, preffix[index]);
+	msg = string + stop; // string with the context
+	stop += vsnprintf(string + stop, len - stop, tmp, ap);
+	stop += snprintf(string + stop, len - stop + 1, ".\n");
+	
+	fprintf(logfile, "%s", string);
+
+	va_end(ap);
+
+	// print to window.log
 	wattron(window.log, color.log.msg[4]);
-	fprintf(logfile, "%lfs ", time);
 	wprintw(window.log, "%lfs ", time);
 	wattroff(window.log, color.log.msg[4]);
 
 	wattron(window.log, color.log.msg[3]);
-	fprintf(logfile, "%s: ", execname);
 	wprintw(window.log,"%s: ", execname);
 	wattroff(window.log, color.log.msg[3]);
 
@@ -70,7 +87,6 @@ void log(char type, const char* tmp, ...) {
 		wattron(window.log, A_BLINK);
 	
 	wattron(window.log, color.log.msg[index]);
-	fprintf(logfile, "%s", preffix[index]);
 	waddstr(window.log, preffix[index]);
 	wattroff(window.log, color.log.msg[index]);
 
@@ -78,14 +94,7 @@ void log(char type, const char* tmp, ...) {
 		wattroff(window.log, A_BOLD);
 	else if (type == 'e')
 		wattroff(window.log, A_BLINK);
-
-	va_list ap;
-	va_start(ap, tmp);
-
-	vfprintf(logfile, tmp, ap);
-	vwprintw(window.log, tmp, ap);
-
-	va_end(ap);
-	waddstr(window.log, ".\n");
-	fprintf(logfile, ".\n");
+	
+	waddstr(window.log, msg);
+	free(string);
 }
