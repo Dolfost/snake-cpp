@@ -1,23 +1,12 @@
 #include<stdio.h>
 #include<stdlib.h>
+#include<time.h>
 
 void fatal_error(const char* msg) {
 	endwin();
 	fprintf(stderr, "%s: fatal: %s.\n", execname, msg);
 	exit(EXIT_FAILURE);
 }
-
-// void log_warning(const char* tmp, ...) {
-// 	va_list ap;
-// 
-// 	wprintw(window.log, "%s: Warning: ", execname);
-// 		
-// 	va_start(ap, tmp);
-// 	vwprintw(window.log, tmp, ap);
-// 	va_end(ap);
-// 
-// 	waddstr(window.log, ".\n");
-// }
 
 void log(char type, const char* tmp, ...) {
 	char const* preffix[] = {
@@ -48,6 +37,8 @@ void log(char type, const char* tmp, ...) {
 
 	va_list ap;
 	va_start(ap, tmp);
+
+	wprintw(window.log, "%lfs ", (double)clock() / (double)CLOCKS_PER_SEC);
 	
 	wattron(window.log, color.log.msg[3]);
 	waddstr(window.log, execname);
