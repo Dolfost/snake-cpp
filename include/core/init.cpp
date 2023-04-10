@@ -36,6 +36,8 @@ int init(void) {
 	color.log.msg[2] = COLOR_PAIR(3);
 	init_pair(4, COLOR_GREEN, color.log.background);
 	color.log.msg[3] = COLOR_PAIR(4);
+	init_pair(5, COLOR_BLUE, color.log.background);
+	color.log.msg[4] = COLOR_PAIR(5);
 
 
 	if ((window.help = newwin(0,0,0,0)) == NULL)

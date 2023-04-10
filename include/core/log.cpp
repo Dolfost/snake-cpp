@@ -38,8 +38,10 @@ void log(char type, const char* tmp, ...) {
 	va_list ap;
 	va_start(ap, tmp);
 
+	wattron(window.log, color.log.msg[4]);
 	wprintw(window.log, "%lfs ", (double)clock() / (double)CLOCKS_PER_SEC);
-	
+	wattroff(window.log, color.log.msg[4]);
+
 	wattron(window.log, color.log.msg[3]);
 	waddstr(window.log, execname);
 	wattroff(window.log, color.log.msg[3]);

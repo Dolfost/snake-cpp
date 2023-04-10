@@ -21,7 +21,7 @@ struct Flags {
 
 struct Colors {
 	struct Colors_log {
-		int msg[4] = {0};
+		int msg[5] = {0};
 		short background;
 	} log;
 };
