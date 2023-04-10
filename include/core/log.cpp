@@ -2,9 +2,16 @@
 #include<stdlib.h>
 #include<time.h>
 
-void fatal_error(const char* msg) {
+void fatal_error(const char* tmp, ...) {
 	endwin();
-	fprintf(stderr, "%s: fatal: %s.\n", execname, msg);
+	fprintf(stderr, "%s: fatal: ", execname);
+
+	va_list ap;
+	va_start(ap, tmp);
+	fprintf(stderr, tmp, ap);
+	va_end(ap);
+
+	fprintf(stderr, ".\n");
 	exit(EXIT_FAILURE);
 }
 
@@ -14,13 +21,19 @@ void error(const char* msg) {
 }
 
 void log(char type, const char* tmp, ...) {
-	char const* preffix[] = {
+	double time = (double)clock() / (double)CLOCKS_PER_SEC;
+
+	static char const* preffix[] = {
 					   "Warning: ", // 0
 					   "Status:  ", // 1
 					   "Error:   ", // 2
 					  };
 
 	signed short index;
+	static FILE* logfile = fopen(flag.core.logpath, "w+");
+	if (logfile == NULL) {
+		fatal_error("Could not open %s", flag.core.logpath);
+	}
 	
 	switch(type) {
 		case 'w': {
@@ -40,14 +53,14 @@ void log(char type, const char* tmp, ...) {
 				 }
 	}
 
-	va_list ap;
-	va_start(ap, tmp);
 
 	wattron(window.log, color.log.msg[4]);
-	wprintw(window.log, "%lfs ", (double)clock() / (double)CLOCKS_PER_SEC);
+	fprintf(logfile, "%lfs ", time);
+	wprintw(window.log, "%lfs ", time);
 	wattroff(window.log, color.log.msg[4]);
 
 	wattron(window.log, color.log.msg[3]);
+	fprintf(logfile, "%s: ", execname);
 	wprintw(window.log,"%s: ", execname);
 	wattroff(window.log, color.log.msg[3]);
 
@@ -57,6 +70,7 @@ void log(char type, const char* tmp, ...) {
 		wattron(window.log, A_BLINK);
 	
 	wattron(window.log, color.log.msg[index]);
+	fprintf(logfile, "%s", preffix[index]);
 	waddstr(window.log, preffix[index]);
 	wattroff(window.log, color.log.msg[index]);
 
@@ -65,7 +79,13 @@ void log(char type, const char* tmp, ...) {
 	else if (type == 'e')
 		wattroff(window.log, A_BLINK);
 
+	va_list ap;
+	va_start(ap, tmp);
+
+	vfprintf(logfile, tmp, ap);
 	vwprintw(window.log, tmp, ap);
+
 	va_end(ap);
 	waddstr(window.log, ".\n");
+	fprintf(logfile, ".\n");
 }
