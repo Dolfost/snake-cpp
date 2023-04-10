@@ -1,6 +1,6 @@
 #define kbhit() wkbhit(stdscr)
 
-int wbhit(WINDOW* win)
+int wkbhit(WINDOW* win)
 {
 	int ch,r;
 
