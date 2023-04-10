@@ -16,6 +16,28 @@ int init(void) {
 		log('s', "Initialized log window succsessfully");
 	}
 
+	if (!(flag.curses.color = has_colors()))
+		log('s', "This terminal does not support color");
+	else
+		log('s', "This terminal does support color");
+
+	if (start_color() != OK)
+		log('e', "Could not initialize color");
+	else
+		log('s', "Initialized colors successfully");
+
+	// log colors
+	color.log.background = COLOR_BLACK;
+	init_pair(1, COLOR_MAGENTA, color.log.background);
+	color.log.msg[0] = COLOR_PAIR(1);
+	init_pair(2, COLOR_YELLOW, color.log.background);
+	color.log.msg[1] = COLOR_PAIR(2);
+	init_pair(3 , COLOR_RED, color.log.background);
+	color.log.msg[2] = COLOR_PAIR(3);
+	init_pair(4, COLOR_GREEN, color.log.background);
+	color.log.msg[3] = COLOR_PAIR(4);
+
+
 	if ((window.help = newwin(0,0,0,0)) == NULL)
 		fatal_error("Could not initialize help window");
 	else
@@ -28,23 +50,7 @@ int init(void) {
 		log('s', "This terminal does support cursor visibilyty settings");
 	}
 
-	if (!(flag.curses.color = has_colors()))
-		log('s', "This terminal does not support color");
-	else
-		log('s', "This terminal does support color");
-
-	if (start_color() != OK)
-		log('e', "Could not initialize color");
-	else
-		log('s', "Initialized colors successfully");
-
-	if (wattrset(window.log, COLOR_WHITE | COLOR_BLACK) == ERR)
-		log('e', "Could not initialize log window color");
-	else
-		log('s', "Initialized log window color successfully");
 	
-
-
 	return EXIT_SUCCESS;
 }
 

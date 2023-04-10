@@ -21,10 +21,7 @@ struct Flags {
 
 struct Colors {
 	struct Colors_log {
-		int msg[3] = {
-			COLOR_MAGENTA, // warning
-			COLOR_YELLOW | WA_BOLD,  // status
-			COLOR_RED | WA_STANDOUT, // error
-		};
+		int msg[4] = {0};
+		short background;
 	} log;
 };

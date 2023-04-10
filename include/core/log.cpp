@@ -27,10 +27,6 @@ void log(char type, const char* tmp, ...) {
 					  };
 
 	signed short index;
-	init_pair(1, COLOR_MAGENTA, COLOR_BLACK);
-	init_pair(2, COLOR_YELLOW, COLOR_BLACK);
-	init_pair(3, COLOR_RED, COLOR_BLACK);
-	init_pair(4, COLOR_GREEN, COLOR_BLACK);
 
 	switch(type) {
 		case 'w': {
@@ -39,7 +35,6 @@ void log(char type, const char* tmp, ...) {
 				  }
 		case 's': {
 					  index = 1;
-
 					  break;
 				  }
 		case 'e': {
@@ -54,25 +49,25 @@ void log(char type, const char* tmp, ...) {
 	va_list ap;
 	va_start(ap, tmp);
 	
-	wattron(window.log, COLOR_PAIR(4));
+	wattron(window.log, color.log.msg[3]);
 	waddstr(window.log, execname);
-	wattroff(window.log, COLOR_PAIR(4));
+	wattroff(window.log, color.log.msg[3]);
 
 	waddstr(window.log, ": ");
 
-	if (type == 'e')
-		wattron(window.log, A_BLINK);
-	else if (type == 'w')
+	if (type == 'w')
 		wattron(window.log, A_BOLD);
+	else if (type == 'e')
+		wattron(window.log, A_BLINK);
 	
-	wattron(window.log, COLOR_PAIR(index + 1));
+	wattron(window.log, color.log.msg[index]);
 	waddstr(window.log, preffix[index]);
-	wattroff(window.log, COLOR_PAIR(index + 1));
+	wattroff(window.log, color.log.msg[index]);
 
-	if (type == 'e')
-		wattroff(window.log, A_BLINK);
-	else if (type == 'w')
+	if (type == 'w')
 		wattroff(window.log, A_BOLD);
+	else if (type == 'e')
+		wattroff(window.log, A_BLINK);
 
 	vwprintw(window.log, tmp, ap);
 	va_end(ap);
