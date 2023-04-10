@@ -1,8 +1,10 @@
-int kbhit(void)
+#define kbhit() wkbhit(stdscr)
+
+int wbhit(WINDOW* win)
 {
 	int ch,r;
 
-	nodelay(stdscr,TRUE);
+	nodelay(win, TRUE);
 	noecho();
 
 	ch = getch();
@@ -14,7 +16,8 @@ int kbhit(void)
 	}
 
 	echo();
-	nodelay(stdscr,FALSE);
-	return(r);
+	nodelay(win, FALSE);
+
+	return r;
 }
 
