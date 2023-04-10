@@ -11,3 +11,4 @@
 :split include/snake/snake.hpp
 :wincmd l
 :split main.hpp
+:tabn 1
