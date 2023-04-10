@@ -60,8 +60,10 @@ void deinit(void) {
 	FILE* dump;
 	if ((dump = fopen("data/log.txt", "w")) == NULL)
 		error("Could not write log to disk");
-	else
+	else {
+		log('s', "Dumped log to data/log.txt");
 		putwin(window.log, dump);
+	}
 
 	fclose(dump);
 	endwin();
