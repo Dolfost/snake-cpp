@@ -43,10 +43,8 @@ void log(char type, const char* tmp, ...) {
 	wattroff(window.log, color.log.msg[4]);
 
 	wattron(window.log, color.log.msg[3]);
-	waddstr(window.log, execname);
+	wprintw(window.log,"%s: ", execname);
 	wattroff(window.log, color.log.msg[3]);
-
-	waddstr(window.log, ": ");
 
 	if (type == 'w')
 		wattron(window.log, A_BOLD);
