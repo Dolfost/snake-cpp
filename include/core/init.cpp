@@ -57,6 +57,13 @@ int init(void) {
 }
 
 void deinit(void) {
+	FILE* dump;
+	if ((dump = fopen("data/log.txt", "w")) == NULL)
+		error("Could not write log to disk");
+	else
+		putwin(window.log, dump);
+
+	fclose(dump);
 	endwin();
 }
 

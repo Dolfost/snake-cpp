@@ -8,6 +8,11 @@ void fatal_error(const char* msg) {
 	exit(EXIT_FAILURE);
 }
 
+void error(const char* msg) {
+	endwin();
+	fprintf(stderr, "%s: error: %s.\n", execname, msg);
+}
+
 void log(char type, const char* tmp, ...) {
 	char const* preffix[] = {
 					   "Warning: ", // 0
