@@ -19,8 +19,8 @@ int init(void) {
 	length.subwindow.bar.miny = 1;
 	length.subwindow.bar.minx = length.window.stdscr.minx;
 
-	window.stdscr = initscr();
 
+	window.stdscr = initscr();
 
 	if ((window.log = newwin(0,0,0,0)) == NULL)
 		fatal_error("Could not initialize log window");
@@ -32,7 +32,7 @@ int init(void) {
 	scrollok(window.log, TRUE);
 
 	if (!(flag.curses.color = has_colors()))
-		log('s', "This terminal does not support color");
+		log('w', "This terminal does not support color");
 	else
 		log('s', "This terminal does support color");
 
@@ -71,7 +71,7 @@ int init(void) {
 				LINES, COLS, length.window.stdscr.miny, length.window.stdscr.minx);
  		wrefresh(window.log);
  		wgetch(window.log);
- 		fatal_error("Terminal is too small. Resize it to %d lines by %d colums", length.window.stdscr.miny, length.window.stdscr.minx);
+ 		fatal_error("Terminal is too small. Resize it to at least %d lines by %d colums", length.window.stdscr.miny, length.window.stdscr.minx);
 	}
 
 
@@ -81,7 +81,7 @@ int init(void) {
 		log('s', "Initialized help window succsessfully");
 	
 	if (curs_set(0) == ERR)
-		log('s', "This terminal does not support cursor visibilyty settings");
+		log('w', "This terminal does not support cursor visibilyty settings");
 	else {
 		flag.curses.cursor = true;
 		log('s', "This terminal does support cursor visibilyty settings");

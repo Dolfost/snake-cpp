@@ -49,7 +49,7 @@ void log(char type, const char* tmp, ...) {
 					  index = 2;
 					  break;
 		default:
-					 index = 0;
+					  index = 0;
 	}
 
 	// make string with the entire message
@@ -58,7 +58,7 @@ void log(char type, const char* tmp, ...) {
 	
 	len += snprintf(NULL, 0, "%lfs %s: %s", time, execname, preffix[index]);
 	len += vsnprintf(NULL, 0, tmp, ap);
-	len += snprintf(NULL, 0, ".\n");
+	len += snprintf(NULL, 0, ".\n") + 1; // + \0
 
 	if ((string = (char*)malloc(sizeof(char)*len)) == NULL)
 		fatal_error("Could not allocate memory for log string (%d chars).", len);
@@ -66,7 +66,7 @@ void log(char type, const char* tmp, ...) {
 	stop += snprintf(string, len, "%lfs %s: %s", time, execname, preffix[index]);
 	msg = string + stop; // string with the context
 	stop += vsnprintf(string + stop, len - stop, tmp, ap);
-	stop += snprintf(string + stop, len - stop + 1, ".\n");
+	stop += snprintf(string + stop, len - stop, ".\n");
 	
 	fprintf(logfile, "%s", string);
 
