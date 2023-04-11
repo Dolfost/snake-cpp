@@ -8,7 +8,7 @@ void fatal_error(const char* tmp, ...) {
 
 	va_list ap;
 	va_start(ap, tmp);
-	fprintf(stderr, tmp, ap);
+	vfprintf(stderr, tmp, ap);
 	va_end(ap);
 
 	fprintf(stderr, ".\n");
