@@ -71,7 +71,7 @@ int init(void) {
 				LINES, COLS, length.window.stdscr.miny, length.window.stdscr.minx);
  		wrefresh(window.log);
  		wgetch(window.log);
- 		fatal_error("Terminal is too small. Resize it to at least %d lines by %d colums", length.window.stdscr.miny, length.window.stdscr.minx);
+ 		fatal_error("Terminal is too small. Resize it to at least %d lines by %d columns", length.window.stdscr.miny, length.window.stdscr.minx);
 	}
 
 
