@@ -3,6 +3,8 @@ void deinit(void);
 
 void fatal_error(const char* tmp, ...);
 
+void memcheck(void*, int);
+
 enum {LOG_TRACE, LOG_DEBUG, LOG_INFO, LOG_WARN, LOG_ERROR, LOG_FATAL, LOG_NL};
 void log_log(int, const char*, int, const char*, ...);
 

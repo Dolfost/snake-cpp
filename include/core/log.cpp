@@ -15,6 +15,15 @@ void fatal_error(const char* tmp, ...) {
 	exit(EXIT_FAILURE);
 }
 
+void memcheck(void* pointer, int size = 0) {
+	if (pointer == NULL)
+		fatal_error("Could not allocate memory.");
+
+	if (size != 0)
+		log_trace("Allocated %d bytes of memory.", size);
+}
+
+
 static struct Log {
 	WINDOW* window = NULL;
 	FILE* file = NULL;
@@ -38,12 +47,12 @@ void log_log(int level, const char* filename, int line, const char* fmt, ...) {
 	clock_t t = clock();
 	double time = (double)t / (double)CLOCKS_PER_SEC;
 
-	va_list ap;
 	va_start(ap, fmt);
 
 	// message string
 	int msglen = vsnprintf(NULL, 0, fmt, ap);
 	char* msgstr = (char*)malloc(sizeof(char)*msglen + 1);
+ 	memcheck(msgstr);
 	vsnprintf(msgstr, msglen + 1, fmt, ap);
 
 	va_end(ap);
@@ -75,8 +84,9 @@ void log_log(int level, const char* filename, int line, const char* fmt, ...) {
 	}
 
 	// time string
-	int timelen = snprintf(NULL, 0,"%lf", time);
+	int timelen = snprintf(NULL, 0,"%lfs", time);
 	char* timestr = (char*)malloc(sizeof(char)*timelen + 1);
+ 	memcheck(timestr);
 	snprintf(timestr, timelen + 1, "%lfs", time);
 
 	// preffix string
@@ -87,6 +97,7 @@ void log_log(int level, const char* filename, int line, const char* fmt, ...) {
 			line);
 	log.padding = preffixlen + 1;
 	char* preffixstr = (char*)malloc(sizeof(char)*preffixlen + 1);
+	memcheck(preffixstr);
 	snprintf(preffixstr, preffixlen + 1, log.preffixformat,
 			timestr,
 			levelstr[level],
