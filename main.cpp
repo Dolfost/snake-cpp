@@ -3,8 +3,8 @@
 #include "main.hpp"
 
 #include "include/core/core.hpp"
-#include "include/core/init.cpp"
 #include "include/core/log.cpp"
+#include "include/core/init.cpp"
 #include "include/core/getopt.cpp"
 
 
@@ -18,9 +18,12 @@ int main(int argc, char** argv) {
 	refresh();
 	getch();
 
-	log('s', "Example status");
-	log('w', "Example warning");
-	log('e', "Example error");
+	log_trace("Example trace");
+	log_debug("Example debug");
+	log_info("Example info");
+	log_warn("Example warning");
+	log_error("Example error");
+	log_fatal("Example fatal");
 
 	wrefresh(window.log);
 	getch();

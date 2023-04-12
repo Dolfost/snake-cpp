@@ -4,97 +4,129 @@
 
 void fatal_error(const char* tmp, ...) {
 	endwin();
-	fprintf(stderr, "%s: fatal: ", execname);
+	fprintf(stderr, "%s: Fatal: ", execname);
 
 	va_list ap;
 	va_start(ap, tmp);
 	vfprintf(stderr, tmp, ap);
 	va_end(ap);
 
-	fprintf(stderr, ".\n");
+	fprintf(stderr, "\n");
 	exit(EXIT_FAILURE);
 }
 
-void error(const char* msg) {
-	endwin();
-	fprintf(stderr, "%s: error: %s.\n", execname, msg);
-}
+static struct Log {
+	WINDOW* window = NULL;
+	FILE* file = NULL;
+	bool stdo = false;
+	const char* preffixformat = "%s %-5s %s:%d:"; 
+	short levelcolor[6];
+	short filenamecolor;
+	int filenameattribute;
+	short msgcolor;
+	int msgattribute;
+	short background;
+	int levelattr[6];
+	int padding = 0;
+} log;
 
-void log(char type, const char* tmp, ...) {
-	double time = (double)clock() / (double)CLOCKS_PER_SEC;
+const char* levelstr[] = {
+  "Trace", "Debug", "Info", "Warn", "Error", "Fatal"
+};
 
-	static char const* preffix[] = {
-					   "Warning: ", // 0
-					   "Status:  ", // 1
-					   "Error:   ", // 2
-					  };
+void log_log(int level, const char* filename, int line, const char* fmt, ...) {
+	clock_t t = clock();
+	double time = (double)t / (double)CLOCKS_PER_SEC;
 
-	signed short index;
-	char* string = NULL;
-	char* msg;
-	int len = 0;
-	int stop = 0;
-	static FILE* logfile = fopen(flag.core.logpath, "w+");
-	if (logfile == NULL)
-		fatal_error("Could not open %s", flag.core.logpath);
-	
-	switch(type) {
-		case 'w':
-					  index = 0;
-					  break;
-		case 's':
-					  index = 1;
-					  break;
-		case 'e':
-					  index = 2;
-					  break;
-		default:
-					  index = 0;
-	}
-
-	// make string with the entire message
 	va_list ap;
-	va_start(ap, tmp);
-	
-	len += snprintf(NULL, 0, "%lfs %s: %s", time, execname, preffix[index]);
-	len += vsnprintf(NULL, 0, tmp, ap);
-	len += snprintf(NULL, 0, ".\n") + 1; // + \0
+	va_start(ap, fmt);
 
-	if ((string = (char*)malloc(sizeof(char)*len)) == NULL)
-		fatal_error("Could not allocate memory for log string (%d chars).", len);
-	
-	stop += snprintf(string, len, "%lfs %s: %s", time, execname, preffix[index]);
-	msg = string + stop; // string with the context
-	stop += vsnprintf(string + stop, len - stop, tmp, ap);
-	stop += snprintf(string + stop, len - stop, ".\n");
-	
-	fprintf(logfile, "%s", string);
+	// message string
+	int msglen = vsnprintf(NULL, 0, fmt, ap);
+	char* msgstr = (char*)malloc(sizeof(char)*msglen + 1);
+	vsnprintf(msgstr, msglen + 1, fmt, ap);
 
 	va_end(ap);
 
-	// print to window.log
-	wattron(window.log, color.log.msg[4]);
-	wprintw(window.log, "%lfs ", time);
-	wattroff(window.log, color.log.msg[4]);
+	if (level == LOG_NL) {
+		if (log.file != NULL) {
+			for (short i = 0; i < log.padding; i++) {
+				fprintf(log.file, " ");
+			}
+			fprintf(log.file, "%s\n", msgstr);
+		}
 
-	wattron(window.log, color.log.msg[3]);
-	wprintw(window.log,"%s: ", execname);
-	wattroff(window.log, color.log.msg[3]);
+		if (log.window != NULL) {
+			wattrset(log.window, COLOR_PAIR(log.msgcolor) | log.msgattribute);
+			mvwaddstr(log.window, getcury(log.window), log.padding, msgstr);
+			wattroff(log.window, COLOR_PAIR(log.msgcolor) | log.msgattribute);
+			waddstr(log.window, "\n");
+		}
 
-	if (type == 'w')
-		wattron(window.log, A_BOLD);
-	else if (type == 'e')
-		wattron(window.log, A_BLINK);
-	
-	wattron(window.log, color.log.msg[index]);
-	waddstr(window.log, preffix[index]);
-	wattroff(window.log, color.log.msg[index]);
+		if (log.stdo == true) {
+			for (short i = 0; i < log.padding; i++) {
+				putchar(' ');
+			}
+			printf("%s\n", msgstr);
+		}	
 
-	if (type == 'w')
-		wattroff(window.log, A_BOLD);
-	else if (type == 'e')
-		wattroff(window.log, A_BLINK);
-	
-	waddstr(window.log, msg);
-	free(string);
+		free(msgstr);
+		return;
+	}
+
+	// time string
+	int timelen = snprintf(NULL, 0,"%lf", time);
+	char* timestr = (char*)malloc(sizeof(char)*timelen + 1);
+	snprintf(timestr, timelen + 1, "%lfs", time);
+
+	// preffix string
+	int preffixlen = snprintf(NULL, 0, log.preffixformat, 
+			timestr, 
+			levelstr[level],
+			filename,
+			line);
+	log.padding = preffixlen + 1;
+	char* preffixstr = (char*)malloc(sizeof(char)*preffixlen + 1);
+	snprintf(preffixstr, preffixlen + 1, log.preffixformat,
+			timestr,
+			levelstr[level],
+			filename,
+			line);
+
+	if (log.file != NULL)
+		fprintf(log.file, "%s %s\n", preffixstr, msgstr);
+
+	if (log.stdo == true)
+		fprintf(stdout, "%s %s\n", preffixstr, msgstr);
+
+
+	if (log.window != NULL) {
+		waddstr(log.window, timestr);
+		waddch(log.window, ' ');
+
+		wattrset(log.window, COLOR_PAIR(log.levelcolor[level]) | log.levelattr[level]);
+		wprintw(log.window, "%-5s", levelstr[level]);
+		wattroff(log.window, COLOR_PAIR(log.levelcolor[level]) | log.levelattr[level]);
+
+		waddch(log.window, ' ');
+
+		wattrset(log.window, COLOR_PAIR(log.filenamecolor) | log.filenameattribute);
+		waddstr(log.window, filename);
+		wattroff(log.window, COLOR_PAIR(log.filenamecolor) | log.filenameattribute);
+		
+		waddch(log.window, ':');
+		wprintw(log.window, "%d", line);
+		waddch(log.window, ':');
+		waddch(log.window, ' ');
+
+		wattrset(log.window, COLOR_PAIR(log.msgcolor) | log.msgattribute);
+		waddstr(log.window, msgstr);
+		wattroff(log.window, COLOR_PAIR(log.msgcolor) | log.msgattribute);
+
+		waddstr(log.window, "\n");
+	}
+
+	free(msgstr);
+	free(preffixstr);
+	free(timestr);
 }

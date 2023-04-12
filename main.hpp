@@ -24,10 +24,6 @@ struct Flags {
 };
 
 struct Colors {
-	struct Colors_log {
-		int msg[5] = {0};
-		short background;
-	} log;
 };
 
 struct Lengths {
