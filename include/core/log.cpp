@@ -47,6 +47,7 @@ void log_log(int level, const char* filename, int line, const char* fmt, ...) {
 	clock_t t = clock();
 	double time = (double)t / (double)CLOCKS_PER_SEC;
 
+	va_list ap;
 	va_start(ap, fmt);
 
 	// message string

@@ -1,10 +1,7 @@
-#define kbhit() wkbhit(stdscr)
-
-int wkbhit(WINDOW* win)
-{
+int wkbhit(WINDOW* window) {
 	int ch,r;
 
-	nodelay(win, TRUE);
+	nodelay(window, TRUE);
 	noecho();
 
 	ch = getch();
@@ -16,8 +13,7 @@ int wkbhit(WINDOW* win)
 	}
 
 	echo();
-	nodelay(win, FALSE);
+	nodelay(window, FALSE);
 
 	return r;
 }
-
