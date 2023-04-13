@@ -28,8 +28,8 @@ int init(void) {
 		fatal_error("Could not initialize log window.");
 	else {	
 		log.window = window.log;
-		log_info("Initialized standart window succsessfully.");
-		log_info("Initialized log window succsessfully.");
+		log_debug("Initialized standart window succsessfully.");
+		log_debug("Initialized log window succsessfully.");
 	}
 
 	scrollok(window.log, TRUE);
@@ -42,7 +42,7 @@ int init(void) {
 	if (start_color() != OK)
 		log_error("Could not initialize color.");
 	else
-		log_info("Initialized colors successfully.");
+		log_debug("Initialized colors successfully.");
 
 	// log colors (8^>)
 	log.background = COLOR_BLACK;
@@ -57,13 +57,13 @@ int init(void) {
 
 
 	if (LINES < length.window.stdscr.miny) {
-		log_warn("The terminal widndow is too small.");
+		log_warn("The terminal widndow is too low.");
 		log_nl("It has %d lines that is %d less tnan min. req. %d lines.",
 				LINES, length.window.stdscr.miny - LINES, length.window.stdscr.miny);
 		flag.curses.small_window = true;
 	}
 	if (COLS < length.window.stdscr.minx) {
-		log_warn("The terminal widndow is too small.");
+		log_warn("The terminal widndow is too narrow.");
 		log_nl("It has %d columns that is %d less tnan min. req. %d columns.",
 					COLS, length.window.stdscr.minx - COLS, length.window.stdscr.minx);
 		flag.curses.small_window = true;
@@ -82,7 +82,7 @@ int init(void) {
 	if ((window.help = newwin(0,0,0,0)) == NULL)
 		fatal_error("Could not initialize help window.");
 	else
-		log_info("Initialized help window succsessfully.");
+		log_debug("Initialized help window succsessfully.");
 	
 	if (curs_set(0) == ERR)
 		log_info("This terminal does not support cursor visibilyty settings.");
