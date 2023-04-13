@@ -1,9 +1,10 @@
-#include<stdio.h>
-#include<stdlib.h>
-#include<time.h>
+// #include "log.hpp" 
 
 void fatal_error(const char* tmp, ...) {
+	#ifdef __NCURSES_H
 	endwin();
+	#endif /* ifdef __NCURSES_H */
+	
 	fprintf(stderr, "%s: Fatal: ", execname);
 
 	va_list ap;
@@ -25,10 +26,13 @@ void memcheck(void* pointer, int size = 0) {
 
 
 static struct Log {
-	WINDOW* window = NULL;
 	FILE* file = NULL;
 	bool stdo = false;
+	int padding = 0;
 	const char* preffixformat = "%s %-5s %s:%d:"; 
+
+	#ifdef __NCURSES_H
+	WINDOW* window = NULL;
 	short levelcolor[6];
 	short filenamecolor;
 	int filenameattribute;
@@ -36,7 +40,7 @@ static struct Log {
 	int msgattribute;
 	short background;
 	int levelattr[6];
-	int padding = 0;
+	#endif /* ifdef __NCURSES_H */
 } log;
 
 const char* levelstr[] = {
@@ -112,31 +116,34 @@ void log_log(int level, const char* filename, int line, const char* fmt, ...) {
 		fprintf(stdout, "%s %s\n", preffixstr, msgstr);
 
 
+	#ifdef __NCURSES_H
 	if (log.window != NULL) {
 		waddstr(log.window, timestr);
 		waddch(log.window, ' ');
-
+	
 		wattrset(log.window, COLOR_PAIR(log.levelcolor[level]) | log.levelattr[level]);
 		wprintw(log.window, "%-5s", levelstr[level]);
 		wattroff(log.window, COLOR_PAIR(log.levelcolor[level]) | log.levelattr[level]);
-
+	
 		waddch(log.window, ' ');
-
+	
 		wattrset(log.window, COLOR_PAIR(log.filenamecolor) | log.filenameattribute);
 		waddstr(log.window, filename);
 		wattroff(log.window, COLOR_PAIR(log.filenamecolor) | log.filenameattribute);
-		
+	
 		waddch(log.window, ':');
 		wprintw(log.window, "%d", line);
 		waddch(log.window, ':');
 		waddch(log.window, ' ');
-
+	
 		wattrset(log.window, COLOR_PAIR(log.msgcolor) | log.msgattribute);
 		waddstr(log.window, msgstr);
 		wattroff(log.window, COLOR_PAIR(log.msgcolor) | log.msgattribute);
-
+	
 		waddstr(log.window, "\n");
 	}
+	#endif /* ifdef __NCURSES_H */
+	
 
 	free(msgstr);
 	free(preffixstr);

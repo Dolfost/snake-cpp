@@ -11,4 +11,5 @@
 :split include/snake/snake.hpp
 :wincmd l
 :split main.hpp
+:tabedit include/core/log.hpp
 :tabn 1

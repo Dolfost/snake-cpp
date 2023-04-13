@@ -3,7 +3,7 @@
 #include "main.hpp"
 
 #include "include/core/core.hpp"
-#include "include/core/log.cpp"
+#include "include/core/log.hpp"
 #include "include/core/init.cpp"
 #include "include/core/getopt.cpp"
 
