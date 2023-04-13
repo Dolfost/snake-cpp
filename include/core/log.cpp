@@ -30,6 +30,7 @@ static struct Log {
 	bool stdo = false;
 	int padding = 0;
 	const char* preffixformat = "%s %-5s %s:%d:"; 
+	const char* timeformat = "%H:%M:%S";
 
 	#ifdef __NCURSES_H
 	WINDOW* window = NULL;
@@ -48,8 +49,10 @@ const char* levelstr[] = {
 };
 
 void log_log(int level, const char* filename, int line, const char* fmt, ...) {
-	clock_t t = clock();
-	double time = (double)t / (double)CLOCKS_PER_SEC;
+	time_t t;
+    time(&t);
+    struct tm *tmp;
+    tmp = localtime(&t);
 
 	va_list ap;
 	va_start(ap, fmt);
@@ -89,10 +92,8 @@ void log_log(int level, const char* filename, int line, const char* fmt, ...) {
 	}
 
 	// time string
-	int timelen = snprintf(NULL, 0,"%lfs", time);
-	char* timestr = (char*)malloc(sizeof(char)*timelen + 1);
- 	memcheck(timestr);
-	snprintf(timestr, timelen + 1, "%lfs", time);
+	static char timestr[9];
+	strftime(timestr, 9, log.timeformat, tmp);
 
 	// preffix string
 	int preffixlen = snprintf(NULL, 0, log.preffixformat, 
@@ -147,5 +148,4 @@ void log_log(int level, const char* filename, int line, const char* fmt, ...) {
 
 	free(msgstr);
 	free(preffixstr);
-	free(timestr);
 }
