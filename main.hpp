@@ -7,6 +7,11 @@ struct Windows {
 	WINDOW* log = NULL;
 	WINDOW* help = NULL;
 };
+struct Subwindows {
+	WINDOW* log = NULL;
+	WINDOW* game = NULL;
+	WINDOW* bar = NULL;
+};
 
 struct Flags {
 	struct Flags_option {
@@ -21,6 +26,9 @@ struct Flags {
 	struct Flags_core {
 		const char* logpath;
 	} core;
+	struct Flags_window {
+		bool two = false;
+	} window;
 };
 
 struct Colors {
@@ -29,14 +37,14 @@ struct Colors {
 struct Lengths {
 	struct Lengths_windows {
 		struct window {
-			int miny;
-			int minx;
+			int minl;
+			int minc;
 		} stdscr;
 	} window;
 	struct Lengths_subwindow {
 		struct subwindow {
-			int miny;
-			int minx;
+			int minl;
+			int minc;
 		} log, game, bar;
 	} subwindow;
 };

@@ -24,8 +24,11 @@ int main(int argc, char** argv) {
 	log_warn("Example warning");
 	log_error("Example error");
 	log_fatal("Example fatal");
-
+	
 	wrefresh(window.log);
+	getch();
+
+	wrefresh(subwindow.log);
 	getch();
 	
 	return 0;
