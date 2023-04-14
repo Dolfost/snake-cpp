@@ -11,10 +11,12 @@ int init(void) {
 
 	flag.core.logpath = "data/log.txt";
 
-	log_log_add(fopen(flag.core.logpath, "w+"));
-	FILE* sus = fopen("data/log1.txt", "w+");	
-	log_log_add(sus);
+	if ((flag.core.logfile = fopen(flag.core.logpath, "w+")) == NULL)
+		fatal_error("Coulnd not open log file '%s' for writing.", flag.core.logpath);
 
+	log_log_add(flag.core.logfile);
+
+	// windows lengths
 	length.window.stdscr.minl = 27;
 	length.window.stdscr.minc = 65;
 	length.subwindow.log.minl = length.window.stdscr.minl;
@@ -25,50 +27,27 @@ int init(void) {
 	length.subwindow.bar.minc = length.window.stdscr.minc;
 
 
-	window.stdscr = initscr();
+	window.stdscr = initscr(); // if initscr() fails, it stops the program and prints error message
 
+
+	// log window and stdscr initialization
 	if ((window.log = newwin(0,0,0,0)) == NULL)
 		fatal_error("Could not initialize log window.");
 	else {	
-		// g_log.window = window.log;
 		log_log_add(window.log);
-		log_debug("Initialized standart window succsessfully.");
+		log_debug("Initialized standart window successfully.");
 		log_debug("Initialized log window succsessfully.");
 	}
 
 	scrollok(window.log, TRUE);
-	
-	if (COLS - length.subwindow.game.minc - 1 >= length.subwindow.log.minc) {
-		log_debug("Terminal window is large enough");
-		log_nl(   "to fit game and log windows in it.");
 
-		if ((subwindow.log = subwin(stdscr, LINES, COLS - length.subwindow.game.minc - 1, 0, length.subwindow.game.minc + 2 - 1)) == NULL)
-			fatal_error("Could not initialize log subwindow.");
-		else
-			log_debug("Initialized log subwindow succesfully.");
-		log_log_add(subwindow.log);
-		scrollok(subwindow.log, TRUE);
-	}
-
-	if ((window.help = newwin(0,0,0,0)) == NULL)
-		fatal_error("Could not initialize help window.");
-	else
-		log_debug("Initialized help window succsessfully.");
-
-	log_log_remove(sus);
-
-	if (curs_set(0) == ERR)
-		log_info("This terminal does not support cursor visibilyty settings.");
-	else {
-		flag.curses.cursor = true;
-		log_info("This terminal does support cursor visibilyty settings.");
-	}
-
+	// colors check
 	if (!(flag.curses.color = has_colors()))
 		log_info("This terminal does not support color.");
 	else
 		log_info("This terminal does support color.");
 
+	// colors initialization
 	if (start_color() != OK)
 		log_error("Could not initialize color.");
 	else
@@ -85,7 +64,8 @@ int init(void) {
 	init_pair(7, COLOR_WHITE, g_log.background);   g_log.filenamecolor = 7; g_log.filenameattribute = A_UNDERLINE;
 	init_pair(8, COLOR_CYAN, g_log.background);    g_log.msgcolor = 8;      g_log.msgattribute = A_NORMAL;
 
-
+	
+	// small terminal check
 	if (LINES < length.window.stdscr.minl) {
 		log_warn("The terminal widndow is too low.");
 		log_nl("It has %d lines that is %d less tnan min. req. %d lines.",
@@ -108,8 +88,70 @@ int init(void) {
  		fatal_error("Terminal is too small. Resize it to at least %d lines by %d columns.", length.window.stdscr.minl, length.window.stdscr.minc);
 	}
 
+	// help window initialization
+	if ((window.help = newwin(0,0,0,0)) == NULL)
+		fatal_error("Could not initialize help window.");
+	else
+		log_debug("Initialized help window succsessfully.");
+	
+	// two or one window
+	if (COLS - length.subwindow.game.minc - 1 >= length.subwindow.log.minc) {
+		log_debug("Terminal window is large enough");
+		log_nl(   "to fit game and log windows in it.");
+
+		if ((subwindow.log = subwin(stdscr, LINES, COLS - length.subwindow.game.minc - 1, 0, length.subwindow.game.minc + 2 - 1)) == NULL)
+			fatal_error("Could not initialize log subwindow.");
+		else {
+			log_log_add(subwindow.log);
+			scrollok(subwindow.log, TRUE);
+			log_debug("Initialized log subwindow succesfully.");
+		}
+	} else {
+		log_debug("Terminal window is not large enough");
+		log_nl(   "to fit game and log windows in it.");
+	}
+
+	// game subwindow initialization
+	if ((subwindow.game = subwin(window.stdscr, length.subwindow.game.minl, length.subwindow.game.minc, 0, 0)) == NULL)
+		fatal_error("Could not initialize game subwindow.");
+	else
+		log_debug("Initialized game subwindow succesfully.");
+
+	// bar subwindow initialization
+	if ((subwindow.bar = subwin(window.stdscr, length.subwindow.bar.minl, length.subwindow.bar.minc, length.subwindow.game.minl + 1, 0)) == NULL)
+		fatal_error("Could not initialize bar subwindow.");
+	else
+		log_debug("Initialized bar subwindow succesfully.");
+
+	// cursor visibility check
+	if (curs_set(0) == ERR)
+		log_info("This terminal does not support cursor visibilyty settings.");
+	else {
+		flag.curses.cursor = true;
+		log_info("This terminal does support cursor visibilyty settings.");
+	}
 
 	
+	// lines drawing
+	mvwvline(stdscr, 0, length.subwindow.game.minc, 0, LINES);
+	mvwhline(stdscr, length.subwindow.game.minl, 0, 0, length.subwindow.game.minc);
+
+
+
+	#if SNAKE_WINDOW_POSITIONING_DEMO == 1
+	init_pair(9, COLOR_WHITE, COLOR_RED);
+	init_pair(10, COLOR_BLUE, COLOR_YELLOW);
+	init_pair(11, COLOR_GREEN, COLOR_BLUE);
+	
+	wbkgd(subwindow.game, COLOR_PAIR(9));
+	wbkgd(subwindow.log, COLOR_PAIR(10));
+	wbkgd(subwindow.bar, COLOR_PAIR(11));
+	touchwin(window.stdscr);
+	refresh();
+	getch();
+	fatal_error("This was windows positioning test.");
+	#endif /* if SNAKE_WINDOW_POSITIONING_DEMO == 1 */
+
 	return EXIT_SUCCESS;
 }
 

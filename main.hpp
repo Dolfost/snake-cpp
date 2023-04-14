@@ -1,5 +1,7 @@
 #define INCLUDEPATH "./include"
 
+#define SNAKE_WINDOW_POSITIONING_DEMO 0
+
 const char* execname;
 
 struct Windows {
@@ -25,6 +27,7 @@ struct Flags {
 	} curses;
 	struct Flags_core {
 		const char* logpath;
+		FILE* logfile = NULL;
 	} core;
 	struct Flags_window {
 		bool two = false;

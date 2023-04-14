@@ -14,7 +14,7 @@ int main(int argc, char** argv) {
 	init();
 	process_argv(argc, argv);
 
-	printw("Hello, nCurses! - we have %d colors", COLORS);
+	wprintw(subwindow.game, "Hello, nCurses! - we have %d colors", COLORS);
 	refresh();
 	getch();
 
@@ -29,6 +29,10 @@ int main(int argc, char** argv) {
 	getch();
 
 	wrefresh(subwindow.log);
+	getch();
+	
+	touchwin(stdscr);
+	wrefresh(window.stdscr);
 	getch();
 	
 	return 0;
