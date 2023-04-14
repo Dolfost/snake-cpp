@@ -11,7 +11,9 @@ int init(void) {
 
 	flag.core.logpath = "data/log.txt";
 
-	g_log.file = fopen(flag.core.logpath, "w+.");
+	log_log_add(fopen(flag.core.logpath, "w+"));
+	FILE* sus = fopen("data/log1.txt", "w+");	
+	log_log_add(sus);
 
 	length.window.stdscr.minl = 27;
 	length.window.stdscr.minc = 65;
@@ -28,9 +30,24 @@ int init(void) {
 	if ((window.log = newwin(0,0,0,0)) == NULL)
 		fatal_error("Could not initialize log window.");
 	else {	
-		g_log.window = window.log;
+		// g_log.window = window.log;
+		log_log_add(window.log);
 		log_debug("Initialized standart window succsessfully.");
 		log_debug("Initialized log window succsessfully.");
+	}
+
+	scrollok(window.log, TRUE);
+	
+	if (COLS - length.subwindow.game.minc - 1 >= length.subwindow.log.minc) {
+		log_debug("Terminal window is large enough");
+		log_nl(   "to fit game and log windows in it.");
+
+		if ((subwindow.log = subwin(stdscr, LINES, COLS - length.subwindow.game.minc - 1, 0, length.subwindow.game.minc + 2 - 1)) == NULL)
+			fatal_error("Could not initialize log subwindow.");
+		else
+			log_debug("Initialized log subwindow succesfully.");
+		log_log_add(subwindow.log);
+		scrollok(subwindow.log, TRUE);
 	}
 
 	if ((window.help = newwin(0,0,0,0)) == NULL)
@@ -38,22 +55,8 @@ int init(void) {
 	else
 		log_debug("Initialized help window succsessfully.");
 
-	scrollok(window.log, TRUE);
+	log_log_remove(sus);
 
-	if (COLS - length.subwindow.game.minc - 1 >= length.subwindow.log.minc) {
-		log_debug("Terminal window is large enough to fit");
-		log_nl(   "game and log window at the same time.");
-		flag.window.two = true;
-
-		if ((subwindow.log = subwin(stdscr, LINES, COLS - length.subwindow.game.minc - 1, 0, length.subwindow.game.minc + 2 - 1)) == NULL)
-			fatal_error("Could not initialize log subwindow.");
-		else
-			log_debug("Initialized log subwindow succesfully.");
-		g_log.window = subwindow.log;
-		scrollok(subwindow.log, TRUE);
-	}
-
-	
 	if (curs_set(0) == ERR)
 		log_info("This terminal does not support cursor visibilyty settings.");
 	else {
