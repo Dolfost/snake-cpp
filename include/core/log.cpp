@@ -25,7 +25,7 @@ void memcheck(void* pointer, int size = 0) {
 }
 
 
-static struct Log {
+static struct Log_Log {
 	FILE* file = NULL;
 	bool stdo = false;
 	int padding = 0;
@@ -42,7 +42,7 @@ static struct Log {
 	short background;
 	int levelattr[6];
 	#endif /* ifdef __NCURSES_H */
-} log;
+} g_log;
 
 const char* levelstr[] = {
   "Trace", "Debug", "Info", "Warn", "Error", "Fatal"
@@ -66,22 +66,22 @@ void log_log(int level, const char* filename, int line, const char* fmt, ...) {
 	va_end(ap);
 
 	if (level == LOG_NL) {
-		if (log.file != NULL) {
-			for (short i = 0; i < log.padding; i++) {
-				fprintf(log.file, " ");
+		if (g_log.file != NULL) {
+			for (short i = 0; i < g_log.padding; i++) {
+				fprintf(g_log.file, " ");
 			}
-			fprintf(log.file, "%s\n", msgstr);
+			fprintf(g_log.file, "%s\n", msgstr);
 		}
 
-		if (log.window != NULL) {
-			wattrset(log.window, COLOR_PAIR(log.msgcolor) | log.msgattribute);
-			mvwaddstr(log.window, getcury(log.window), log.padding, msgstr);
-			wattroff(log.window, COLOR_PAIR(log.msgcolor) | log.msgattribute);
-			waddstr(log.window, "\n");
+		if (g_log.window != NULL) {
+			wattrset(g_log.window, COLOR_PAIR(g_log.msgcolor) | g_log.msgattribute);
+			mvwaddstr(g_log.window, getcury(g_log.window), g_log.padding, msgstr);
+			wattroff(g_log.window, COLOR_PAIR(g_log.msgcolor) | g_log.msgattribute);
+			waddstr(g_log.window, "\n");
 		}
 
-		if (log.stdo == true) {
-			for (short i = 0; i < log.padding; i++) {
+		if (g_log.stdo == true) {
+			for (short i = 0; i < g_log.padding; i++) {
 				putchar(' ');
 			}
 			printf("%s\n", msgstr);
@@ -93,55 +93,55 @@ void log_log(int level, const char* filename, int line, const char* fmt, ...) {
 
 	// time string
 	static char timestr[9];
-	strftime(timestr, 9, log.timeformat, tmp);
+	strftime(timestr, 9, g_log.timeformat, tmp);
 
 	// preffix string
-	int preffixlen = snprintf(NULL, 0, log.preffixformat, 
+	int preffixlen = snprintf(NULL, 0, g_log.preffixformat, 
 			timestr, 
 			levelstr[level],
 			filename,
 			line);
-	log.padding = preffixlen + 1;
+	g_log.padding = preffixlen + 1;
 	char* preffixstr = (char*)malloc(sizeof(char)*preffixlen + 1);
 	memcheck(preffixstr);
-	snprintf(preffixstr, preffixlen + 1, log.preffixformat,
+	snprintf(preffixstr, preffixlen + 1, g_log.preffixformat,
 			timestr,
 			levelstr[level],
 			filename,
 			line);
 
-	if (log.file != NULL)
-		fprintf(log.file, "%s %s\n", preffixstr, msgstr);
+	if (g_log.file != NULL)
+		fprintf(g_log.file, "%s %s\n", preffixstr, msgstr);
 
-	if (log.stdo == true)
+	if (g_log.stdo == true)
 		fprintf(stdout, "%s %s\n", preffixstr, msgstr);
 
 
 	#ifdef __NCURSES_H
-	if (log.window != NULL) {
-		waddstr(log.window, timestr);
-		waddch(log.window, ' ');
+	if (g_log.window != NULL) {
+		waddstr(g_log.window, timestr);
+		waddch(g_log.window, ' ');
 	
-		wattrset(log.window, COLOR_PAIR(log.levelcolor[level]) | log.levelattr[level]);
-		wprintw(log.window, "%-5s", levelstr[level]);
-		wattroff(log.window, COLOR_PAIR(log.levelcolor[level]) | log.levelattr[level]);
+		wattrset(g_log.window, COLOR_PAIR(g_log.levelcolor[level]) | g_log.levelattr[level]);
+		wprintw(g_log.window, "%-5s", levelstr[level]);
+		wattroff(g_log.window, COLOR_PAIR(g_log.levelcolor[level]) | g_log.levelattr[level]);
 	
-		waddch(log.window, ' ');
+		waddch(g_log.window, ' ');
 	
-		wattrset(log.window, COLOR_PAIR(log.filenamecolor) | log.filenameattribute);
-		waddstr(log.window, filename);
-		wattroff(log.window, COLOR_PAIR(log.filenamecolor) | log.filenameattribute);
+		wattrset(g_log.window, COLOR_PAIR(g_log.filenamecolor) | g_log.filenameattribute);
+		waddstr(g_log.window, filename);
+		wattroff(g_log.window, COLOR_PAIR(g_log.filenamecolor) | g_log.filenameattribute);
 	
-		waddch(log.window, ':');
-		wprintw(log.window, "%d", line);
-		waddch(log.window, ':');
-		waddch(log.window, ' ');
+		waddch(g_log.window, ':');
+		wprintw(g_log.window, "%d", line);
+		waddch(g_log.window, ':');
+		waddch(g_log.window, ' ');
 	
-		wattrset(log.window, COLOR_PAIR(log.msgcolor) | log.msgattribute);
-		waddstr(log.window, msgstr);
-		wattroff(log.window, COLOR_PAIR(log.msgcolor) | log.msgattribute);
+		wattrset(g_log.window, COLOR_PAIR(g_log.msgcolor) | g_log.msgattribute);
+		waddstr(g_log.window, msgstr);
+		wattroff(g_log.window, COLOR_PAIR(g_log.msgcolor) | g_log.msgattribute);
 	
-		waddstr(log.window, "\n");
+		waddstr(g_log.window, "\n");
 	}
 	#endif /* ifdef __NCURSES_H */
 	

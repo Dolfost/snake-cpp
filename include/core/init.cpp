@@ -8,9 +8,9 @@ Lengths length;
 int init(void) {
 	atexit(deinit);
 
-	flag.core.logpath = "data/log.txt";
+	flag.core.logpath = "data/g_log.txt";
 
-	log.file = fopen(flag.core.logpath, "w+.");
+	g_log.file = fopen(flag.core.logpath, "w+.");
 
 	length.window.stdscr.miny = 27;
 	length.window.stdscr.minx = 65;
@@ -27,7 +27,7 @@ int init(void) {
 	if ((window.log = newwin(0,0,0,0)) == NULL)
 		fatal_error("Could not initialize log window.");
 	else {	
-		log.window = window.log;
+		g_log.window = window.log;
 		log_debug("Initialized standart window succsessfully.");
 		log_debug("Initialized log window succsessfully.");
 	}
@@ -45,15 +45,15 @@ int init(void) {
 		log_debug("Initialized colors successfully.");
 
 	// log colors (8^>)
-	log.background = COLOR_BLACK;
-	init_pair(1, COLOR_BLUE, log.background);    log.levelcolor[0] = 1; log.levelattr[0] = A_DIM; 	 // trace
-	init_pair(2, COLOR_YELLOW, log.background);  log.levelcolor[1] = 2; log.levelattr[1] = A_NORMAL;    // debug
-	init_pair(3, COLOR_GREEN, log.background);   log.levelcolor[2] = 3; log.levelattr[2] = A_NORMAL; // info
-	init_pair(4, COLOR_MAGENTA, log.background); log.levelcolor[3] = 4; log.levelattr[3] = A_BOLD;   // warn
-	init_pair(5, COLOR_RED, log.background);     log.levelcolor[4] = 5; log.levelattr[4] = A_BLINK;  // error
-	init_pair(6, COLOR_RED, log.background);     log.levelcolor[5] = 6; log.levelattr[5] = A_REVERSE;  // fatal
-	init_pair(7, COLOR_WHITE, log.background);   log.filenamecolor = 7; log.filenameattribute = A_UNDERLINE;
-	init_pair(8, COLOR_CYAN, log.background);    log.msgcolor = 8;      log.msgattribute = A_NORMAL;
+	g_log.background = COLOR_BLACK;
+	init_pair(1, COLOR_BLUE, g_log.background);    g_log.levelcolor[0] = 1; g_log.levelattr[0] = A_DIM; 	 // trace
+	init_pair(2, COLOR_YELLOW, g_log.background);  g_log.levelcolor[1] = 2; g_log.levelattr[1] = A_NORMAL;    // debug
+	init_pair(3, COLOR_GREEN, g_log.background);   g_log.levelcolor[2] = 3; g_log.levelattr[2] = A_NORMAL; // info
+	init_pair(4, COLOR_MAGENTA, g_log.background); g_log.levelcolor[3] = 4; g_log.levelattr[3] = A_BOLD;   // warn
+	init_pair(5, COLOR_RED, g_log.background);     g_log.levelcolor[4] = 5; g_log.levelattr[4] = A_BLINK;  // error
+	init_pair(6, COLOR_RED, g_log.background);     g_log.levelcolor[5] = 6; g_log.levelattr[5] = A_REVERSE;  // fatal
+	init_pair(7, COLOR_WHITE, g_log.background);   g_log.filenamecolor = 7; g_log.filenameattribute = A_UNDERLINE;
+	init_pair(8, COLOR_CYAN, g_log.background);    g_log.msgcolor = 8;      g_log.msgattribute = A_NORMAL;
 
 
 	if (LINES < length.window.stdscr.miny) {
