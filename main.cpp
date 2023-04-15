@@ -4,20 +4,27 @@
 
 #include "include/core/core.hpp"
 #include "include/core/log.hpp"
+#include "include/game/game.hpp"
 
+#include "include/snake/snake.hpp"
 #include "include/core/init.cpp"
 #include "include/core/getopt.cpp"
 #include "include/snake/setup.cpp"
 
-// #include "include/snake/sna"
 #include "include/game/game.cpp"
+
+#include "include/snake/draw.cpp"
+#include "include/snake/input.cpp"
+#include "include/snake/logic.cpp"
 
 
 int main(int argc, char** argv) {
 	execname = *argv;
 
 	init();
+	
 	process_argv(argc, argv);
+
 	setup();
 	game();
 
@@ -32,8 +39,13 @@ int main(int argc, char** argv) {
 	log_fatal("Example fatal");
 
 
-	touchwin(stdscr);
 	wrefresh(window.stdscr);
+	wrefresh(window.game);
+	wrefresh(window.sidelog);
+	wrefresh(window.bar);
+	getch();
+
+	wrefresh(window.log);
 	getch();
 	
 	return 0;

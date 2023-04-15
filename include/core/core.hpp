@@ -5,11 +5,12 @@ struct Windows {
 	WINDOW* stdscr = NULL;
 	WINDOW* log = NULL;
 	WINDOW* help = NULL;
-};
-struct Subwindows {
-	WINDOW* log = NULL;
+	WINDOW* sidelog = NULL;
 	WINDOW* game = NULL;
 	WINDOW* bar = NULL;
+};
+struct Subwindows {
+
 };
 
 struct Flags {
@@ -39,13 +40,13 @@ struct Lengths {
 		struct window {
 			int minl;
 			int minc;
-		} stdscr;
+		} stdscr, log, sidelog, game, bar;
 	} window;
 	struct Lengths_subwindow {
-		struct subwindow {
+		struct window {
 			int minl;
 			int minc;
-		} log, game, bar;
+		};
 	} subwindow;
 };
 

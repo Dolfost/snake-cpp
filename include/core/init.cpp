@@ -19,12 +19,12 @@ int init(void) {
 	// windows lengths
 	length.window.stdscr.minl = 27;
 	length.window.stdscr.minc = 65;
-	length.subwindow.log.minl = length.window.stdscr.minl;
-	length.subwindow.log.minc = 100;
-	length.subwindow.game.minl = 25;
-	length.subwindow.game.minc = length.window.stdscr.minc;
-	length.subwindow.bar.minl = 1;
-	length.subwindow.bar.minc = length.window.stdscr.minc;
+	length.window.sidelog.minl = length.window.stdscr.minl;
+	length.window.sidelog.minc = 100;
+	length.window.game.minl = 25;
+	length.window.game.minc = length.window.stdscr.minc;
+	length.window.bar.minl = 1;
+	length.window.bar.minc = length.window.stdscr.minc;
 
 
 	window.stdscr = initscr(); // if initscr() fails, it stops the program and prints error message
@@ -95,16 +95,17 @@ int init(void) {
 		log_debug("Initialized help window succsessfully.");
 	
 	// two or one window
-	if (COLS - length.subwindow.game.minc - 1 >= length.subwindow.log.minc) {
+	if (COLS - length.window.game.minc - 1 >= length.window.sidelog.minc) {
 		log_debug("Terminal window is large enough");
 		log_nl(   "to fit game and log windows in it.");
 
-		if ((subwindow.log = subwin(stdscr, LINES, COLS - length.subwindow.game.minc - 1, 0, length.subwindow.game.minc + 2 - 1)) == NULL)
-			fatal_error("Could not initialize log subwindow.");
-		else {
-			log_log_add(subwindow.log);
-			scrollok(subwindow.log, TRUE);
-			log_debug("Initialized log subwindow succesfully.");
+		if ((window.sidelog = newwin(LINES, COLS - length.window.game.minc - 1, 0, length.window.game.minc + 2 - 1)) == NULL) {
+			log_fatal("Could not initialize sidelog window.");
+			fatal_error("Could not initialize sidelog window.");
+		} else {
+			log_log_add(window.sidelog);
+			scrollok(window.sidelog, TRUE);
+			log_debug("Initialized sidelog window succesfully.");
 		}
 	} else {
 		log_debug("Terminal window is not large enough");
@@ -112,16 +113,18 @@ int init(void) {
 	}
 
 	// game subwindow initialization
-	if ((subwindow.game = subwin(window.stdscr, length.subwindow.game.minl, length.subwindow.game.minc, 0, 0)) == NULL)
-		fatal_error("Could not initialize game subwindow.");
-	else
+	if ((window.game = newwin(length.window.game.minl, length.window.game.minc, 0, 0)) == NULL) {
+		log_fatal("Could not initialize game window.");
+		fatal_error("Could not initialize game window.");
+	} else 
 		log_debug("Initialized game subwindow succesfully.");
 
 	// bar subwindow initialization
-	if ((subwindow.bar = subwin(window.stdscr, length.subwindow.bar.minl, length.subwindow.bar.minc, length.subwindow.game.minl + 1, 0)) == NULL)
-		fatal_error("Could not initialize bar subwindow.");
-	else
-		log_debug("Initialized bar subwindow succesfully.");
+	if ((window.bar = newwin(length.window.bar.minl, length.window.bar.minc, length.window.game.minl + 1, 0)) == NULL) {
+		log_fatal("Could not initialize bar window.");
+		fatal_error("Could not initialize bar window.");
+	} else
+		log_debug("Initialized bar window succesfully.");
 
 	// cursor visibility check
 	if (curs_set(0) == ERR)
@@ -133,9 +136,8 @@ int init(void) {
 
 	
 	// lines drawing
-	mvwvline(stdscr, 0, length.subwindow.game.minc, 0, LINES);
-	mvwhline(stdscr, length.subwindow.game.minl, 0, 0, length.subwindow.game.minc);
-
+	mvwvline(stdscr, 0, length.window.game.minc, 0, LINES);
+	mvwhline(stdscr, length.window.game.minl, 0, 0, length.window.game.minc);
 
 
 	#if SNAKE_WINDOW_POSITIONING_DEMO == 1
@@ -143,19 +145,23 @@ int init(void) {
 	init_pair(10, COLOR_BLUE, COLOR_YELLOW);
 	init_pair(11, COLOR_GREEN, COLOR_BLUE);
 	
-	wbkgd(subwindow.game, COLOR_PAIR(9));
-	wbkgd(subwindow.log, COLOR_PAIR(10));
-	wbkgd(subwindow.bar, COLOR_PAIR(11));
-	touchwin(window.stdscr);
+	wbkgd(window.game, COLOR_PAIR(9));
+	wbkgd(window.sidelog, COLOR_PAIR(10));
+	wbkgd(window.bar, COLOR_PAIR(11));
 	refresh();
+	wrefresh(window.game);
+	wrefresh(window.sidelog);
+	wrefresh(window.bar);
 	getch();
 	fatal_error("This was windows positioning test.");
 	#endif /* if SNAKE_WINDOW_POSITIONING_DEMO == 1 */
+
 
 	return EXIT_SUCCESS;
 }
 
 void deinit(void) {
+	flushinp();
 	endwin();
 }
 
