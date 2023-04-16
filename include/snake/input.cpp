@@ -19,35 +19,23 @@ int wkbhit(WINDOW* window) {
 }
 
 void input(void) {
-	nodelay(window.game, TRUE);
-	noecho();
-	
-	flushinp();
+ 	noecho();
 
-	switch(getch()) {
-		case 'd':
-			snake.position.x++;
-			snake.direction = D_RIGHT;
-			log_debug("Snake is moving right. (%d;%d)", snake.position.y, snake.position.x);
-			break;
-		case 'w':
-			snake.position.y--;
-			snake.direction = D_UP;
-			log_debug("Snake is moving up. (%d;%d)", snake.position.y, snake.position.x);
-			break;
-		case 'a':
-			snake.position.x--;
-			snake.direction = D_LEFT;
-			log_debug("Snake is moving left. (%d;%d)", snake.position.y, snake.position.x);
-			break;
-		case 's':
-			snake.position.y++;
-			snake.direction = D_DOWN;
-			log_debug("Snake is moving down. (%d;%d)", snake.position.y, snake.position.x);
-			break;
-		default:
-			break;
+	int ch = wgetch(window.game);
+	
+	if(( ch== 'd' || ch == 'D' || ch == KEY_RIGHT) && (snake.direction != D_RIGHT && snake.direction != D_LEFT)) {
+		snake.direction = D_RIGHT;
+		log_debug("Snake turned right. (%d;%d)", snake.position.y, snake.position.x);
+	} else if (( ch == 'a' || ch == 'A' || ch == KEY_LEFT) && (snake.direction != D_RIGHT && snake.direction != D_LEFT)) {
+		snake.direction = D_LEFT;
+		log_debug("Snake turned left. (%d;%d)", snake.position.y, snake.position.x);
+	} else if((ch == 's' || ch == 'S' || ch == KEY_DOWN) && (snake.direction != D_UP && snake.direction != D_DOWN)) {
+		snake.direction = D_DOWN;
+		log_debug("Snake turned down. (%d;%d)", snake.position.y, snake.position.x);
+	} else if((ch == 'w' || ch == 'W' || ch == KEY_UP) && (snake.direction != D_UP && snake.direction != D_DOWN)) {
+		snake.direction = D_UP;
+		log_debug("Snake turned up. (%d;%d)", snake.position.y, snake.position.x);
 	}
+
 	echo();
-	nodelay(window.game, FALSE);
 }

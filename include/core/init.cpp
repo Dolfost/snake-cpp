@@ -17,8 +17,8 @@ int init(void) {
 	log_log_add(flag.core.logfile);
 
 	// windows lengths
-	length.window.stdscr.minl = 27;
-	length.window.stdscr.minc = 65;
+	length.window.stdscr.minl = 30; // default: 27
+	length.window.stdscr.minc = 60; // default: 65
 	length.window.sidelog.minl = length.window.stdscr.minl;
 	length.window.sidelog.minc = 100;
 	length.window.game.minl = 25;

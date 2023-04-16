@@ -1,14 +1,16 @@
 void game(void) {
 	log_trace("Game function have started.");
 
+	wrefresh(window.stdscr);
+
 	while (snake.hit != true) {
 		input();
-		// move();
+		move();
 		mvwaddch(window.game, snake.position.y, snake.position.x, '#');
 		
 		draw();
 		wallhit();
-		napms(60);
+		napms(GAME_NAP);
 	}
 
 	desetup();

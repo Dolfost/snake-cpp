@@ -10,6 +10,8 @@ int get_random(int lower_bound, int upper_bound) {
 void setup(void) {
 	log_trace("Setup function have started.");
 
+	wtimeout(window.game, GAME_KEY_TIMEOUT);
+
 	srand(time(NULL));
 
 

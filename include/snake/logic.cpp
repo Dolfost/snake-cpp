@@ -11,8 +11,24 @@ void wallhit(void) {
 }
 
 void move(void) {
-	for (int i = 0; i < length.window.game.minl; i++) {
-		for (int j = 0; j < length.window.game.minc; j++) {
-		}
-	}	
+// 	for (int i = 0; i < length.window.game.minl; i++) {
+// 		for (int j = 0; j < length.window.game.minc; j++) {
+// 		}
+// 	}	
+	switch(snake.direction) {
+		case D_RIGHT:
+			snake.position.x++;
+			break;
+		case D_UP:
+			snake.position.y--;
+			break;
+		case D_LEFT:
+			snake.position.x--;
+			break;
+		case D_DOWN:
+			snake.position.y++;
+			break;
+		default:
+			break;
+	}
 }

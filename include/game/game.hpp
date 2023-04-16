@@ -1,3 +1,5 @@
+#define GAME_NAP 80
+#define GAME_KEY_TIMEOUT 10
 void input(void);
 void wallhit(void);
 
@@ -11,6 +13,7 @@ struct Snake {
 	bool hit;
 	int length;
 	Direction direction = D_NONE;
+	
 };
 
 struct Bait {
