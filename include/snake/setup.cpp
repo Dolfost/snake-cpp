@@ -2,6 +2,7 @@
 
 Snake snake;
 Bait bait;
+Game progress;
 
 int get_random(int lower_bound, int upper_bound) {
 	return rand() % (upper_bound + 1 - lower_bound) + lower_bound;
@@ -14,29 +15,28 @@ void setup(void) {
 
 	srand(time(NULL));
 
+	progress.score = 0;
 
-	floor = (short*)calloc(length.window.game.minl*length.window.game.minc, sizeof(short));
-	memcheck(floor, length.window.game.minl*length.window.game.minc*sizeof(short));
+	snake.body = (Point*)calloc(length.window.game.minl*length.window.game.minc, sizeof(Point));
+	memcheck(snake.body, length.window.game.minl*length.window.game.minc*sizeof(Point));
 
-	snake.position.y = get_random(0, length.window.game.minl - 1);
-	snake.position.x = get_random(0, length.window.game.minc - 1);
-	floor[snake.position.y*sizeof(short) + snake.position.x] = 1;
-	mvwaddstr(window.game, snake.position.y, snake.position.x, "#");
+	snake.head.y = get_random(0, length.window.game.minl - 1);
+	snake.head.x = get_random(0, length.window.game.minc - 1);
+
+	snake.body[0].y = snake.head.y;
+	snake.body[0].x = snake.head.x;
+
+	// snake.tail = snake.body;
+
 	snake.length = 1;
-	log_debug("Snake start coordinates is (%d;%d).", snake.position.y, snake.position.x);
+
+	mvwaddstr(window.game, snake.head.y, snake.head.x, "#");
+	snake.length = 1;
+	log_debug("Snake spawned at (%d;%d).", snake.head.y, snake.head.x);
 	
-	bait.position.y = get_random(0, length.window.game.minl - 1);
-	bait.position.x = get_random(0, length.window.game.minc - 1);
-	floor[bait.position.y*sizeof(short) + bait.position.x] = -1;
-	mvwaddstr(window.game, bait.position.y, bait.position.x, "@");
-	log_debug("Bait start coordinates is (%d;%d).", bait.position.y, bait.position.x);
-
-
-
-	
+	spawn_bait();
 }
 
 void desetup(void) {
 	log_trace("Desetup function have started.");
-	free(floor);
 }

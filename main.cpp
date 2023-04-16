@@ -31,12 +31,12 @@ int main(int argc, char** argv) {
 
 
 
-	log_trace("Example trace");
-	log_debug("Example debug");
-	log_info("Example info");
-	log_warn("Example warning");
-	log_error("Example error");
-	log_fatal("Example fatal");
+// 	log_trace("Example trace");
+// 	log_debug("Example debug");
+// 	log_info("Example info");
+// 	log_warn("Example warning");
+// 	log_error("Example error");
+// 	log_fatal("Example fatal");
 
 
 	wrefresh(window.stdscr);

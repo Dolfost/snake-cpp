@@ -1,15 +1,35 @@
+void spawn_bait(void) {
+	bool is_taken = true;
+
+	while (is_taken == true) {
+		is_taken = false;
+		bait.position.y = get_random(0, length.window.game.minl - 1);
+		bait.position.x = get_random(0, length.window.game.minc - 1);
+		for (int i = 0; i < snake.length; i++) {
+			if (snake.body[i].y == bait.position.y && snake.body[i].x == bait.position.x) {
+				is_taken = true;;
+				break;
+			}
+		}
+	}
+	log_debug("Bait spawned at (%d;%d).", bait.position.y, bait.position.x);
+}
+
 void game(void) {
 	log_trace("Game function have started.");
 
 	wrefresh(window.stdscr);
+	draw();
 
-	while (snake.hit != true) {
+	while (snake.hit != true && snake.bit != true) {
 		input();
+
 		move();
-		mvwaddch(window.game, snake.position.y, snake.position.x, '#');
 		
 		draw();
+
 		wallhit();
+		
 		napms(GAME_NAP);
 	}
 
