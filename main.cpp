@@ -11,11 +11,11 @@
 #include "include/core/getopt.cpp"
 #include "include/snake/setup.cpp"
 
-#include "include/game/game.cpp"
-
 #include "include/snake/draw.cpp"
 #include "include/snake/input.cpp"
 #include "include/snake/logic.cpp"
+
+#include "include/game/game.cpp"
 
 
 int main(int argc, char** argv) {
