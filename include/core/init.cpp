@@ -16,15 +16,17 @@ int init(void) {
 
 	log_log_add(flag.core.logfile);
 
-	// windows lengths
-	length.window.stdscr.minl = 30; // default: 27
-	length.window.stdscr.minc = 60; // default: 65
-	length.window.sidelog.minl = length.window.stdscr.minl;
-	length.window.sidelog.minc = 100;
-	length.window.game.minl = 25;
-	length.window.game.minc = length.window.stdscr.minc;
+	// windows sizes
+	length.window.game.minl = 30; // 30
+	length.window.game.minc = 60; // 60
 	length.window.bar.minl = 1;
 	length.window.bar.minc = length.window.stdscr.minc;
+
+	length.window.stdscr.minl = length.window.game.minl + length.window.bar.minl + 1;
+	length.window.stdscr.minc = length.window.game.minc;
+	length.window.sidelog.minl = length.window.stdscr.minl;
+	length.window.sidelog.minc = 100;
+
 
 
 	window.stdscr = initscr(); // if initscr() fails, it stops the program and prints error message
