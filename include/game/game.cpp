@@ -25,10 +25,10 @@ void game(void) {
 		input();
 
 		move();
-		
-		draw();
 
 		wallhit();
+		
+		draw();
 		
 		napms(GAME_NAP);
 	}

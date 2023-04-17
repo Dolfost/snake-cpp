@@ -20,7 +20,7 @@ int init(void) {
 	length.window.game.minl = 30; // 30
 	length.window.game.minc = 60; // 60
 	length.window.bar.minl = 1;
-	length.window.bar.minc = length.window.stdscr.minc;
+	length.window.bar.minc = length.window.game.minc;
 
 	length.window.stdscr.minl = length.window.game.minl + length.window.bar.minl + 1;
 	length.window.stdscr.minc = length.window.game.minc;
