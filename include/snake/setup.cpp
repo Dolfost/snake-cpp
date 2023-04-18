@@ -45,4 +45,5 @@ void setup(void) {
 
 void desetup(void) {
 	log_trace("Desetup function have started.");
+	free(snake.body);
 }
