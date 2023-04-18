@@ -45,6 +45,7 @@ void move(void) {
 		progress.score += 5;
 		snake.length++;
 		log_debug("The snake caught the mouse at (%d;%d)", snake.head.y, snake.head.x);
+		log_debug("The score equals %d points.", progress.score);
 		spawn_bait();
 	}
 }

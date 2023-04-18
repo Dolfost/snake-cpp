@@ -33,5 +33,7 @@ void game(void) {
 		napms(GAME_NAP);
 	}
 
+	log_debug("The score equals %d points.", progress.score);
+
 	desetup();
 }

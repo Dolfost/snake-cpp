@@ -65,7 +65,6 @@ int init(void) {
 	init_pair(6, COLOR_RED, g_log.background);     g_log.levelcolor[5] = 6; g_log.levelattr[5] = A_REVERSE; // fatal
 	init_pair(7, COLOR_WHITE, g_log.background);   g_log.filenamecolor = 7; g_log.filenameattribute = A_UNDERLINE;
 	init_pair(8, COLOR_CYAN, g_log.background);    g_log.msgcolor = 8;      g_log.msgattribute = A_NORMAL;
-
 	
 	// small terminal check
 	if (LINES < length.window.stdscr.minl) {
@@ -120,6 +119,12 @@ int init(void) {
 		fatal_error("Could not initialize game window.");
 	} else 
 		log_debug("Initialized game subwindow succesfully.");
+	
+	if (keypad(window.game, TRUE) == ERR) {
+		log_error("Could not initialize function keys.");
+		log_nl(   "Arrow keys might not work propersly.");
+	} else
+		log_debug("Initialized function keys successfully.");
 
 	// bar subwindow initialization
 	if ((window.bar = newwin(length.window.bar.minl, length.window.bar.minc, length.window.game.minl + 1, 0)) == NULL) {
