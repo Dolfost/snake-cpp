@@ -33,6 +33,7 @@ struct Flags {
 };
 
 struct Colors {
+	short gamebg;
 };
 
 struct Lengths {

@@ -1,3 +1,5 @@
+#include <math.h>
+
 void spawn_bait(void) {
 	bool is_taken = true;
 
@@ -15,7 +17,7 @@ void spawn_bait(void) {
 	log_debug("Bait spawned at (%d;%d).", bait.position.y, bait.position.x);
 }
 
-void game(void) {
+void gameloop(void) {
 	log_trace("Game function have started.");
 
 	wrefresh(window.stdscr);
@@ -27,13 +29,16 @@ void game(void) {
 		move();
 
 		wallhit();
+
+		game.distance = sqrt(pow(snake.head.x - bait.position.x, 2) + pow(snake.head.y - bait.position.y, 2));
 		
 		draw();
 		
 		napms(GAME_NAP);
 	}
 
-	log_debug("The score equals %d points.", progress.score);
+	log_debug("The final score equals %d points.", game.score);
+	log_debug("The final length equals %d.", snake.length);
 
 	desetup();
 }

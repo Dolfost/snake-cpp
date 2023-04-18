@@ -42,10 +42,10 @@ void move(void) {
 	snake.body[0] = snake.head;
 
 	if (snake.head.y == bait.position.y && snake.head.x == bait.position.x) {
-		progress.score += 5;
+		game.score += 5;
 		snake.length++;
 		log_debug("The snake caught the mouse at (%d;%d)", snake.head.y, snake.head.x);
-		log_debug("The score equals %d points.", progress.score);
+		log_debug("The score equals %d points.", game.score);
 		spawn_bait();
 	}
 }

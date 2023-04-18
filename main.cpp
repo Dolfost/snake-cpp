@@ -26,7 +26,7 @@ int main(int argc, char** argv) {
 	process_argv(argc, argv);
 
 	setup();
-	game();
+	gameloop();
 
 
 
