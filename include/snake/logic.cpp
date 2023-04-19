@@ -42,9 +42,14 @@ void move(void) {
 	snake.body[0] = snake.head;
 
 	if (snake.head.y == bait.position.y && snake.head.x == bait.position.x) {
-		game.score += 5;
+		clock_gettime(CLOCK_MONOTONIC, &snake.time_end);
+		snake.time = ((int64_t)snake.time_end.tv_sec - (int64_t)snake.time_start.tv_sec)
+			+ ((int64_t)snake.time_end.tv_nsec - (int64_t)snake.time_start.tv_nsec) / (double)1000000000;;
+		clock_gettime(CLOCK_MONOTONIC, &snake.time_start);
+
+		game.score += (bait.distance * 7) / snake.time + 4;
 		snake.length++;
-		log_debug("The snake caught the mouse at (%d;%d)", snake.head.y, snake.head.x);
+		log_debug("The snake caught the mouse at (%d;%d) in %fs.", snake.head.y, snake.head.x, snake.time);
 		log_debug("The score equals %d points.", game.score);
 		spawn_bait();
 	}

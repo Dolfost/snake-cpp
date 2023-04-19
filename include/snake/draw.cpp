@@ -1,3 +1,11 @@
+void werase(WINDOW* window, short from, short to) {
+	short y = getcury(window);
+	while (from <= to) {
+		mvwaddch(window, y, from, ' ');
+		from++;
+	}
+}
+
 void draw(void) {
 	// snake
 	mvwaddch(window.game, snake.tail.y, snake.tail.x, ' ');
@@ -17,9 +25,16 @@ void draw(void) {
 	mvwaddch(window.game, bait.position.y, bait.position.x, '@');
 
 	wattrset(window.game, COLOR_PAIR(bait.fearcolor[3]) + bait.fearattr[3]);
-	
+
+
+	// bar
+	// werase(window.bar, length.bar.scorename, length.bar.scorename + length.bar.score);
+	mvwprintw(window.bar, 0, length.bar.scorename, "%d", game.score);
+	mvwprintw(window.bar, 0, length.bar.scorename + length.bar.score + length.bar.timename,
+			"%0.1fs", snake.time);
 
 	// window refreshing
 	wrefresh(window.game);
+	wrefresh(window.bar);
 	wrefresh(window.sidelog);
 }

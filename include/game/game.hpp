@@ -19,12 +19,18 @@ struct Snake {
 	bool hit;	// snake have hit the wall
 	bool bit;	// skake have bit itelf (hahaha what a fool)
 	int length; // snake length
+	
+	struct timespec time_start;
+	struct timespec time_end;
+	double time; // how muche seconds elapsed between two mouse catches
+	
 	Direction direction = D_NONE;
 	Point* body; // array of all points in snake body	
 };
 
 struct Bait {
 	Point position;
+	double distance; // distance to snake on spawn
 	// fear****[0] is more fear than fear****[1] 
 	short fearcolor[4];
 	int fearattr[4];

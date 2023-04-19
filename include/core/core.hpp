@@ -49,5 +49,11 @@ struct Lengths {
 			int minc;
 		};
 	} subwindow;
+	struct Bar {
+		short scorename;
+		short score;
+		short timename;
+		short time;
+	} bar;
 };
 
