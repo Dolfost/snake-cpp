@@ -30,6 +30,9 @@ void draw(void) {
 	// bar
 	// werase(window.bar, length.bar.scorename, length.bar.scorename + length.bar.score);
 	mvwprintw(window.bar, 0, length.bar.scorename, "%d", game.score);
+
+	werase(window.bar, length.bar.scorename + length.bar.score + length.bar.timename,
+			length.bar.scorename + length.bar.score + length.bar.timename + length.bar.time);
 	mvwprintw(window.bar, 0, length.bar.scorename + length.bar.score + length.bar.timename,
 			"%0.1fs", snake.time);
 
