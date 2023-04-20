@@ -29,8 +29,6 @@ int main(int argc, char** argv) {
 	gameloop();
 
 
-
-
 // 	log_trace("Example trace");
 // 	log_debug("Example debug");
 // 	log_info("Example info");

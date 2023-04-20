@@ -1,1 +1,1 @@
-g++ -g -std=c++11 main.cpp -lncurses -o snake.out
+g++ -g -Wall -Wextra -std=c++11 main.cpp -lncurses -o snake.out
