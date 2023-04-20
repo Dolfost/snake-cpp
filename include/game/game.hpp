@@ -36,6 +36,7 @@ struct Bait {
 	short fearcolor[4];
 	int fearattr[4];
 	unsigned char fearradius[3];
+	bool eaten;
 };
 
 struct Game {

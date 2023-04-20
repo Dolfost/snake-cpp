@@ -21,6 +21,9 @@ void setup(void) {
 	snake.body = (Point*)calloc(length.window.game.minl*length.window.game.minc, sizeof(Point));
 	memcheck(snake.body, length.window.game.minl*length.window.game.minc*sizeof(Point));
 
+	snake.body[1].y = -1;
+	snake.body[1].x = -1;
+
 	snake.head.y = get_random(0, length.window.game.minl - 1);
 	snake.head.x = get_random(0, length.window.game.minc - 1);
 
@@ -40,6 +43,8 @@ void setup(void) {
 	bait.fearradius[0] = 5;
 	bait.fearradius[1] = 10;
 	bait.fearradius[2] = 15;
+
+	bait.eaten = false;
 	
 	spawn_bait();
 

@@ -49,6 +49,7 @@ void move(void) {
 
 		game.score += (bait.distance * 7) / snake.time + 4;
 		snake.length++;
+		bait.eaten = true;
 		log_debug("The snake caught the mouse at (%d;%d) in %fs.", snake.head.y, snake.head.x, snake.time);
 		log_debug("The score equals %d points.", game.score);
 		spawn_bait();

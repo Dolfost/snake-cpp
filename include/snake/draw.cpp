@@ -9,8 +9,15 @@ void werase(WINDOW* window, short from, short to) {
 void draw(void) {
 	// snake
 	mvwaddch(window.game, snake.tail.y, snake.tail.x, ' ');
-	mvwaddch(window.game, snake.head.y, snake.head.x, 'O');
-	
+	mvwaddch(window.game, snake.head.y, snake.head.x, '0');
+
+	if (snake.length > 1) {
+		mvwaddch(window.game, snake.body[1].y, snake.body[1].x, 'O'); 
+		if (bait.eaten == true) {
+			mvwaddch(window.game, snake.body[1].y, snake.body[1].x, '#');
+			bait.eaten = false;
+		}
+	}
 
 	// mouse	
 	if (game.distance <= bait.fearradius[0])
@@ -28,13 +35,18 @@ void draw(void) {
 
 
 	// bar
-	// werase(window.bar, length.bar.scorename, length.bar.scorename + length.bar.score);
+	werase(window.bar, length.bar.scorename, length.bar.scorename + length.bar.score - 1);
 	mvwprintw(window.bar, 0, length.bar.scorename, "%d", game.score);
 
 	werase(window.bar, length.bar.scorename + length.bar.score + length.bar.timename,
 			length.bar.scorename + length.bar.score + length.bar.timename + length.bar.time);
-	mvwprintw(window.bar, 0, length.bar.scorename + length.bar.score + length.bar.timename,
-			"%0.1fs", snake.time);
+	if (snake.time > 99.9)
+		mvwprintw(window.bar, 0, length.bar.scorename + length.bar.score + length.bar.timename,
+				">99.9s");
+	else	
+		mvwprintw(window.bar, 0, length.bar.scorename + length.bar.score + length.bar.timename,
+				"%0.1fs", snake.time);
+	
 
 	// window refreshing
 	wrefresh(window.game);
