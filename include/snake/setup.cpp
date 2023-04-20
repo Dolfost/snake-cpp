@@ -12,6 +12,7 @@ void setup(void) {
 	log_trace("Setup function have started.");
 
 	wtimeout(window.game, GAME_KEY_TIMEOUT);
+	cbreak();
 
 	srand(time(NULL));
 

@@ -36,11 +36,6 @@ void gameloop(void) {
 		game.distance = sqrt(pow(snake.head.x - bait.position.x, 2) + pow(snake.head.y - bait.position.y, 2));
 		
 		draw();
-		 
-		if (snake.nitro == true) { 
-			napms(GAME_NAP/2);
-		} else
-			napms(GAME_NAP);
 	}
 
 	log_debug("The final score equals %d points.", game.score);

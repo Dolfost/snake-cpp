@@ -1,5 +1,5 @@
-#define GAME_NAP 80 // 80
-#define GAME_KEY_TIMEOUT 0 // 10
+#define GAME_NAP 0 // 80
+#define GAME_KEY_TIMEOUT 100 // 10
 
 void input(void);
 void wallhit(void);
@@ -26,7 +26,6 @@ struct Snake {
 	double time; // how muche seconds elapsed between two mouse catches
 	
 	Direction direction = D_NONE;
-	bool nitro;
 	Point* body; // array of all points in snake body	
 };
 
