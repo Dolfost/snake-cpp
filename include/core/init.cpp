@@ -182,6 +182,7 @@ int init(void) {
 }
 
 void deinit(void) {
+	log_debug("Deinit functions has started");
 	flushinp();
 	endwin();
 }
