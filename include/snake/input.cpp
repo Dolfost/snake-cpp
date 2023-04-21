@@ -23,8 +23,6 @@ void input(void) {
 
 	int ch = wgetch(window.game);
 
-	
-
 	if (ch == ERR)
 		;
 	else if (input_snake(ch))

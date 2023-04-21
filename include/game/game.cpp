@@ -58,5 +58,7 @@ void gamepause(void) {
 
 	napms(GAME_PAUSE_TIMEOUT);
 
+	flushinp(); // clear garbage
+
 	echo();
 }
