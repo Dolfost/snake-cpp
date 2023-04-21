@@ -52,4 +52,23 @@ void draw(void) {
 	wrefresh(window.game);
 	wrefresh(window.bar);
 	wrefresh(window.sidelog);
+	wrefresh(window.stdscr);
 }
+
+void drawgame(void) {
+	touchwin(window.stdscr);
+	wrefresh(window.stdscr);
+	touchwin(window.game);
+	wrefresh(window.game);
+	touchwin(window.sidelog);
+	wrefresh(window.sidelog);
+	touchwin(window.bar);
+	wrefresh(window.bar);
+}
+
+void drawstdlines(void) {
+	mvwvline(stdscr, 0, length.window.game.minc, 0, LINES);
+	mvwhline(stdscr, length.window.game.minl, 0, 0, length.window.game.minc);
+}
+
+

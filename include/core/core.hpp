@@ -1,10 +1,12 @@
 int init(void);
 void deinit(void);
 
+void buildhelp(char*);
+void fillhelp(FILE* file);
+
 struct Windows {
 	WINDOW* stdscr = NULL;
 	WINDOW* log = NULL;
-	WINDOW* help = NULL;
 	WINDOW* sidelog = NULL;
 	WINDOW* game = NULL;
 	WINDOW* bar = NULL;
@@ -14,10 +16,16 @@ struct Subwindows {
 
 };
 
+struct Pads {
+	WINDOW* help = NULL;
+};
+
 struct Flags {
 	struct Flags_option {
 		bool unknown = false;
 		bool help = false;
+		bool buildhelp = false;
+		char* helppath = NULL;
 	} option;
 	struct Flags_curses {
 		bool color = false;
@@ -51,12 +59,19 @@ struct Lengths {
 			int minc;
 		};
 	} subwindow;
-	struct Bar {
+	struct Lengths_bar {
 		short scorename;
 		short score;
 		short timename;
 		short time;
 	} bar;
+
+	struct Lengths_pad {
+		struct pad {
+			int minl;
+			int minc;
+		} help;
+	} pad;
 };
 
 struct Positions {

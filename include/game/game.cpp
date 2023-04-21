@@ -19,7 +19,7 @@ void spawn_bait(void) {
 }
 
 void gameloop(void) {
-	log_trace("Game function have started.");
+	log_trace("Game loop have started.");
 
 	wrefresh(window.stdscr);
 	draw();
@@ -70,4 +70,96 @@ void gamepause(void) {
 	flushinp(); // clear garbage
 
 	echo();
+}
+
+void help(void) {
+	box(window.stdscr, 0, 0);
+	mvwaddstr(window.stdscr, 0, 2, "Snake help");
+	wrefresh(window.stdscr);
+	prefresh(pad.help, 0, 0, 1, 1, length.pad.help.minl+2, length.pad.help.minc+2);
+	
+	input_help();
+
+
+	wborder(window.stdscr, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
+	drawstdlines();
+	drawgame();
+}
+
+
+
+
+
+
+char* fgetline(FILE* filea) {
+	static FILE* file;
+
+	if (filea != NULL)
+		file = filea;
+
+	long int position = ftell(file);
+
+	if (position == -1) {
+		log_fatal("Could not get position from file.");
+		return NULL;
+	}
+
+	long int len = 0;
+	int ch;
+
+	do {
+		ch = fgetc(file);
+		len++;
+	} while (ch != '\n' || ch != EOF);
+	len--;
+
+	char* str = (char*)malloc(sizeof(char)*len + 1);
+
+	fseek(file, SEEK_SET, position);
+
+	for (int i = 0; i < len; i++) {
+		str[i] = fgetc(file);
+	}
+
+	return str;
+}
+
+
+long countlines(FILE* file) {
+	long position = ftell(file);
+	long lines = 0;
+
+	if (file == NULL) {
+		log_fatal("Got null pointer.");
+		return -1;
+	}
+
+	int ch;
+
+	do {
+		ch = fgetc(file);
+		if (ch == '\n')
+			lines++;
+	} while (ch != EOF); 
+	lines++;
+
+	fseek(file, SEEK_SET, position);
+
+	return lines;
+}
+
+
+void buildhelp(char* path) {
+	log_trace("Entered buildhelp().");
+ 	FILE* file = fopen(path, "w+");
+	
+	if (file == NULL) {
+		log_fatal("Could not open help file");
+		log_nl(   "'%s' for building.", path);
+		return;
+	}
+	
+	fprintf(file, "This is help.\nBruh.\n");
+
+	fclose(file);
 }

@@ -2,6 +2,7 @@
 
 Windows window;
 Subwindows subwindow;
+Pads pad;
 Flags flag;
 Colors color;
 Lengths length;
@@ -15,9 +16,26 @@ int init(void) {
 	if ((flag.core.logfile = fopen(flag.core.logpath, "w+")) == NULL)
 		fatal_error("Coulnd not open log file '%s' for writing.", flag.core.logpath);
 
+
 	log_log_add(flag.core.logfile);
 
+	window.stdscr = initscr(); // if initscr() fails, it stops the program and prints error message
+
+	// log window and stdscr initialization
+	if ((window.log = newwin(0,0,0,0)) == NULL)
+		fatal_error("Could not initialize log window.");
+	else {	
+		log_log_add(window.log);
+		log_debug("Initialized standart window successfully.");
+		log_debug("Initialized log window succsessfully.");
+	}
+
+	scrollok(window.log, TRUE);
+
+
 	// windows sizes
+// 	length.window.game.minl = 22; // lldb
+// 	length.window.game.minc = 80; // lldb
 	length.window.game.minl = 30; // 30
 	length.window.game.minc = 60; // 60
 	length.window.bar.minl = 1;
@@ -30,21 +48,14 @@ int init(void) {
 	length.window.sidelog.minl = length.window.stdscr.minl;
 	length.window.sidelog.minc = 100;
 
+	FILE* helpfile = fopen(flag.option.helppath, "r"); // closed after fillhelp()
+	if (helpfile == NULL)
+		fatal_error("Could not open help file for reading.");
+	length.pad.help.minl = countlines(helpfile);
+	if (length.pad.help.minl < LINES - 2)
+		length.pad.help.minl = LINES - 2;
+	length.pad.help.minc = COLS - 2;
 
-
-	window.stdscr = initscr(); // if initscr() fails, it stops the program and prints error message
-
-
-	// log window and stdscr initialization
-	if ((window.log = newwin(0,0,0,0)) == NULL)
-		fatal_error("Could not initialize log window.");
-	else {	
-		log_log_add(window.log);
-		log_debug("Initialized standart window successfully.");
-		log_debug("Initialized log window succsessfully.");
-	}
-
-	scrollok(window.log, TRUE);
 
 	// colors check
 	if (!(flag.curses.color = has_colors()))
@@ -85,7 +96,8 @@ int init(void) {
 	init_pair(6, COLOR_RED, g_log.background);     g_log.levelcolor[5] = 6; g_log.levelattr[5] = A_REVERSE; // fatal
 	init_pair(7, COLOR_WHITE, g_log.background);   g_log.filenamecolor = 7; g_log.filenameattribute = A_UNDERLINE;
 	init_pair(8, COLOR_CYAN, g_log.background);    g_log.msgcolor = 8;      g_log.msgattribute = A_NORMAL;
-	
+
+
 	// small terminal check
 	if (LINES < length.window.stdscr.minl) {
 		log_warn("The terminal widndow is too low.");
@@ -120,12 +132,17 @@ int init(void) {
 	mvwaddstr(window.pause, length.window.pause.minl / 2,
 			(length.window.pause.minc - 5 /* 5 is an word length */) / 2, "PAUSE");
 
-	// help window initialization
-	if ((window.help = newwin(0,0,0,0)) == NULL)
-		fatal_error("Could not initialize help window.");
+
+	// help pad initialization
+	if ((pad.help = newpad(length.pad.help.minl, length.pad.help.minc)) == NULL)
+		fatal_error("Could not initialize help pad.");
 	else
-		log_debug("Initialized help window succsessfully.");
+		log_debug("Initialized help pad succsessfully.");
+	// help pad filling
+	fillhelp(helpfile);
+	fclose(helpfile);
 	
+
 	// two or one window
 	if (COLS - length.window.game.minc - 1 >= length.window.sidelog.minc) {
 		log_debug("Terminal window is large enough");
@@ -153,7 +170,7 @@ int init(void) {
 	
 	if (keypad(window.game, TRUE) == ERR) {
 		log_error("Could not initialize function keys.");
-		log_nl(   "Arrow keys might not work propersly.");
+		log_nl(   "Arrow keys might not work properly.");
 	} else
 		log_debug("Initialized function keys successfully.");
 
@@ -174,9 +191,7 @@ int init(void) {
 
 	
 	// lines drawing
-	mvwvline(stdscr, 0, length.window.game.minc, 0, LINES);
-	mvwhline(stdscr, length.window.game.minl, 0, 0, length.window.game.minc);
-
+	drawstdlines();
 
 	#if SNAKE_WINDOW_POSITIONING_DEMO == 1
 	init_pair(9, COLOR_WHITE, COLOR_RED);
@@ -196,6 +211,13 @@ int init(void) {
 
 
 	return EXIT_SUCCESS;
+}
+
+void fillhelp(FILE* file) {
+	int ch;
+	while ((ch = fgetc(file)) != EOF) {
+		waddch(pad.help, ch);
+	}
 }
 
 void deinit(void) {

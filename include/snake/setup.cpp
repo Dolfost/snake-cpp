@@ -11,6 +11,11 @@ int get_random(int lower_bound, int upper_bound) {
 void setup(void) {
 	log_trace("Setup function have started.");
 
+	if (flag.option.buildhelp == true) {
+		log_debug("Buildind help to '%s'...", flag.option.helppath);
+		buildhelp(flag.option.helppath);
+	}
+
 	wtimeout(window.game, GAME_KEY_TIMEOUT);
 	cbreak();
 

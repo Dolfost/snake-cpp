@@ -49,6 +49,10 @@ bool input_snake(int ch) {
 	} else if ((ch == 'w' || ch == 'W' || ch == KEY_UP) && (snake.direction != D_DOWN)) {
 		snake.direction = D_UP;
 		interaction = true;
+	} else 	if (ch == 'p') {
+		gamepause();
+		log_debug("Game has been paused for %0.3fs.", snake.pause_time);
+		interaction = true;
 	}
 
 	if (previous != snake.direction)
@@ -59,11 +63,31 @@ bool input_snake(int ch) {
 bool input_global(int ch) {
 	bool interaction = false;
 
-	if (ch == 'p') {
-		gamepause();
-		log_debug("Game has been paused for %0.3fs.", snake.pause_time);
+	if (ch == 'h') {
+		log_debug("Entered help window.");
+		help();
 		interaction = true;
-	}
+	}// else if (ch == 'q') {
+// 		log_debug("Exiting the game.");
+// 		interaction = true;
+// 		exitgame();
+// 	}
 
 	return interaction;
+}
+
+void input_help(void) {
+	noecho();
+
+	int ch;
+
+	while (true) {
+		ch = wgetch(pad.help);
+		if (ch == 'h' || ch == 'q') {
+			log_debug("Left help window.");
+			break;
+		}
+	}
+
+	echo();
 }

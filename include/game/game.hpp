@@ -3,18 +3,13 @@
 #define GAME_PAUSE_TIMEOUT 1000 // 1000
 
 void gameloop(void);
-void draw(void);
-void move(void);
-
 void input(void);
-bool input_snake(int);
-bool input_global(int);
-
 void gamepause(void);
 
-void wallhit(void);
 
-void spawn_bait(void);
+char* fgetline(FILE*);
+long countlines(FILE* file);
+
 
 enum Direction {D_RIGHT, D_UP, D_LEFT, D_DOWN, D_NONE};
 const char* directionstr[] = {"right", "up", "left", "down"};

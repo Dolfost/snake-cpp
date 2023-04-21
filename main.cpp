@@ -20,10 +20,10 @@
 
 int main(int argc, char** argv) {
 	execname = *argv;
-
-	init();
 	
 	process_argv(argc, argv);
+
+	init();
 
 	setup();
 	gameloop();
