@@ -1,7 +1,17 @@
 #define GAME_NAP 0 // 80
 #define GAME_KEY_TIMEOUT 100 // 10
+#define GAME_PAUSE_TIMEOUT 1000 // 1000
+
+void gameloop(void);
+void draw(void);
+void move(void);
 
 void input(void);
+bool input_snake(int);
+bool input_global(int);
+
+void gamepause(void);
+
 void wallhit(void);
 
 void spawn_bait(void);

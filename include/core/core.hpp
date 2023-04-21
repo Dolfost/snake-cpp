@@ -8,6 +8,7 @@ struct Windows {
 	WINDOW* sidelog = NULL;
 	WINDOW* game = NULL;
 	WINDOW* bar = NULL;
+	WINDOW* pause = NULL;
 };
 struct Subwindows {
 
@@ -41,7 +42,7 @@ struct Lengths {
 		struct window {
 			int minl;
 			int minc;
-		} stdscr, log, sidelog, game, bar;
+		} stdscr, log, sidelog, game, bar, pause;
 	} window;
 	struct Lengths_subwindow {
 		struct window {
@@ -55,5 +56,12 @@ struct Lengths {
 		short timename;
 		short time;
 	} bar;
+};
+
+struct Positions {
+	struct Positions_window {
+		int y;
+		int x;
+	} pause;
 };
 

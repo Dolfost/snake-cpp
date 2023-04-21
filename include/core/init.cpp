@@ -5,6 +5,7 @@ Subwindows subwindow;
 Flags flag;
 Colors color;
 Lengths length;
+Positions positions;
 
 int init(void) {
 	atexit(deinit);
@@ -21,6 +22,8 @@ int init(void) {
 	length.window.game.minc = 60; // 60
 	length.window.bar.minl = 1;
 	length.window.bar.minc = length.window.game.minc;
+	length.window.pause.minl = 5;
+	length.window.pause.minc = 13;
 
 	length.window.stdscr.minl = length.window.game.minl + length.window.bar.minl + 1;
 	length.window.stdscr.minc = length.window.game.minc;
@@ -89,6 +92,17 @@ int init(void) {
  		fatal_error("Terminal is too small. Resize it to at least %d lines by %d columns.", length.window.stdscr.minl, length.window.stdscr.minc);
 	}
 
+	// pause window
+	if ((window.pause = newwin(length.window.pause.minl, length.window.pause.minc,
+					(length.window.game.minl - length.window.pause.minl ) / 2,
+					(length.window.game.minc - length.window.pause.minc ) / 2)) == NULL)
+		fatal_error("Could not initialize pause window.");
+	else
+		log_debug("Initialized pause window succsessfully.");
+	box(window.pause, 0, 0);
+	mvwaddstr(window.pause, length.window.pause.minl / 2,
+			(length.window.pause.minc - 5 /* 5 is an word length */) / 2, "PAUSE");
+
 	// help window initialization
 	if ((window.help = newwin(0,0,0,0)) == NULL)
 		fatal_error("Could not initialize help window.");
@@ -113,7 +127,7 @@ int init(void) {
 		log_nl(   "to fit game and log windows in it.");
 	}
 
-	// game subwindow initialization
+	// game window initialization
 	if ((window.game = newwin(length.window.game.minl, length.window.game.minc, 0, 0)) == NULL) {
 		log_fatal("Could not initialize game window.");
 		fatal_error("Could not initialize game window.");

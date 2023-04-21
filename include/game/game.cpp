@@ -37,9 +37,26 @@ void gameloop(void) {
 		
 		draw();
 	}
+	beep();
 
 	log_debug("The final score equals %d points.", game.score);
 	log_debug("The final length equals %d.", snake.length);
 
 	desetup();
+}
+
+void gamepause(void) {
+	noecho();
+	
+	touchwin(window.pause);
+	wrefresh(window.pause);
+	
+	while (getch() != 'p');
+
+	touchwin(window.game);
+	wrefresh(window.game);
+
+	napms(GAME_PAUSE_TIMEOUT);
+
+	echo();
 }

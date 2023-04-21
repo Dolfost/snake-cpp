@@ -29,22 +29,16 @@ int main(int argc, char** argv) {
 	gameloop();
 
 
-// 	log_trace("Example trace");
-// 	log_debug("Example debug");
-// 	log_info("Example info");
-// 	log_warn("Example warning");
-// 	log_error("Example error");
-// 	log_fatal("Example fatal");
-
-
 	wrefresh(window.stdscr);
 	wrefresh(window.game);
 	wrefresh(window.sidelog);
 	wrefresh(window.bar);
 	getch();
 
+	log_info("Press return to close log.");
 	wrefresh(window.log);
-	getch();
+	noecho();
+	while (getch() != '\n');
 	
 	return 0;
 }

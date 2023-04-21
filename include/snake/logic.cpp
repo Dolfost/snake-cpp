@@ -4,7 +4,6 @@ void wallhit(void) {
 	if (snake.head.y < 0 || snake.head.x < 0 ||
 	snake.head.y > length.window.game.minl - 1 ||
 	snake.head.x > length.window.game.minc - 1) {
-		beep();
 		snake.hit = true;
 		log_debug("The snake crashed into the wall at (%d;%d).", snake.head.y, snake.head.x);
 	}
