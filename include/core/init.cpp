@@ -52,11 +52,28 @@ int init(void) {
 	else
 		log_info("This terminal does support color.");
 
+	if ((flag.curses.change_color = can_change_color()) == FALSE)
+		log_info("This terminal cannot change color.");
+	else
+		log_info("This terminal can change color.");
+
 	// colors initialization
 	if (start_color() != OK)
 		log_error("Could not initialize color.");
 	else
 		log_debug("Initialized colors successfully.");
+
+	// redefining colors
+	if (flag.curses.change_color == true) {
+		init_color(COLOR_BLACK, 0, 0, 0);
+		init_color(COLOR_RED, 949, 47, 47);
+		init_color(COLOR_GREEN, 149, 929, 149);
+		init_color(COLOR_YELLOW, 1000, 933, 0);
+		init_color(COLOR_BLUE, 0, 82, 1000);
+		init_color(COLOR_MAGENTA, 1000, 0, 969);
+		init_color(COLOR_CYAN, 0, 1000, 1000);
+		init_color(COLOR_WHITE, 900, 900, 900);
+	}
 
 	// log colors (8^>)
 	g_log.background = COLOR_BLACK;

@@ -60,9 +60,8 @@ bool input_global(int ch) {
 	bool interaction = false;
 
 	if (ch == 'p') {
-		log_debug("Game has been paused.");
 		gamepause();
-		log_debug("Game has been unpaused.");
+		log_debug("Game has been paused for %0.3fs.", snake.pause_time);
 		interaction = true;
 	}
 

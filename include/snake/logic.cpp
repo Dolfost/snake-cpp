@@ -42,15 +42,20 @@ void move(void) {
 
 	if (snake.head.y == bait.position.y && snake.head.x == bait.position.x) {
 		clock_gettime(CLOCK_MONOTONIC, &snake.time_end);
-		snake.time = ((int64_t)snake.time_end.tv_sec - (int64_t)snake.time_start.tv_sec)
-			+ ((int64_t)snake.time_end.tv_nsec - (int64_t)snake.time_start.tv_nsec) / (double)1000000000;;
+		snake.time = timediff(&snake.time_start, &snake.time_end) - snake.pause_time;
+		snake.pause_time = 0;
 		clock_gettime(CLOCK_MONOTONIC, &snake.time_start);
 
 		game.score += (bait.distance * 7) / snake.time + 4;
 		snake.length++;
 		bait.eaten = true;
-		log_debug("The snake caught the mouse at (%d;%d) in %fs.", snake.head.y, snake.head.x, snake.time);
+		log_debug("The snake caught the mouse at (%d;%d) in %0.3fs.", snake.head.y, snake.head.x, snake.time);
 		log_debug("The score equals %d points.", game.score);
 		spawn_bait();
 	}
+}
+
+double timediff(const struct timespec* start, const struct timespec* end) {
+	return ((int64_t)end->tv_sec - (int64_t)start->tv_sec)
+		+ ((int64_t)end->tv_nsec - (int64_t)start->tv_nsec) / (double)1000000000;
 }

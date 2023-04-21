@@ -21,6 +21,7 @@ struct Flags {
 	} option;
 	struct Flags_curses {
 		bool color = false;
+		bool change_color = false;
 		bool cursor = false;
 		bool small_window = false;
 	} curses;

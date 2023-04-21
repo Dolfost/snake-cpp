@@ -46,8 +46,8 @@ void draw(void) {
 	else	
 		mvwprintw(window.bar, 0, length.bar.scorename + length.bar.score + length.bar.timename,
 				"%0.1fs", snake.time);
-	
 
+	
 	// window refreshing
 	wrefresh(window.game);
 	wrefresh(window.bar);

@@ -34,6 +34,7 @@ struct Snake {
 	struct timespec time_start;
 	struct timespec time_end;
 	double time; // how muche seconds elapsed between two mouse catches
+	double pause_time;
 	
 	Direction direction = D_NONE;
 	Point* body; // array of all points in snake body	

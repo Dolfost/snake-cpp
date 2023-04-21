@@ -6,7 +6,6 @@
 #include <stdlib.h>
 #include <time.h>
 
-
 void fatal_error(const char* tmp, ...);
 void memcheck(void*, int);
 

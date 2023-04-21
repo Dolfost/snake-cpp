@@ -6,3 +6,5 @@ int wkbhit(WINDOW*);
 
 void werase(WINDOW*, short, short);
 #define erase(from, to) werase(stdscr, from, to)
+
+double timediff(const struct timespec*, const struct timespec*);

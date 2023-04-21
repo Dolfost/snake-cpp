@@ -31,6 +31,7 @@ void setup(void) {
 	snake.body[0].x = snake.head.x;
 
 	snake.length = 1;
+	snake.pause_time = 0;
 	log_debug("Snake spawned at (%d;%d).", snake.head.y, snake.head.x);
 
 	// mouse fear stuff

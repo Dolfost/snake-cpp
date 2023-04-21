@@ -51,12 +51,21 @@ void gamepause(void) {
 	touchwin(window.pause);
 	wrefresh(window.pause);
 	
+	struct timespec start;
+	struct timespec end;
+
+	clock_gettime(CLOCK_MONOTONIC, &start);
+	
 	while (getch() != 'p');
 
 	touchwin(window.game);
 	wrefresh(window.game);
 
 	napms(GAME_PAUSE_TIMEOUT);
+
+	clock_gettime(CLOCK_MONOTONIC, &end);
+
+	snake.pause_time += timediff(&start, &end);
 
 	flushinp(); // clear garbage
 
