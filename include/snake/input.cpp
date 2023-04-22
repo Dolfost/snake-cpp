@@ -18,7 +18,7 @@ int wkbhit(WINDOW* window) {
 	return r;
 }
 
-void input(void) {
+void gameinput(void) {
  	noecho();
 
 	int ch = wgetch(window.game);
@@ -27,8 +27,13 @@ void input(void) {
 		;
 	else if (input_snake(ch))
 		;
-	else if (input_global(ch))
-		;
+	else if (help(ch)) {
+		drawgame();
+	} else if (exitgame(ch)) {
+		drawgame();
+	} else if (gamepause(ch)) {
+		drawgame();
+	}
 
 	echo();
 }
@@ -49,45 +54,67 @@ bool input_snake(int ch) {
 	} else if ((ch == 'w' || ch == 'W' || ch == KEY_UP) && (snake.direction != D_DOWN)) {
 		snake.direction = D_UP;
 		interaction = true;
-	} else 	if (ch == 'p') {
-		gamepause();
-		log_debug("Game has been paused for %0.3fs.", snake.pause_time);
-		interaction = true;
 	}
 
 	if (previous != snake.direction)
-		log_debug("Snake turned %s at (%d;%d).", directionstr[snake.direction], snake.head.y, snake.head.x);
+		log_debug("Snake turned %s at (%d;%d). [%c]", directionstr[snake.direction], snake.head.y, snake.head.x, ch);
+	
 	return interaction;
 }
 
-bool input_global(int ch) {
-	bool interaction = false;
-
-	if (ch == 'h') {
-		log_debug("Entered help window.");
-		help();
-		interaction = true;
-	}// else if (ch == 'q') {
-// 		log_debug("Exiting the game.");
-// 		interaction = true;
-// 		exitgame();
-// 	}
-
-	return interaction;
-}
 
 void input_help(void) {
 	noecho();
 
 	int ch;
-
 	while (true) {
 		ch = wgetch(pad.help);
-		if (ch == 'h' || ch == 'q') {
-			log_debug("Left help window.");
+		if (ch == ERR)
+			continue;
+		if (ch == 'h' || ch == 'H') {
+			log_debug("Left help window. [%c]", ch);
 			break;
+		} else if (ch == KEY_UP || ch == 'w') {
+			if (length.pad.help.vl > 0) {
+				prefresh(pad.help, --length.pad.help.vl, 0, 
+						1, 1, LINES - 2, length.window.game.minc - 2);
+			}
+		} else if (ch == KEY_DOWN || ch == 's') {
+			if (length.pad.help.vl + LINES - 2 < length.pad.help.minl ) {
+				prefresh(pad.help, ++length.pad.help.vl, 0, 
+						1, 1, LINES - 2, length.window.game.minc - 2);
+			}
+		} else if (exitgame(ch)) {
+			touchwin(window.stdscr);
+			wrefresh(window.stdscr);
+			touchwin(pad.help);
+			prefresh(pad.help, length.pad.help.vl, 0, 
+					1, 1, LINES - 2, length.window.game.minc - 2);
+		}
+		
+	}
+
+	echo();
+}
+
+void input_exit(void) {
+	noecho();
+
+	int ch;
+
+	while (true) {
+		ch = wgetch(window.exit);
+		if (ch == 'Y' || ch == 'Q' || ch == 'y' || ch == 'q') {
+			log_debug("Exiting the game... [%c]", ch);
+			exit(EXIT_SUCCESS);
+			break;
+		}
+		if (ch == 'N' || ch == 'C' || ch == 'n' || ch == 'c') {
+			log_debug("Exit was interrupted. [%c]", ch);
+			return;
 		}
 	}
 
 	echo();
 }
+

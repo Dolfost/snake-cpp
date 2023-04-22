@@ -11,6 +11,7 @@ struct Windows {
 	WINDOW* game = NULL;
 	WINDOW* bar = NULL;
 	WINDOW* pause = NULL;
+	WINDOW* exit = NULL;
 };
 struct Subwindows {
 
@@ -69,7 +70,7 @@ struct Lengths {
 		struct window {
 			int minl;
 			int minc;
-		} stdscr, log, sidelog, game, bar, pause;
+		} stdscr, log, sidelog, game, bar, pause, exit;
 	} window;
 	struct Lengths_subwindow {
 		struct window {
@@ -88,6 +89,7 @@ struct Lengths {
 		struct pad {
 			int minl;
 			int minc;
+			int vl; // visible line
 		} help;
 	} pad;
 };

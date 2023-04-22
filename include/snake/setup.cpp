@@ -25,7 +25,7 @@ void setup(void) {
 			log_debug("Initialized help pad succsessfully.");
 		fclose(helpfile);
 	}
-
+	length.pad.help.vl = 0;
 
 	wtimeout(window.game, flag.option.timeout);
 	cbreak();
@@ -85,7 +85,7 @@ void setup(void) {
 	}
 
 	if (flag.option.help == true) {
-		help();
+		help('h');
 	}
 }
 

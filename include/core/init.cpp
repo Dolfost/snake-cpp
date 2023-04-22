@@ -41,8 +41,11 @@ int init(void) {
 	length.window.game.minc = 80; // 60
 	length.window.bar.minl = 1;
 	length.window.bar.minc = length.window.game.minc;
+
 	length.window.pause.minl = 5;
 	length.window.pause.minc = 13;
+	length.window.exit.minl = 6;
+	length.window.exit.minc = 31;
 
 	length.window.stdscr.minl = length.window.game.minl + length.window.bar.minl + 1;
 	length.window.stdscr.minc = length.window.game.minc;
@@ -50,7 +53,7 @@ int init(void) {
 	length.window.sidelog.minc = 100;
 
 
-	length.pad.help.minl = 100;
+	length.pad.help.minl = 50;
 	length.pad.help.minc = length.window.game.minc;
 
 
@@ -129,6 +132,17 @@ int init(void) {
 	mvwaddstr(window.pause, length.window.pause.minl / 2,
 			(length.window.pause.minc - 5 /* 5 is an word length */) / 2, "PAUSE");
 	
+	// exit window
+	if ((window.exit = newwin(length.window.exit.minl, length.window.exit.minc,
+					(LINES - length.window.exit.minl ) / 2,
+					(COLS - length.window.exit.minc ) / 2)) == NULL)
+		fatal_error("Could not initialize exit window.");
+	else
+		log_debug("Initialized exit window succsessfully.");
+	box(window.exit, 0, 0);
+	mvwaddstr(window.exit, 2, (length.window.exit.minc - 27 /* 27 is an sentetce length */) / 2, "Do you really want to exit?");
+	mvwaddstr(window.exit, 3, (length.window.exit.minc - 13 /* 13 is an sentetce length */) / 2, "Y/y/q   N/n/c");
+	
 
 	// two or one window
 	if (COLS - length.window.game.minc - 1 >= length.window.sidelog.minc) {
@@ -178,7 +192,7 @@ int init(void) {
 
 	
 	// lines drawing
-	drawstdlines();
+	drawgamelines();
 
 	#if SNAKE_WINDOW_POSITIONING_DEMO == 1
 	init_pair(9, COLOR_WHITE, COLOR_RED);
@@ -202,7 +216,7 @@ int init(void) {
 
 
 void deinit(void) {
-	log_debug("Deinit functions has started");
+	log_trace("Deinit functions has started.");
 	flushinp();
 	endwin();
 }

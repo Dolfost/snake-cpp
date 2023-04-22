@@ -5,8 +5,7 @@
 *.dSYM
 
 # Game
-/data/**
-!/data/.gitkeep
+/data/log.txt
 
 # neovim
 tags

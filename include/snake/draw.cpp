@@ -64,11 +64,125 @@ void drawgame(void) {
 	wrefresh(window.sidelog);
 	touchwin(window.bar);
 	wrefresh(window.bar);
+	drawgamelines();
 }
 
-void drawstdlines(void) {
+void drawgamelines(void) {
 	mvwvline(stdscr, 0, length.window.game.minc, 0, LINES);
 	mvwhline(stdscr, length.window.game.minl, 0, 0, length.window.game.minc);
 }
 
 
+
+WINDOW* buildhelppad(const char* path) {
+	log_debug("Entered buildhelppad().");
+
+	FILE* padfile = fopen(path, "w+");
+	if (padfile == NULL) {
+		log_error("Could not open pad file");
+		log_nl(   "'%s' for writting.");
+		return NULL;
+	}
+
+	WINDOW* pad = newpad(length.pad.help.minl, length.pad.help.minc);
+	wprintw(pad, "This is help pad ");
+	incolor(pad, color.pair.help.keyword, attribute.help.keyword, "v%s", SNAKE_VERSION);
+	waddstr(pad, ".\n");
+
+	helppad_title(pad, "Help pad controls");
+	helppad_keys(pad, "w"); helppad_keyword(pad, "Scroll"); waddstr(pad, " the help pad up by 1 line.\n");
+	helppad_keys(pad, "s"); helppad_keyword(pad, "Scroll"); waddstr(pad, " the help pad down by 1 line.\n");
+	helppad_keys(pad, "W"); helppad_keyword(pad, "Scroll"); waddstr(pad, " the help pad up by 5 lines.\n");
+	helppad_keys(pad, "S"); helppad_keyword(pad, "Scroll"); waddstr(pad, " the help pad down by 5 lines.\n");
+
+	helppad_title(pad, "Global controls");
+	helppad_keys(pad, "hH"); helppad_keyword(pad, "Hide/show"); waddstr(pad, " the help pad.\n");
+	helppad_keys(pad, "q"); helppad_keyword(pad, "Quit"); waddstr(pad, " the game.\n");
+	helppad_keys(pad, "Q"); helppad_keyword(pad, "Force quit"); waddstr(pad, " the game.\n");
+
+	helppad_title(pad, "In-game controls");
+	helppad_keys_word(pad, "arrows"); waddstr(pad, "Change snake "); helppad_keyword(pad, "direction"); waddstr(pad, ".\n");
+	helppad_keys(pad, "DWAS"); waddstr(pad, "Change snake "); helppad_keyword(pad, "direction"); waddstr(pad, ".\n");
+	helppad_keys(pad, "dwas"); waddstr(pad, "Change snake "); helppad_keyword(pad, "direction"); waddstr(pad, ".\n");
+	waddstr(pad, "\nHold any of snake controls buttons down for "); helppad_keyword(pad, "speedup"); waddstr(pad, ".\n\n");
+	helppad_keys(pad, "pP"); helppad_keyword(pad, "Pause/unpause"); waddstr(pad, " the game.\n");
+	helppad_keys(pad, "hH"); waddstr(pad, "Show "); helppad_keyword(pad, "help"); waddstr(pad, ".\n");
+
+
+	putwin(pad, padfile);
+	fclose(padfile);
+	return pad;
+}
+
+void helppad_title(WINDOW* pad, const char* fmt, ...) {
+	va_list args;
+	va_start(args, fmt);
+
+	waddstr(pad, "\n    ");
+	wattrset(pad, COLOR_PAIR(color.pair.help.key) | attribute.help.key);
+	waddch(pad, '-');
+
+	wattrset(pad, COLOR_PAIR(color.pair.help.title) | attribute.help.title);
+	vw_printw(pad, fmt, args);
+	wattroff(pad, COLOR_PAIR(color.pair.help.title) | attribute.help.title);
+	wattrset(pad, COLOR_PAIR(color.pair.help.key) | attribute.help.key);
+	waddstr(pad, "-\n");
+
+	wattroff(pad, COLOR_PAIR(color.pair.help.key) | attribute.help.key);
+
+	va_end(args);
+}
+
+void helppad_keyword(WINDOW* pad, const char* fmt, ...) {
+	va_list args;
+	va_start(args, fmt);
+
+	wattrset(pad, COLOR_PAIR(color.pair.help.keyword) | attribute.help.keyword);
+	vw_printw(pad, fmt, args);
+
+	wattroff(pad, COLOR_PAIR(color.pair.help.keyword) | attribute.help.keyword);
+
+	va_end(args);
+}
+	
+
+void helppad_keys(WINDOW* pad, const char* keys) {
+	wprintw(pad, "  [");
+	int printed = 0;
+	for (int i = strlen(keys) - 1; i >= 0; i--, printed += 2) {
+		wattrset(pad, COLOR_PAIR(color.pair.help.key) | attribute.help.key);
+		waddch(pad, keys[i]);
+		wattroff(pad, COLOR_PAIR(color.pair.help.key) | attribute.help.key);
+		waddch(pad, ' ');
+	}
+	mvwprintw(pad, getcury(pad), getcurx(pad) - 1, "]");
+	
+	for (int i = (length.window.game.minc/8) - printed; i > 0; i--) {
+		waddch(pad, ' ');
+	}
+}
+
+
+void helppad_keys_word(WINDOW* pad, const char* word) {
+	wprintw(pad, "  {");
+	int printed = strlen(word) + 1;
+	wattrset(pad, COLOR_PAIR(color.pair.help.key) | attribute.help.key);
+	waddstr(pad, word);
+	wattroff(pad, COLOR_PAIR(color.pair.help.key) | attribute.help.key);
+	wprintw(pad, "}");
+	
+	for (int i = (length.window.game.minc/8) - printed; i > 0; i--) {
+		waddch(pad, ' ');
+	}
+}
+
+void incolor(WINDOW* window, short col, int attr, const char* fmt, ...) {
+	va_list args;
+	va_start(args, fmt);
+
+	wattrset(window, COLOR_PAIR(col) | attr);
+	vw_printw(window, fmt, args);
+	wattroff(window, COLOR_PAIR(col) | attr);
+
+	va_end(args);
+}

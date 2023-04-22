@@ -2,8 +2,10 @@
 #define GAME_DEFAULT_PAUSE_TIMEOUT 1000 // 1000
 
 void gameloop(void);
-void input(void);
-void gamepause(void);
+void gameinput(void);
+
+bool gamepause(int);
+bool exitgame(int);
 
 
 char* fgetline(FILE*);
