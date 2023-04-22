@@ -47,7 +47,6 @@ void gameloop(void) {
 
 bool gamepause(int ch) {
 	if (ch == 'p' || ch == 'P') {
-		noecho();
 		
 		touchwin(window.pause);
 		wrefresh(window.pause);
@@ -58,7 +57,8 @@ bool gamepause(int ch) {
 		clock_gettime(CLOCK_MONOTONIC, &start);
 		
 		while (true) {
-			ch = getch();
+			noecho();
+			ch = wgetch(window.pause);
 
 			if (ch == ERR)
 				continue;

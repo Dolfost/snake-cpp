@@ -56,20 +56,21 @@ void draw(void) {
 }
 
 void drawgame(void) {
+	drawgamelines();
 	touchwin(window.stdscr);
 	wrefresh(window.stdscr);
+
 	touchwin(window.game);
 	wrefresh(window.game);
 	touchwin(window.sidelog);
 	wrefresh(window.sidelog);
 	touchwin(window.bar);
 	wrefresh(window.bar);
-	drawgamelines();
 }
 
 void drawgamelines(void) {
-	mvwvline(stdscr, 0, length.window.game.minc, 0, LINES);
-	mvwhline(stdscr, length.window.game.minl, 0, 0, length.window.game.minc);
+	mvwvline(window.stdscr, 0, length.window.game.minc, 0, LINES);
+	mvwhline(window.stdscr, length.window.game.minl, 0, 0, length.window.game.minc);
 }
 
 
@@ -94,9 +95,10 @@ WINDOW* buildhelppad(const char* path) {
 	helppad_keys(pad, "s"); helppad_keyword(pad, "Scroll"); waddstr(pad, " the help pad down by 1 line.\n");
 	helppad_keys(pad, "W"); helppad_keyword(pad, "Scroll"); waddstr(pad, " the help pad up by 5 lines.\n");
 	helppad_keys(pad, "S"); helppad_keyword(pad, "Scroll"); waddstr(pad, " the help pad down by 5 lines.\n");
+	helppad_keys(pad, "hH"); helppad_keyword(pad, "Hide"); waddstr(pad, " the help pad.\n");
 
 	helppad_title(pad, "Global controls");
-	helppad_keys(pad, "hH"); helppad_keyword(pad, "Hide/show"); waddstr(pad, " the help pad.\n");
+	helppad_keys(pad, "hH"); waddstr(pad, "Show the "); helppad_keyword(pad, "help pad"); waddstr(pad, ".\n");
 	helppad_keys(pad, "q"); helppad_keyword(pad, "Quit"); waddstr(pad, " the game.\n");
 	helppad_keys(pad, "Q"); helppad_keyword(pad, "Force quit"); waddstr(pad, " the game.\n");
 
@@ -104,7 +106,7 @@ WINDOW* buildhelppad(const char* path) {
 	helppad_keys_word(pad, "arrows"); waddstr(pad, "Change snake "); helppad_keyword(pad, "direction"); waddstr(pad, ".\n");
 	helppad_keys(pad, "DWAS"); waddstr(pad, "Change snake "); helppad_keyword(pad, "direction"); waddstr(pad, ".\n");
 	helppad_keys(pad, "dwas"); waddstr(pad, "Change snake "); helppad_keyword(pad, "direction"); waddstr(pad, ".\n");
-	waddstr(pad, "\nHold any of snake controls buttons down for "); helppad_keyword(pad, "speedup"); waddstr(pad, ".\n\n");
+	waddstr(pad, "\n Hold any of snake controls buttons down for "); helppad_keyword(pad, "speedup"); waddstr(pad, ".\n\n");
 	helppad_keys(pad, "pP"); helppad_keyword(pad, "Pause/unpause"); waddstr(pad, " the game.\n");
 	helppad_keys(pad, "hH"); waddstr(pad, "Show "); helppad_keyword(pad, "help"); waddstr(pad, ".\n");
 

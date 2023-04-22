@@ -14,7 +14,7 @@ void setup(void) {
 	// help pad initialization
 	FILE* helpfile = fopen(flag.option.helppadpath, "r");
 	if (helpfile == NULL) {
-		log_error("Could not open help pad file.");
+		log_error("Could not open help pad file");
 		log_nl(  "'%s' for reading.", flag.option.helppadpath);
 	} else {
 		if ((pad.help = getwin(helpfile)) == NULL) {
@@ -92,6 +92,7 @@ void setup(void) {
 
 	if (flag.option.help == true) {
 		help('h');
+		drawgame();
 	}
 }
 
