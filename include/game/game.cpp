@@ -57,7 +57,23 @@ bool gamepause(int ch) {
 
 		clock_gettime(CLOCK_MONOTONIC, &start);
 		
-		while (getch() != 'p');
+		while (true) {
+			ch = getch();
+
+			if (ch == ERR)
+				continue;
+			else if (ch == 'p' || ch == 'P')
+				break;
+			else if (help(ch)) {
+				drawgame();
+				touchwin(window.pause);
+				wrefresh(window.pause);
+			} else if (exitgame(ch)) {
+				drawgame();
+				touchwin(window.pause);
+				wrefresh(window.pause);
+			}
+		}
 
 		touchwin(window.game);
 		wrefresh(window.game);

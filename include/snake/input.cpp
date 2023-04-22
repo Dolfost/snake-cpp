@@ -91,7 +91,6 @@ void input_help(void) {
 			prefresh(pad.help, length.pad.help.vl, 0, 
 					1, 1, LINES - 2, length.window.game.minc - 2);
 		}
-		
 	}
 
 	echo();

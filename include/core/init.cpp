@@ -170,10 +170,10 @@ int init(void) {
 		log_debug("Initialized game subwindow succesfully.");
 	
 	if (keypad(window.game, TRUE) == ERR) {
-		log_error("Could not initialize function keys.");
+		log_error("Could not initialize function keys for game window.");
 		log_nl(   "Arrow keys might not work properly.");
 	} else
-		log_debug("Initialized function keys successfully.");
+		log_debug("Initialized function keys for game window successfully.");
 
 	// bar subwindow initialization
 	if ((window.bar = newwin(length.window.bar.minl, length.window.bar.minc, length.window.game.minl + 1, 0)) == NULL) {

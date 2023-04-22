@@ -27,6 +27,12 @@ void setup(void) {
 	}
 	length.pad.help.vl = 0;
 
+	if (keypad(pad.help, TRUE) == ERR) {
+		log_error("Could not initialize function keys for help pad.");
+		log_nl(   "Arrow keys might not work properly.");
+	} else
+		log_debug("Initialized function keys for help pad successfully.");
+
 	wtimeout(window.game, flag.option.timeout);
 	cbreak();
 
