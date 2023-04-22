@@ -21,18 +21,17 @@
 int main(int argc, char** argv) {
 	execname = *argv;
 	
-	process_argv(argc, argv);
 
 	init();
 
+	process_argv(argc, argv);
+
 	setup();
+
 	gameloop();
 
 
-	wrefresh(window.stdscr);
-	wrefresh(window.game);
-	wrefresh(window.sidelog);
-	wrefresh(window.bar);
+	drawgame();
 	getch();
 
 	log_info("Press return to close log.");

@@ -1,3 +1,4 @@
+#define SNAKE_VERSION "1.1.1"
 #define GAME_NAP 0 // 80
 #define GAME_KEY_TIMEOUT 100 // 10
 #define GAME_PAUSE_TIMEOUT 1000 // 1000
@@ -8,8 +9,9 @@ void gamepause(void);
 
 
 char* fgetline(FILE*);
-long countlines(FILE* file);
+long countlines(FILE*);
 
+void showhelp(const char*);
 
 enum Direction {D_RIGHT, D_UP, D_LEFT, D_DOWN, D_NONE};
 const char* directionstr[] = {"right", "up", "left", "down"};

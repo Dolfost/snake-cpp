@@ -11,10 +11,31 @@ int get_random(int lower_bound, int upper_bound) {
 void setup(void) {
 	log_trace("Setup function have started.");
 
-	if (flag.option.buildhelp == true) {
-		log_debug("Buildind help to '%s'...", flag.option.helppath);
-		buildhelp(flag.option.helppath);
+	if (flag.option.buildhelppad == true) {
+		log_debug("Buildind help to '%s'...", flag.option.helppadpath);
+		buildhelppad(flag.option.helppadpath);
 	}
+
+	// help pad initialization
+	FILE* helpfile = fopen(flag.option.helppadpath, "r");
+	if (helpfile == NULL) {
+		log_error("Could not open help pad file.");
+		log_nl(  "'%s' for reading.", flag.option.helppadpath);
+	} else {
+		if ((pad.help = getwin(helpfile)) == NULL) {
+			log_fatal("Could not initialize help pad from");
+			log_nl(   "'%s'.", flag.option.helppadpath);
+			fatal_error("Could not initialize help pad.");
+		} else
+			log_debug("Initialized help pad succsessfully.");
+		fclose(helpfile);
+	}
+
+	if (flag.option.help == true) {
+		help();
+	}
+
+
 
 	wtimeout(window.game, GAME_KEY_TIMEOUT);
 	cbreak();

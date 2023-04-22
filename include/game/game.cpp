@@ -73,10 +73,11 @@ void gamepause(void) {
 }
 
 void help(void) {
+	wclear(window.stdscr);
 	box(window.stdscr, 0, 0);
 	mvwaddstr(window.stdscr, 0, 2, "Snake help");
 	wrefresh(window.stdscr);
-	prefresh(pad.help, 0, 0, 1, 1, length.pad.help.minl+2, length.pad.help.minc+2);
+	prefresh(pad.help, 0, 0, 1, 1, length.window.game.minl - 1, length.window.game.minc - 1);
 	
 	input_help();
 
@@ -85,11 +86,6 @@ void help(void) {
 	drawstdlines();
 	drawgame();
 }
-
-
-
-
-
 
 char* fgetline(FILE* filea) {
 	static FILE* file;
@@ -149,17 +145,23 @@ long countlines(FILE* file) {
 }
 
 
-void buildhelp(char* path) {
-	log_trace("Entered buildhelp().");
- 	FILE* file = fopen(path, "w+");
-	
-	if (file == NULL) {
-		log_fatal("Could not open help file");
-		log_nl(   "'%s' for building.", path);
-		return;
-	}
-	
-	fprintf(file, "This is help.\nBruh.\n");
 
-	fclose(file);
+
+WINDOW* buildhelppad(const char* path) {
+	log_debug("Entered buildhelppad().");
+
+	FILE* padfile = fopen(path, "w+");
+	if (padfile == NULL) {
+		log_error("Could not open pad file");
+		log_nl(   "'%s' for writting.");
+		return NULL;
+	}
+
+	WINDOW* pad = newpad(length.pad.help.minl, length.pad.help.minc);
+
+	wprintw(pad, "This is help pad v%s", SNAKE_VERSION);
+
+	putwin(pad, padfile);
+	fclose(padfile);
+	return pad;
 }

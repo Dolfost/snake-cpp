@@ -1,7 +1,7 @@
 int init(void);
 void deinit(void);
 
-void buildhelp(char*);
+WINDOW* buildhelppad(const char*);
 void fillhelp(FILE* file);
 
 struct Windows {
@@ -24,8 +24,8 @@ struct Flags {
 	struct Flags_option {
 		bool unknown = false;
 		bool help = false;
-		bool buildhelp = false;
-		char* helppath = NULL;
+		bool buildhelppad = false;
+		const char* helppadpath = NULL;
 	} option;
 	struct Flags_curses {
 		bool color = false;

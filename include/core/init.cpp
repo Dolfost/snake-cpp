@@ -36,8 +36,8 @@ int init(void) {
 	// windows sizes
 // 	length.window.game.minl = 22; // lldb
 // 	length.window.game.minc = 80; // lldb
-	length.window.game.minl = 30; // 30
-	length.window.game.minc = 60; // 60
+	length.window.game.minl = 40; // 30
+	length.window.game.minc = 80; // 60
 	length.window.bar.minl = 1;
 	length.window.bar.minc = length.window.game.minc;
 	length.window.pause.minl = 5;
@@ -48,13 +48,9 @@ int init(void) {
 	length.window.sidelog.minl = length.window.stdscr.minl;
 	length.window.sidelog.minc = 100;
 
-	FILE* helpfile = fopen(flag.option.helppath, "r"); // closed after fillhelp()
-	if (helpfile == NULL)
-		fatal_error("Could not open help file for reading.");
-	length.pad.help.minl = countlines(helpfile);
-	if (length.pad.help.minl < LINES - 2)
-		length.pad.help.minl = LINES - 2;
-	length.pad.help.minc = COLS - 2;
+
+	length.pad.help.minl = 100;
+	length.pad.help.minc = length.window.game.minc;
 
 
 	// colors check
@@ -131,16 +127,6 @@ int init(void) {
 	box(window.pause, 0, 0);
 	mvwaddstr(window.pause, length.window.pause.minl / 2,
 			(length.window.pause.minc - 5 /* 5 is an word length */) / 2, "PAUSE");
-
-
-	// help pad initialization
-	if ((pad.help = newpad(length.pad.help.minl, length.pad.help.minc)) == NULL)
-		fatal_error("Could not initialize help pad.");
-	else
-		log_debug("Initialized help pad succsessfully.");
-	// help pad filling
-	fillhelp(helpfile);
-	fclose(helpfile);
 	
 
 	// two or one window
@@ -213,12 +199,6 @@ int init(void) {
 	return EXIT_SUCCESS;
 }
 
-void fillhelp(FILE* file) {
-	int ch;
-	while ((ch = fgetc(file)) != EOF) {
-		waddch(pad.help, ch);
-	}
-}
 
 void deinit(void) {
 	log_debug("Deinit functions has started");
