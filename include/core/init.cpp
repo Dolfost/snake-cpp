@@ -7,6 +7,7 @@ Flags flag;
 Colors color;
 Lengths length;
 Positions positions;
+Attributes attribute;
 
 int init(void) {
 	atexit(deinit);

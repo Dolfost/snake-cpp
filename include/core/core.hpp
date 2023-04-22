@@ -26,6 +26,8 @@ struct Flags {
 		bool help = false;
 		bool buildhelppad = false;
 		const char* helppadpath = NULL;
+		long int timeout;
+		long int pausetimeout;
 	} option;
 	struct Flags_curses {
 		bool color = false;
@@ -44,6 +46,22 @@ struct Flags {
 
 struct Colors {
 	short gamebg;
+	short helpbg;
+	struct Color_pair {
+		struct Colors_help {
+			short key;
+			short title;
+			short keyword;
+		} help;
+	} pair;
+};
+
+struct Attributes {
+	struct Attributes_help {
+		int key;
+		int title;
+		int keyword;
+	} help;
 };
 
 struct Lengths {

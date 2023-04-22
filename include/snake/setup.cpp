@@ -11,11 +11,6 @@ int get_random(int lower_bound, int upper_bound) {
 void setup(void) {
 	log_trace("Setup function have started.");
 
-	if (flag.option.buildhelppad == true) {
-		log_debug("Buildind help to '%s'...", flag.option.helppadpath);
-		buildhelppad(flag.option.helppadpath);
-	}
-
 	// help pad initialization
 	FILE* helpfile = fopen(flag.option.helppadpath, "r");
 	if (helpfile == NULL) {
@@ -31,13 +26,8 @@ void setup(void) {
 		fclose(helpfile);
 	}
 
-	if (flag.option.help == true) {
-		help();
-	}
 
-
-
-	wtimeout(window.game, GAME_KEY_TIMEOUT);
+	wtimeout(window.game, flag.option.timeout);
 	cbreak();
 
 	srand(time(NULL));
@@ -81,6 +71,22 @@ void setup(void) {
 	mvwaddstr(window.bar, 0, length.bar.scorename + length.bar.score, "Time: ");
 	length.bar.timename = 6;
 	length.bar.time = 6; // >99.9s
+	
+
+	// help window colors
+	color.helpbg = COLOR_BLACK;
+	init_pair(13, COLOR_YELLOW,  color.helpbg); color.pair.help.key = 13; attribute.help.key = A_BOLD;
+	init_pair(14, COLOR_MAGENTA, color.helpbg); color.pair.help.title = 14; attribute.help.title = A_BOLD;
+	init_pair(15, COLOR_GREEN,   color.helpbg); color.pair.help.keyword = 15; attribute.help.keyword = A_UNDERLINE;
+
+	if (flag.option.buildhelppad == true) {
+		log_debug("Buildind help to '%s'...", flag.option.helppadpath);
+		buildhelppad(flag.option.helppadpath);
+	}
+
+	if (flag.option.help == true) {
+		help();
+	}
 }
 
 void desetup(void) {

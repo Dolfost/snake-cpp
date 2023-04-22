@@ -1,7 +1,5 @@
-#define SNAKE_VERSION "1.1.1"
-#define GAME_NAP 0 // 80
-#define GAME_KEY_TIMEOUT 100 // 10
-#define GAME_PAUSE_TIMEOUT 1000 // 1000
+#define GAME_DEFAUTL_KEY_TIMEOUT 100 // 100
+#define GAME_DEFAULT_PAUSE_TIMEOUT 1000 // 1000
 
 void gameloop(void);
 void input(void);

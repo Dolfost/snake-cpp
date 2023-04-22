@@ -61,7 +61,7 @@ void gamepause(void) {
 	touchwin(window.game);
 	wrefresh(window.game);
 
-	napms(GAME_PAUSE_TIMEOUT);
+	napms(flag.option.pausetimeout);
 
 	clock_gettime(CLOCK_MONOTONIC, &end);
 
@@ -159,9 +159,70 @@ WINDOW* buildhelppad(const char* path) {
 
 	WINDOW* pad = newpad(length.pad.help.minl, length.pad.help.minc);
 
-	wprintw(pad, "This is help pad v%s", SNAKE_VERSION);
+
+	wprintw(pad, "This is help pad ");
+	incolor(pad, color.pair.help.keyword, attribute.help.keyword, "v%s", SNAKE_VERSION);
+	waddstr(pad, ".\n");
+	helppad_title(pad, "Help pad navigation");
+
+	helppad_key(pad, "hq");
+	
+	waddstr(pad, "exit help pad.\n");
+
+	helppad_key(pad, "asdf");
+	waddstr(pad, "sussy baka.\n");
 
 	putwin(pad, padfile);
 	fclose(padfile);
 	return pad;
 }
+
+void helppad_title(WINDOW* pad, const char* fmt, ...) {
+	va_list args;
+	va_start(args, fmt);
+
+	waddstr(pad, "\n    ");
+	wattrset(pad, COLOR_PAIR(color.pair.help.key) | attribute.help.key);
+	waddch(pad, '-');
+
+	wattrset(pad, COLOR_PAIR(color.pair.help.title) | attribute.help.title);
+	vw_printw(pad, fmt, args);
+	wattroff(pad, COLOR_PAIR(color.pair.help.title) | attribute.help.title);
+	wattrset(pad, COLOR_PAIR(color.pair.help.key) | attribute.help.key);
+	waddstr(pad, "-\n");
+
+	wattroff(pad, COLOR_PAIR(color.pair.help.key) | attribute.help.key);
+
+	va_end(args);
+}
+
+void helppad_key(WINDOW* pad, const char* keys) {
+	wprintw(pad, "  [");
+	int printed = 0;
+	for (int i = strlen(keys) - 1; i >= 0; i--, printed += 2) {
+		wattrset(pad, COLOR_PAIR(color.pair.help.key) | attribute.help.key);
+		waddch(pad, keys[i]);
+		wattroff(pad, COLOR_PAIR(color.pair.help.key) | attribute.help.key);
+		waddch(pad, ' ');
+	}
+	mvwprintw(pad, getcury(pad), getcurx(pad) - 1, "]");
+	
+	for (int i = (length.window.game.minc/8) - printed; i > 0; i--) {
+		waddch(pad, ' ');
+	}
+}
+
+void incolor(WINDOW* window, short col, int attr, const char* fmt, ...) {
+	va_list args;
+	va_start(args, fmt);
+
+	wattrset(window, COLOR_PAIR(col) | attr);
+	vw_printw(window, fmt, args);
+	wattroff(window, COLOR_PAIR(col) | attr);
+
+	va_end(args);
+}
+
+
+
+
