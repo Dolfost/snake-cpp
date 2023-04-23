@@ -25,13 +25,28 @@ void setup(void) {
 			log_debug("Initialized help pad succsessfully.");
 		fclose(helpfile);
 	}
-	length.pad.help.vl = 0;
-
 	if (keypad(pad.help, TRUE) == ERR) {
 		log_error("Could not initialize function keys for help pad.");
 		log_nl(   "Arrow keys might not work properly.");
 	} else
-		log_debug("Initialized function keys for help pad successfully.");
+		log_debug("Initialized function keys for help pad successfully.");	
+
+
+	// log pad initialization
+	if ((pad.log = newpad(length.pad.log.minl, length.pad.log.minc)) == NULL)
+		fatal_error("Could not initialize log pad.");
+	else {	
+		wmove(pad.log, length.pad.log.minl - 1, 0);
+		scrollok(pad.log, TRUE);
+		log_log_add(pad.log);
+		log_debug("Initialized log pad succsessfully.");
+	}
+	if (keypad(pad.log, TRUE) == ERR) {
+		log_error("Could not initialize function keys for log pad.");
+		log_nl(   "Arrow keys might not work properly.");
+	} else
+		log_debug("Initialized function keys for log pad successfully.");	
+
 
 	wtimeout(window.game, flag.option.timeout);
 	cbreak();

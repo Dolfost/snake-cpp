@@ -5,6 +5,7 @@ void gameloop(void);
 void gameinput(void);
 
 bool gamepause(int);
+bool gamelog(int);
 bool exitgame(int);
 
 

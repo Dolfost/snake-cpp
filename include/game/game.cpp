@@ -72,6 +72,10 @@ bool gamepause(int ch) {
 				drawgame();
 				touchwin(window.pause);
 				wrefresh(window.pause);
+			} else if (gamelog(ch)) {
+				drawgame();
+				touchwin(window.pause);
+				wrefresh(window.pause);
 			}
 		}
 
@@ -94,8 +98,28 @@ bool gamepause(int ch) {
 		return false;
 }
 
+bool gamelog(int ch) {
+	length.pad.log.vl = length.pad.log.minl - (LINES - 2) - 1;
+	if (ch == 'l' || ch == 'L') {
+		log_debug("Opened log pad. [%c]", ch);
+		box(window.stdscr, 0, 0);
+		mvwaddstr(window.stdscr, 0, 2, "Snake log");
+		wrefresh(window.stdscr);
+		touchwin(pad.log);
+		prefresh(pad.log, length.pad.log.vl, 0, 1, 1, LINES - 2, COLS - 1);
+
+		input_log();
+
+		wborder(window.stdscr, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
+		return true;
+	} else
+		return false;
+}
+
+
 bool help(int ch) {
-	if (ch == 'h' || ch == 'H'){ 
+	length.pad.help.vl = 0;
+	if (ch == 'h' || ch == 'H') { 
 		log_debug("Entered help window. [%c]", ch);
 		wclear(window.stdscr);
 		box(window.stdscr, 0, 0);
@@ -113,7 +137,7 @@ bool help(int ch) {
 
 bool exitgame(int ch) {
 	if (ch == 'Q' || ch == 'q') {
-		log_debug("Exiting the game...");
+		log_debug("Entered exit window. [%c]", ch);
 		if (ch == 'Q') {
 			log_debug("Force game exit. [%c]", ch);
 			exit(EXIT_SUCCESS);

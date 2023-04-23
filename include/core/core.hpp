@@ -1,3 +1,4 @@
+#define CORE_DEFAULT_LOG_SCROLLBACK 100
 int init(void);
 void deinit(void);
 
@@ -6,7 +7,6 @@ void fillhelp(FILE* file);
 
 struct Windows {
 	WINDOW* stdscr = NULL;
-	WINDOW* log = NULL;
 	WINDOW* sidelog = NULL;
 	WINDOW* game = NULL;
 	WINDOW* bar = NULL;
@@ -19,6 +19,7 @@ struct Subwindows {
 
 struct Pads {
 	WINDOW* help = NULL;
+	WINDOW* log = NULL;
 };
 
 struct Flags {
@@ -90,7 +91,7 @@ struct Lengths {
 			int minl;
 			int minc;
 			int vl; // visible line
-		} help;
+		} help, log;
 	} pad;
 };
 

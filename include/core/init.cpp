@@ -11,30 +11,20 @@ Attributes attribute;
 
 int init(void) {
 	atexit(deinit);
-
+	
 	flag.core.logpath = "data/log.txt";
 
 	if ((flag.core.logfile = fopen(flag.core.logpath, "w+")) == NULL)
 		fatal_error("Coulnd not open log file '%s' for writing.", flag.core.logpath);
 
-
 	log_log_add(flag.core.logfile);
 
+
 	window.stdscr = initscr(); // if initscr() fails, it stops the program and prints error message
-
-	// log window and stdscr initialization
-	if ((window.log = newwin(0,0,0,0)) == NULL)
-		fatal_error("Could not initialize log window.");
-	else {	
-		log_log_add(window.log);
-		log_debug("Initialized standart window successfully.");
-		log_debug("Initialized log window succsessfully.");
-	}
-
-	scrollok(window.log, TRUE);
+	log_debug("Initialized standart window successfully.");
 
 
-	// windows sizes
+	// windows size
 // 	length.window.game.minl = 22; // lldb
 // 	length.window.game.minc = 80; // lldb
 	length.window.game.minl = 40; // 30
@@ -52,9 +42,30 @@ int init(void) {
 	length.window.sidelog.minl = length.window.stdscr.minl;
 	length.window.sidelog.minc = 100;
 
-
 	length.pad.help.minl = 50;
 	length.pad.help.minc = length.window.game.minc;
+	// length.pad.log.minl = CORE_DEFAULT_LOG_SCROLLBACK; // set in getopt.cpp
+	length.pad.log.minc = COLS - 2;
+
+	
+	// two or one window
+	if (COLS - length.window.game.minc - 1 >= length.window.sidelog.minc) {
+		log_debug("Terminal window is large enough");
+		log_nl(   "to fit game and log windows in it.");
+
+		if ((window.sidelog = newwin(LINES + 1, COLS - length.window.game.minc - 1, 0, length.window.game.minc + 2 - 1)) == NULL) {
+			log_fatal("Could not initialize sidelog window.");
+			fatal_error("Could not initialize sidelog window.");
+		} else {
+			wmove(window.sidelog, LINES - 1, 0);
+			log_log_add(window.sidelog);
+			scrollok(window.sidelog, TRUE);
+			log_debug("Initialized sidelog window succesfully.");
+		}
+	} else {
+		log_debug("Terminal window is not large enough");
+		log_nl(   "to fit game and log windows in it.");
+	}
 
 
 	// colors check
@@ -116,8 +127,9 @@ int init(void) {
 				LINES, COLS);
 		log_nl("Please, increase terminal size to at least %d lines by %d columns.", 
 				length.window.stdscr.minl, length.window.stdscr.minc);
- 		wrefresh(window.log);
- 		wgetch(window.log);
+//  		wrefresh(window.log);
+//  		wgetch(window.log);
+  		gamelog('l');
  		fatal_error("Terminal is too small. Resize it to at least %d lines by %d columns.", length.window.stdscr.minl, length.window.stdscr.minc);
 	}
 
@@ -143,24 +155,6 @@ int init(void) {
 	mvwaddstr(window.exit, 2, (length.window.exit.minc - 27 /* 27 is an sentetce length */) / 2, "Do you really want to exit?");
 	mvwaddstr(window.exit, 3, (length.window.exit.minc - 13 /* 13 is an sentetce length */) / 2, "Y/y/q   N/n/c");
 	
-
-	// two or one window
-	if (COLS - length.window.game.minc - 1 >= length.window.sidelog.minc) {
-		log_debug("Terminal window is large enough");
-		log_nl(   "to fit game and log windows in it.");
-
-		if ((window.sidelog = newwin(LINES, COLS - length.window.game.minc - 1, 0, length.window.game.minc + 2 - 1)) == NULL) {
-			log_fatal("Could not initialize sidelog window.");
-			fatal_error("Could not initialize sidelog window.");
-		} else {
-			log_log_add(window.sidelog);
-			scrollok(window.sidelog, TRUE);
-			log_debug("Initialized sidelog window succesfully.");
-		}
-	} else {
-		log_debug("Terminal window is not large enough");
-		log_nl(   "to fit game and log windows in it.");
-	}
 
 	// game window initialization
 	if ((window.game = newwin(length.window.game.minl, length.window.game.minc, 0, 0)) == NULL) {

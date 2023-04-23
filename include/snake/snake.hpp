@@ -25,6 +25,7 @@ void move(void);
 
 bool input_snake(int);
 void input_global(void);
+void input_log(void);
 void input_help(void);
 
 bool help(int);

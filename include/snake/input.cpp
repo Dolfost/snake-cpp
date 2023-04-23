@@ -33,6 +33,8 @@ void gameinput(void) {
 		drawgame();
 	} else if (gamepause(ch)) {
 		drawgame();
+	} else if (gamelog(ch)) {
+		drawgame();
 	}
 
 	echo();
@@ -62,6 +64,38 @@ bool input_snake(int ch) {
 	return interaction;
 }
 
+void input_log(void) {
+	noecho();
+
+	int ch;
+	while (true) {
+		ch = wgetch(pad.log);
+		if (ch == ERR)
+			continue;
+		if (ch == 'l' || ch == 'L') {
+			log_debug("Left log pad. [%c]", ch);
+			break;
+		} else if (ch == KEY_UP || ch == 'w') {
+			if (length.pad.log.vl > 0) {
+				prefresh(pad.log, --length.pad.log.vl, 0, 
+						1, 1, LINES - 2, COLS - 2);
+			}
+		} else if (ch == KEY_DOWN || ch == 's') {
+			if (length.pad.log.vl + (LINES - 1) < length.pad.log.minl ) {
+				prefresh(pad.log, ++length.pad.log.vl, 0, 
+						1, 1, LINES - 2, COLS - 2);
+			}
+		} else if (exitgame(ch)) {
+			touchwin(window.stdscr);
+			wrefresh(window.stdscr);
+			touchwin(pad.help);
+			prefresh(pad.help, length.pad.help.vl, 0, 
+					1, 1, LINES - 2, length.window.game.minc - 2);
+		}
+	}
+
+	echo();
+}
 
 void input_help(void) {
 	noecho();
@@ -72,7 +106,7 @@ void input_help(void) {
 		if (ch == ERR)
 			continue;
 		if (ch == 'h' || ch == 'H') {
-			log_debug("Left help window. [%c]", ch);
+			log_debug("Left help pad. [%c]", ch);
 			break;
 		} else if (ch == KEY_UP || ch == 'w') {
 			if (length.pad.help.vl > 0) {
@@ -80,7 +114,7 @@ void input_help(void) {
 						1, 1, LINES - 2, length.window.game.minc - 2);
 			}
 		} else if (ch == KEY_DOWN || ch == 's') {
-			if (length.pad.help.vl + LINES - 2 < length.pad.help.minl ) {
+			if (length.pad.help.vl + (LINES - 1) < length.pad.help.minl ) {
 				prefresh(pad.help, ++length.pad.help.vl, 0, 
 						1, 1, LINES - 2, length.window.game.minc - 2);
 			}

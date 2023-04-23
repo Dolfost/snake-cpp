@@ -20,6 +20,8 @@ void process_argv(int argc, char** argv) {
 	flag.option.timeout = GAME_DEFAUTL_KEY_TIMEOUT;
 	flag.option.pausetimeout = GAME_DEFAULT_PAUSE_TIMEOUT;
 
+	length.pad.log.minl = CORE_DEFAULT_LOG_SCROLLBACK;
+
 	while ((opt = getopt_long(argc, argv, ":ht:", long_options, &option_index)) != -1) {
 		switch(opt) {
 			case '?': // unknown option

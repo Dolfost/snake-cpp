@@ -20,7 +20,6 @@
 
 int main(int argc, char** argv) {
 	execname = *argv;
-	
 
 	init();
 
@@ -30,14 +29,11 @@ int main(int argc, char** argv) {
 
 	gameloop();
 
-
 	drawgame();
 	getch();
 
-	log_info("Press return to close log.");
-	wrefresh(window.log);
-	noecho();
-	while (getch() != '\n');
+	log_info("Press [L l] to close log.");
+	gamelog('l');
 	
 	return 0;
 }
