@@ -102,11 +102,7 @@ bool gamelog(int ch) {
 	length.pad.log.vl = length.pad.log.minl - (LINES - 2) - 1;
 	if (ch == 'l' || ch == 'L') {
 		log_debug("Opened log pad. [%c]", ch);
-		box(window.stdscr, 0, 0);
-		mvwaddstr(window.stdscr, 0, 2, "Snake log");
-		wrefresh(window.stdscr);
-		touchwin(pad.log);
-		prefresh(pad.log, length.pad.log.vl, 0, 1, 1, LINES - 2, COLS - 1);
+		drawlog();
 
 		input_log();
 
@@ -121,11 +117,7 @@ bool help(int ch) {
 	length.pad.help.vl = 0;
 	if (ch == 'h' || ch == 'H') { 
 		log_debug("Entered help window. [%c]", ch);
-		wclear(window.stdscr);
-		box(window.stdscr, 0, 0);
-		mvwaddstr(window.stdscr, 0, 2, "Snake help");
-		wrefresh(window.stdscr);
-		prefresh(pad.help, 0, 0, 1, 1, LINES - 2, length.window.game.minc - 2);
+		drawhelp();
 		
 		input_help();
 

@@ -86,11 +86,9 @@ void input_log(void) {
 						1, 1, LINES - 2, COLS - 2);
 			}
 		} else if (exitgame(ch)) {
-			touchwin(window.stdscr);
-			wrefresh(window.stdscr);
-			touchwin(pad.help);
-			prefresh(pad.help, length.pad.help.vl, 0, 
-					1, 1, LINES - 2, length.window.game.minc - 2);
+			drawlog();
+		} else if (help(ch)) {
+			drawlog();
 		}
 	}
 
@@ -119,11 +117,9 @@ void input_help(void) {
 						1, 1, LINES - 2, length.window.game.minc - 2);
 			}
 		} else if (exitgame(ch)) {
-			touchwin(window.stdscr);
-			wrefresh(window.stdscr);
-			touchwin(pad.help);
-			prefresh(pad.help, length.pad.help.vl, 0, 
-					1, 1, LINES - 2, length.window.game.minc - 2);
+			drawhelp();
+		} else if (gamelog(ch)) {
+			drawhelp();
 		}
 	}
 

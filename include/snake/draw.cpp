@@ -73,7 +73,29 @@ void drawgamelines(void) {
 	mvwhline(window.stdscr, length.window.game.minl, 0, 0, length.window.game.minc);
 }
 
+void drawhelp(void) {
+	wclear(window.stdscr);
+	box(window.stdscr, 0, 0);
+	mvwaddstr(window.stdscr, 0, 2, "Snake help");
+	wrefresh(window.stdscr);
 
+	touchwin(pad.help);
+	prefresh(pad.help, length.pad.help.vl, 0, 
+			1, 1, LINES - 2, length.window.game.minc - 2);
+}
+
+void drawlog(void) {
+	box(window.stdscr, 0, 0);
+	mvwaddstr(window.stdscr, 0, 2, "Snake log");
+	wrefresh(window.stdscr);
+
+	touchwin(window.stdscr);
+	wrefresh(window.stdscr);
+	touchwin(pad.log);
+	prefresh(pad.log, length.pad.log.vl, 0, 
+			1, 1, LINES - 2, length.window.game.minc - 2);
+}
+	
 
 WINDOW* buildhelppad(const char* path) {
 	log_debug("Entered buildhelppad().");
