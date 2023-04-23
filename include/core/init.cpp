@@ -61,6 +61,10 @@ int init(void) {
 			log_log_add(window.sidelog);
 			scrollok(window.sidelog, TRUE);
 			log_debug("Initialized sidelog window succesfully.");
+			log_info("Above log source do not contain all logs");
+			log_nl(  "because it is initialized too late.");
+			log_nl(  "For full log see '%s' file.", flag.core.logpath);
+
 		}
 	} else {
 		log_debug("Terminal window is not large enough");

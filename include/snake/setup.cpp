@@ -11,6 +11,25 @@ int get_random(int lower_bound, int upper_bound) {
 void setup(void) {
 	log_trace("Setup function have started.");
 
+	// log pad initialization
+	if ((pad.log = newpad(length.pad.log.minl, length.pad.log.minc)) == NULL)
+		fatal_error("Could not initialize log pad.");
+	else {	
+		wmove(pad.log, length.pad.log.minl - 1, 0);
+		scrollok(pad.log, TRUE);
+		log_log_add(pad.log);
+		log_debug("Initialized log pad succsessfully.");
+		log_info("Above log source do not contain all logs");
+		log_nl(  "because it is initialized too late.");
+		log_nl(  "For full log see '%s' file.", flag.core.logpath);
+	}
+	if (keypad(pad.log, TRUE) == ERR) {
+		log_error("Could not initialize function keys for log pad.");
+		log_nl(   "Arrow keys might not work properly.");
+	} else
+		log_debug("Initialized function keys for log pad successfully.");	
+
+
 	// help pad initialization
 	FILE* helpfile = fopen(flag.option.helppadpath, "r");
 	if (helpfile == NULL) {
@@ -30,22 +49,6 @@ void setup(void) {
 		log_nl(   "Arrow keys might not work properly.");
 	} else
 		log_debug("Initialized function keys for help pad successfully.");	
-
-
-	// log pad initialization
-	if ((pad.log = newpad(length.pad.log.minl, length.pad.log.minc)) == NULL)
-		fatal_error("Could not initialize log pad.");
-	else {	
-		wmove(pad.log, length.pad.log.minl - 1, 0);
-		scrollok(pad.log, TRUE);
-		log_log_add(pad.log);
-		log_debug("Initialized log pad succsessfully.");
-	}
-	if (keypad(pad.log, TRUE) == ERR) {
-		log_error("Could not initialize function keys for log pad.");
-		log_nl(   "Arrow keys might not work properly.");
-	} else
-		log_debug("Initialized function keys for log pad successfully.");	
 
 
 	wtimeout(window.game, flag.option.timeout);

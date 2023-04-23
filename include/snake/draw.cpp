@@ -94,7 +94,7 @@ void drawlog(void) {
 	wrefresh(window.stdscr);
 	touchwin(pad.log);
 	prefresh(pad.log, length.pad.log.vl, 0, 
-			1, 1, LINES - 2, length.window.game.minc - 2);
+			1, 1, LINES - 2, COLS - 2);
 }
 	
 
