@@ -118,12 +118,13 @@ WINDOW* buildhelppad(const char* path) {
 	helppad_keys(pad, "s"); helppad_keyword(pad, "Scroll"); waddstr(pad, " the help pad down by 1 line.\n");
 	helppad_keys(pad, "W"); helppad_keyword(pad, "Scroll"); waddstr(pad, " the help pad up by 5 lines.\n");
 	helppad_keys(pad, "S"); helppad_keyword(pad, "Scroll"); waddstr(pad, " the help pad down by 5 lines.\n");
-	helppad_keys(pad, "hH"); helppad_keyword(pad, "Hide"); waddstr(pad, " the help pad.\n");
+	helppad_keys(pad, "hH"); helppad_keyword(pad, "Exit/hide"); waddstr(pad, " the help pad.\n");
 
 	helppad_title(pad, "Global controls");
 	helppad_keys(pad, "hH"); waddstr(pad, "Show the "); helppad_keyword(pad, "help pad"); waddstr(pad, ".\n");
 	helppad_keys(pad, "q"); helppad_keyword(pad, "Quit"); waddstr(pad, " the game.\n");
-	helppad_keys(pad, "Q"); helppad_keyword(pad, "Force quit"); waddstr(pad, " the game.\n");
+	helppad_keys(pad, "Q"); helppad_keyword(pad, "Force quit"); waddstr(pad, " the game. (exits without a prompt)\n");
+	helppad_keys(pad, "lL"); waddstr(pad, "Open the "); helppad_keyword(pad, "log pad"); waddstr(pad, ".\n");
 
 	helppad_title(pad, "In-game controls");
 	helppad_keys_word(pad, "arrows"); waddstr(pad, "Change snake "); helppad_keyword(pad, "direction"); waddstr(pad, ".\n");
@@ -132,6 +133,21 @@ WINDOW* buildhelppad(const char* path) {
 	waddstr(pad, "\n Hold any of snake controls buttons down for "); helppad_keyword(pad, "speedup"); waddstr(pad, ".\n\n");
 	helppad_keys(pad, "pP"); helppad_keyword(pad, "Pause/unpause"); waddstr(pad, " the game.\n");
 	helppad_keys(pad, "hH"); waddstr(pad, "Show "); helppad_keyword(pad, "help"); waddstr(pad, ".\n");
+
+	helppad_title(pad, "Log pad controls");
+	helppad_keys(pad, "w"); helppad_keyword(pad, "Scroll"); waddstr(pad, " the log pad up by 1 line.\n");
+	helppad_keys(pad, "s"); helppad_keyword(pad, "Scroll"); waddstr(pad, " the log pad down by 1 line.\n");
+	helppad_keys(pad, "W"); helppad_keyword(pad, "Scroll"); waddstr(pad, " the log pad up by 5 lines.\n");
+	helppad_keys(pad, "S"); helppad_keyword(pad, "Scroll"); waddstr(pad, " the log pad down by 5 lines.\n");
+	helppad_keys(pad, "lL"); helppad_keyword(pad, "Exit/hide"); waddstr(pad, " the log pad.\n");
+
+	helppad_title(pad, "Exit window controls");
+	waddstr(pad, " Exit window can recognize "); helppad_keyword(pad, "ONLY"); waddstr(pad, " next keys:\n");
+	helppad_keys(pad, "cnN"); waddstr(pad, "Approve the exit. (mean, "); helppad_keyword(pad, "exit"); waddstr(pad, " the game.\n");
+	helppad_keys(pad, "qyY"); waddstr(pad, "Decline the exit and hide exit window.\n");
+
+
+
 
 
 	putwin(pad, padfile);

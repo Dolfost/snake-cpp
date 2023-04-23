@@ -11,23 +11,44 @@ int get_random(int lower_bound, int upper_bound) {
 void setup(void) {
 	log_trace("Setup function have started.");
 
-	// log pad initialization
-	if ((pad.log = newpad(length.pad.log.minl, length.pad.log.minc)) == NULL)
-		fatal_error("Could not initialize log pad.");
-	else {	
-		wmove(pad.log, length.pad.log.minl - 1, 0);
-		scrollok(pad.log, TRUE);
-		log_log_add(pad.log);
-		log_debug("Initialized log pad succsessfully.");
-		log_info("Above log source do not contain all logs");
-		log_nl(  "because it is initialized too late.");
-		log_nl(  "For full log see '%s' file.", flag.core.logpath);
+	if (length.pad.log.minl != CORE_DEFAULT_LOG_SCROLLBACK) {
+		int helppadcopy;
+		WINDOW* newlogpad = NULL;
+		
+		log_debug("Changing log pad scrollback");
+		log_nl(   "from %d to %d lines.", CORE_DEFAULT_LOG_SCROLLBACK, length.pad.log.minl);
+
+		if ((newlogpad = newpad(length.pad.log.minl, length.pad.log.minc)) == NULL) {
+			log_fatal("Could not initialize new log pad. (%d lines)", length.pad.log.minl);
+			fatal_error("Could not change the log pad scrollback to %d lines.", length.pad.log.minl);
+		} else
+			log_debug("Initialized new log pad succesfully. (%d lines)", length.pad.log.minl);
+
+		if (length.pad.log.minl > CORE_DEFAULT_LOG_SCROLLBACK) { // TODO fix this (new line after copying window
+			log_fatal("%d %d %d", CORE_DEFAULT_LOG_SCROLLBACK, length.pad.log.minl, length.pad.log.minc);
+			helppadcopy = copywin(pad.log, newlogpad, 0, 0, // something is wrong
+					length.pad.log.minl - CORE_DEFAULT_LOG_SCROLLBACK - 1, 0,
+					length.pad.log.minl - 2, length.pad.log.minc - 1, // sould be length.pad.log.minl - 1, but is causes segfault. WTF???
+					TRUE);
+		} else {
+			helppadcopy = copywin(pad.log, newlogpad, CORE_DEFAULT_LOG_SCROLLBACK - length.pad.log.minl - 1, 0,
+					0, 0,
+					length.pad.log.minl - 1, length.pad.log.minc - 1, FALSE);
+		}
+
+		if (helppadcopy == ERR) {
+			log_fatal("Could not copy old log pad to new one.");
+			fatal_error("Could not copy old log pad to new one.");
+		}
+
+			delwin(pad.log);
+			log_log_remove(pad.log);
+			pad.log = newlogpad;
+			wmove(pad.log, length.pad.log.minl - 1, 0);
+			scrollok(pad.log, TRUE);
+			log_log_add(pad.log);
+			log_debug("Copied log pad to new pad successfully.");
 	}
-	if (keypad(pad.log, TRUE) == ERR) {
-		log_error("Could not initialize function keys for log pad.");
-		log_nl(   "Arrow keys might not work properly.");
-	} else
-		log_debug("Initialized function keys for log pad successfully.");	
 
 
 	// help pad initialization

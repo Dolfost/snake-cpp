@@ -94,7 +94,7 @@ void input_log(void) {
 			}
 		} else if (ch == 'S') {
 			if (length.pad.log.vl + (LINES - 1) < length.pad.log.minl ) {
-				if ((length.pad.log.vl += 4) + (LINES - 1) > length.pad.log.minl)
+				if ((length.pad.log.vl += 4) + (LINES - 1) >= length.pad.log.minl)
 					length.pad.log.vl = length.pad.log.minl - (LINES);
 				prefresh(pad.log, ++length.pad.log.vl, 0, 
 						1, 1, LINES - 2, COLS - 2);
@@ -139,7 +139,7 @@ void input_help(void) {
 			}
 		} else if (ch == 'S') {
 			if (length.pad.help.vl + (LINES - 1) < length.pad.help.minl ) {
-				if ((length.pad.help.vl += 4) + (LINES - 1) > length.pad.help.minl)
+				if ((length.pad.help.vl += 4) + (LINES - 1) >= length.pad.help.minl)
 					length.pad.help.vl = length.pad.help.minl - (LINES);
 				prefresh(pad.help, ++length.pad.help.vl, 0, 
 						1, 1, LINES - 2, COLS - 2);

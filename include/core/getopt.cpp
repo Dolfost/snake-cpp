@@ -7,6 +7,7 @@ void process_argv(int argc, char** argv) {
 		{"help", no_argument, 0, 'h'},
 		{"timeout", required_argument, 0, 't'},
 		{"pause-timeout", required_argument, 0, 'p'},
+		{"log-scrollback", required_argument, 0, 's'},
 		{"build-help-pad", no_argument, 0, 1000},
 		{"help-pad-path", required_argument, 0, 1001},
 		{0, 0, 0, 0}
@@ -20,9 +21,7 @@ void process_argv(int argc, char** argv) {
 	flag.option.timeout = GAME_DEFAUTL_KEY_TIMEOUT;
 	flag.option.pausetimeout = GAME_DEFAULT_PAUSE_TIMEOUT;
 
-	length.pad.log.minl = CORE_DEFAULT_LOG_SCROLLBACK;
-
-	while ((opt = getopt_long(argc, argv, ":ht:", long_options, &option_index)) != -1) {
+	while ((opt = getopt_long(argc, argv, ":ht:s:", long_options, &option_index)) != -1) {
 		switch(opt) {
 			case '?': // unknown option
 				if (optopt == 0)
@@ -42,7 +41,7 @@ void process_argv(int argc, char** argv) {
 				log_debug("Recieved [--help | -h] option.");
 				break;
 			case 't': // --timeout | -t
-				log_debug("Recieved [--timeout | -t] option.");
+				log_debug("Recieved [--timeout | -t] option");
 				log_nl(   "with argument '%s'.", optarg);
 				flag.option.timeout = strtol(optarg, &optarg, 0);
 				if (flag.option.timeout <= 0 || *optarg != '\0') {
@@ -65,6 +64,26 @@ void process_argv(int argc, char** argv) {
 					flag.option.timeout = GAME_DEFAULT_PAUSE_TIMEOUT;
 				}
 				break;
+			case 's': // --log-scrollback | -s
+				log_debug("Recieved [--log-scrollback | -s] option");
+				log_nl(   "with argument '%s'.", optarg);
+				length.pad.log.minl = strtol(optarg, &optarg, 0);
+				if (*optarg != '\0') {
+					log_error("Could not get proper argument for");
+					log_nl(   "[--log-scrollback | -s] option.");
+					log_nl(   "It will be set to default %d lines.",
+							CORE_DEFAULT_LOG_SCROLLBACK);
+					length.pad.log.minl = CORE_DEFAULT_LOG_SCROLLBACK;
+				} 
+				if (length.pad.log.minl < LINES - 2) {
+					log_error("The scrollback in %d lines is too small.", length.pad.log.minl);
+					log_nl(   "For this terminal size, it should be");
+					log_nl(   "not smaller than %d lines.", LINES - 2);
+					log_nl(   "It will be set to default %d lines.", CORE_DEFAULT_LOG_SCROLLBACK);
+					length.pad.log.minl = CORE_DEFAULT_LOG_SCROLLBACK;
+				}
+				break;
+
 			case 1000: // --build-help-pad
 				flag.option.buildhelppad = true;
 				log_debug("Recieved --build-help-pad option.");
