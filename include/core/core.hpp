@@ -2,6 +2,8 @@
 int init(void);
 void deinit(void);
 
+void process_argv(int, char**);
+
 WINDOW* buildhelppad(const char*);
 void fillhelp(FILE* file);
 

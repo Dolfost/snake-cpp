@@ -15,6 +15,9 @@ void draw(void);
 void drawgame(void);
 void drawgamelines(void);
 
+void drawhelp(void);
+void drawlog(void);
+
 void helppad_title(WINDOW*, const char*, ...);
 void helppad_keys(WINDOW*, const char*);
 void helppad_keys_word(WINDOW*, const char*);

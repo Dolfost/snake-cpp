@@ -47,6 +47,7 @@ void gameloop(void) {
 
 bool gamepause(int ch) {
 	if (ch == 'p' || ch == 'P') {
+		log_debug("Entered pause window. [%c]", ch);
 		
 		touchwin(window.pause);
 		wrefresh(window.pause);
@@ -116,7 +117,7 @@ bool gamelog(int ch) {
 bool help(int ch) {
 	length.pad.help.vl = 0;
 	if (ch == 'h' || ch == 'H') { 
-		log_debug("Entered help window. [%c]", ch);
+		log_debug("Entered help pad. [%c]", ch);
 		drawhelp();
 		
 		input_help();

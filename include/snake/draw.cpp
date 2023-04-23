@@ -85,6 +85,7 @@ void drawhelp(void) {
 }
 
 void drawlog(void) {
+	wclear(window.stdscr);
 	box(window.stdscr, 0, 0);
 	mvwaddstr(window.stdscr, 0, 2, "Snake log");
 	wrefresh(window.stdscr);
