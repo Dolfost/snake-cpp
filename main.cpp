@@ -29,11 +29,10 @@ int main(int argc, char** argv) {
 
 	gameloop();
 
-	drawgame();
-	getch();
-
-	log_info("Press [L l] to close log.");
-	gamelog('l');
+	if (flag.option.openlog == true) {
+		log_info("Press [L l] to close log.");
+		gamelog('L');
+	}
 	
 	return 0;
 }

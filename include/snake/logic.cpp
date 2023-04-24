@@ -9,6 +9,35 @@ void wallhit(void) {
 	}
 }
 
+void selfbit(void) {
+	for (int i = snake.length - 1; i > 0; i--) {
+		if (snake.head.y == snake.body[i].y && snake.head.x == snake.body[i].x) {
+			snake.bit = true;
+			log_debug("The snake bit itself at (%d;%d).", snake.head.y, snake.head.x);
+			return;
+		}
+		snake.body[i] = snake.body[i-1];	
+	}	
+
+	snake.body[0] = snake.head;
+}
+
+void dinner(void) {
+	if (snake.head.y == bait.position.y && snake.head.x == bait.position.x) {
+		clock_gettime(CLOCK_MONOTONIC, &snake.time_end);
+		snake.time = timediff(&snake.time_start, &snake.time_end) - snake.pause_time;
+		snake.pause_time = 0;
+		clock_gettime(CLOCK_MONOTONIC, &snake.time_start);
+
+		game.score += (bait.distance)*3 / snake.time + 4;
+		snake.length++;
+		bait.eaten = true;
+		log_debug("The snake caught the mouse at (%d;%d) in %0.3fs.", snake.head.y, snake.head.x, snake.time);
+		log_debug("The score equals %d points.", game.score);
+		spawn_bait();
+	}
+}
+
 void move(void) {
 	snake.tail = snake.body[snake.length - 1];
 
@@ -27,32 +56,6 @@ void move(void) {
 			break;
 		default:
 			break;
-	}
-
-	for (int i = snake.length - 1; i > 0; i--) {
-		if (snake.head.y == snake.body[i].y && snake.head.x == snake.body[i].x) {
-			snake.bit = true;
-			log_debug("The snake bit itself at (%d;%d).", snake.head.y, snake.head.x);
-			return;
-		}
-		snake.body[i] = snake.body[i-1];	
-	}	
-
-	snake.body[0] = snake.head;
-
-	if (snake.head.y == bait.position.y && snake.head.x == bait.position.x) {
-		clock_gettime(CLOCK_MONOTONIC, &snake.time_end);
-		snake.time = timediff(&snake.time_start, &snake.time_end) - snake.pause_time;
-		snake.pause_time = 0;
-		clock_gettime(CLOCK_MONOTONIC, &snake.time_start);
-
-
-		game.score += (bait.distance)*3 / snake.time + 4;
-		snake.length++;
-		bait.eaten = true;
-		log_debug("The snake caught the mouse at (%d;%d) in %0.3fs.", snake.head.y, snake.head.x, snake.time);
-		log_debug("The score equals %d points.", game.score);
-		spawn_bait();
 	}
 }
 

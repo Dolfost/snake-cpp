@@ -15,34 +15,88 @@ void spawn_bait(void) {
 		}
 	}
 	bait.distance = game.distance;
-	log_debug("Bait spawned at (%d;%d).", bait.position.y, bait.position.x);
+	log_debug("Bait respawned at (%d;%d).", bait.position.y, bait.position.x);
+}
+
+void gamesetup(void) {
+	game.score = 0;
+
+	snake.body = (Point*)calloc(length.window.game.minl*length.window.game.minc, sizeof(Point));
+	memcheck(snake.body, length.window.game.minl*length.window.game.minc*sizeof(Point));
+
+	snake.body[1].y = -1;
+	snake.body[1].x = -1;
+
+	snake.head.y = get_random(0, length.window.game.minl - 1);
+	snake.head.x = get_random(0, length.window.game.minc - 1);
+
+	snake.body[0].y = snake.head.y;
+	snake.body[0].x = snake.head.x;
+
+	snake.length = 1;
+	snake.pause_time = 0;
+	log_debug("Snake spawned at (%d;%d).", snake.head.y, snake.head.x);
 }
 
 void gameloop(void) {
 	log_trace("Game loop have started.");
 
-	wrefresh(window.stdscr);
-	draw();
+	drawgame();
 
 	clock_gettime(CLOCK_MONOTONIC, &snake.time_start);
 
-	while (snake.hit != true && snake.bit != true) {
-		gameinput();
 
-		move();
+	while (game.playagain == true) {
+		clock_gettime(CLOCK_MONOTONIC, &game.time_start);
+		while (snake.hit != true && snake.bit != true) {
+			draw();
 
-		wallhit();
+			gameinput();
 
-		game.distance = sqrt(pow(snake.head.x - bait.position.x, 2) + pow(snake.head.y - bait.position.y, 2));
-		
-		draw();
+			move();
+
+			wallhit();
+			selfbit();
+			dinner();
+
+			game.distance = sqrt(pow(snake.head.x - bait.position.x, 2) + pow(snake.head.y - bait.position.y, 2));
+		}
+		clock_gettime(CLOCK_MONOTONIC, &game.time_end);
+		game.time = timediff(&game.time_start, &game.time_end);
+		beep();
+
+
+		log_debug("The final score equals %d points.", game.score);
+		log_debug("The final length equals %d.", snake.length);
+
+		gameover();
+		finals();
+
+		game.playagain = false;
+		gamesetup();
 	}
-	beep();
-
-	log_debug("The final score equals %d points.", game.score);
-	log_debug("The final length equals %d.", snake.length);
 
 	desetup();
+}
+
+void finals(void) {
+	drawfinals();
+	curs_set(1);
+	wgetnstr(window.finals, game.playername, length.game.maxnicknamelen);
+	curs_set(0);
+}
+
+void gameover(void) {
+	drawover();
+
+	noecho();
+
+	wtimeout(window.game, 0);
+	while (wgetch(window.game) != '\n');
+	wmove(window.finals, 8, 9);
+	wtimeout(window.game, flag.option.timeout);
+
+	echo();
 }
 
 bool gamepause(int ch) {
@@ -113,10 +167,14 @@ bool gamelog(int ch) {
 		return false;
 }
 
-
 bool help(int ch) {
 	length.pad.help.vl = 0;
 	if (ch == 'h' || ch == 'H') { 
+		if (pad.help == NULL) {
+			log_error("Could not open help pad. [%s]", keyname(ch));
+			log_nl(   "Help pad isn't initialized.");
+			return true;
+		}
 		log_debug("Entered help pad. [%c]", ch);
 		drawhelp();
 		
@@ -179,7 +237,6 @@ char* fgetline(FILE* filea) {
 	return str;
 }
 
-
 long countlines(FILE* file) {
 	long position = ftell(file);
 	long lines = 0;
@@ -202,11 +259,4 @@ long countlines(FILE* file) {
 
 	return lines;
 }
-
-
-
-
-
-
-
 

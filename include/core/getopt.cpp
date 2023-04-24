@@ -5,9 +5,11 @@
 void process_argv(int argc, char** argv) {
 	struct option long_options[] = {
 		{"help", no_argument, 0, 'h'},
-		{"timeout", required_argument, 0, 't'},
+		{"open-log", no_argument, 0, 'l'},
 		{"pause-timeout", required_argument, 0, 'p'},
 		{"log-scrollback", required_argument, 0, 's'},
+		{"timeout", required_argument, 0, 't'},
+
 		{"build-help-pad", no_argument, 0, 1000},
 		{"help-pad-path", required_argument, 0, 1001},
 		{0, 0, 0, 0}
@@ -21,7 +23,7 @@ void process_argv(int argc, char** argv) {
 	flag.option.timeout = GAME_DEFAUTL_KEY_TIMEOUT;
 	flag.option.pausetimeout = GAME_DEFAULT_PAUSE_TIMEOUT;
 
-	while ((opt = getopt_long(argc, argv, ":ht:s:", long_options, &option_index)) != -1) {
+	while ((opt = getopt_long(argc, argv, ":hlp:t:s:", long_options, &option_index)) != -1) {
 		switch(opt) {
 			case '?': // unknown option
 				if (optopt == 0)
@@ -39,6 +41,10 @@ void process_argv(int argc, char** argv) {
 			case 'h': // --help | -h
 				flag.option.help = true;
 				log_debug("Recieved [--help | -h] option.");
+				break;
+			case 'l': // --open-log | -l
+				flag.option.openlog = true;
+				log_debug("Recieved [--open-log | -l] option.");
 				break;
 			case 't': // --timeout | -t
 				log_debug("Recieved [--timeout | -t] option");

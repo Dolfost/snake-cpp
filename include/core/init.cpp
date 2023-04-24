@@ -9,6 +9,8 @@ Lengths length;
 Positions positions;
 Attributes attribute;
 
+Game game;
+
 int init(void) {
 	atexit(deinit);
 	
@@ -46,6 +48,9 @@ int init(void) {
 	length.pad.help.minc = length.window.game.minc;
 	length.pad.log.minl = CORE_DEFAULT_LOG_SCROLLBACK;
 	length.pad.log.minc = COLS - 2;
+
+	length.window.finals.minl = 10;
+	length.window.finals.minc = length.window.game.minc / 2;
 
 	
 	// log pad initialization
@@ -185,7 +190,7 @@ int init(void) {
 		log_fatal("Could not initialize game window.");
 		fatal_error("Could not initialize game window.");
 	} else 
-		log_debug("Initialized game subwindow succesfully.");
+		log_debug("Initialized game window succesfully.");
 	
 	if (keypad(window.game, TRUE) == ERR) {
 		log_error("Could not initialize function keys for game window.");
@@ -193,7 +198,25 @@ int init(void) {
 	} else
 		log_debug("Initialized function keys for game window successfully.");
 
-	// bar subwindow initialization
+	// finals window initialization
+	if ((window.finals = newwin(length.window.finals.minl, length.window.finals.minc,
+					(length.window.game.minl - length.window.finals.minl) / 2,
+					(length.window.game.minc - length.window.finals.minc) / 2)) == NULL) {
+		log_fatal("Could not initialize finals window.");
+		fatal_error("Could not initialize finals window.");
+	} else 
+		log_debug("Initialized finals window succesfully.");
+	if (keypad(window.finals, TRUE) == ERR) {
+		log_error("Could not initialize function keys for finals window.");
+		log_nl(   "Arrow keys might not work properly.");
+	} else
+		log_debug("Initialized function keys for finals window successfully.");
+	
+	wattrset(window.finals, A_BOLD);
+	center(window.finals, 1, "Game is over");
+	wattroff(window.finals, A_BOLD);
+
+	// bar window initialization
 	if ((window.bar = newwin(length.window.bar.minl, length.window.bar.minc, length.window.game.minl + 1, 0)) == NULL) {
 		log_fatal("Could not initialize bar window.");
 		fatal_error("Could not initialize bar window.");
@@ -227,6 +250,10 @@ int init(void) {
 	getch();
 	fatal_error("This was windows positioning test.");
 	#endif /* if SNAKE_WINDOW_POSITIONING_DEMO == 1 */
+
+	length.game.maxnicknamelen = length.window.finals.minc - 1 - 2 - 5 - 2 - 1;
+	game.playername = (char*)malloc(sizeof(char)*(length.game.maxnicknamelen + 1));
+	memcheck(game.playername, sizeof(char)*(length.game.maxnicknamelen + 1));
 
 
 	return EXIT_SUCCESS;

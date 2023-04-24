@@ -52,7 +52,7 @@ void draw(void) {
 	wrefresh(window.game);
 	wrefresh(window.bar);
 	wrefresh(window.sidelog);
-	wrefresh(window.stdscr);
+	// wrefresh(window.stdscr);
 }
 
 void drawgame(void) {
@@ -71,6 +71,7 @@ void drawgame(void) {
 void drawgamelines(void) {
 	mvwvline(window.stdscr, 0, length.window.game.minc, 0, LINES);
 	mvwhline(window.stdscr, length.window.game.minl, 0, 0, length.window.game.minc);
+	mvwhline(window.stdscr, length.window.game.minl + length.window.bar.minl + 1, 0, 0, length.window.game.minc);
 }
 
 void drawhelp(void) {
@@ -96,7 +97,47 @@ void drawlog(void) {
 	prefresh(pad.log, length.pad.log.vl, 0, 
 			1, 1, LINES - 2, COLS - 2);
 }
+
+void drawover(void) {
+	wattrset(window.bar, A_BOLD);
+	mvwaddstr(window.bar, 0, length.window.bar.minc - 12 - 1, "Press return"); // -13 is the phrase length
+	wattroff(window.bar, A_BOLD);
+	wrefresh(window.bar);
+	wrefresh(window.sidelog);
+}
+
+void drawfinals(void) {
+	int mins = game.time / 60;
+	int secs = game.time -  mins*60;
+	box(window.finals, 0, 0);
+	center(window.finals, 3, "You ate %d mouses in %d:%dm", snake.length - 1, mins, secs);
+	center(window.finals, 5, "The score is %d points", game.score);
+	mvwaddstr(window.finals, 7, 3, "Who are you?");
+	mvwaddstr(window.finals, 8, 3, "I am ");
+	wrefresh(window.finals);
+}
+			
 	
+
+int center(WINDOW* window, int line, const char* fmt, ...) {
+	if (window == NULL)
+		return -1;
+
+	va_list ap;
+	va_start(ap, fmt);
+	
+	int len = vsnprintf(NULL, 0, fmt, ap);
+	char* str = (char*)malloc(sizeof(char)*len + 1);
+	memcheck(str);
+	vsnprintf(str, len + 1, fmt, ap);
+
+	mvwaddstr(window, line, (getmaxx(window) - len) / 2, str);
+
+	free(str);
+	va_end(ap);
+
+	return len;
+}
 
 WINDOW* buildhelppad(const char* path) {
 	log_debug("Entered buildhelppad().");

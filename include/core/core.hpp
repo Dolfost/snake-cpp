@@ -14,6 +14,7 @@ struct Windows {
 	WINDOW* bar = NULL;
 	WINDOW* pause = NULL;
 	WINDOW* exit = NULL;
+	WINDOW* finals = NULL;
 };
 struct Subwindows {
 
@@ -32,6 +33,7 @@ struct Flags {
 		const char* helppadpath = NULL;
 		long int timeout;
 		long int pausetimeout;
+		bool openlog = false;
 	} option;
 	struct Flags_curses {
 		bool color = false;
@@ -73,7 +75,7 @@ struct Lengths {
 		struct window {
 			int minl;
 			int minc;
-		} stdscr, log, sidelog, game, bar, pause, exit;
+		} stdscr, log, sidelog, game, bar, pause, exit, finals;
 	} window;
 	struct Lengths_subwindow {
 		struct window {
@@ -95,6 +97,9 @@ struct Lengths {
 			int vl; // visible line
 		} help, log;
 	} pad;
+	struct Lengths_game {
+		short maxnicknamelen;
+	} game;
 };
 
 struct Positions {

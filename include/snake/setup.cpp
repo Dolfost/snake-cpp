@@ -2,7 +2,7 @@
 
 Snake snake;
 Bait bait;
-Game game;
+// Game game; // defined in init.cpp
 
 int get_random(int lower_bound, int upper_bound) {
 	return rand() % (upper_bound + 1 - lower_bound) + lower_bound;
@@ -10,6 +10,17 @@ int get_random(int lower_bound, int upper_bound) {
 
 void setup(void) {
 	log_trace("Setup function have started.");
+
+	// help window colors
+	color.helpbg = COLOR_BLACK;
+	init_pair(13, COLOR_YELLOW,  color.helpbg); color.pair.help.key = 13; attribute.help.key = A_BOLD;
+	init_pair(14, COLOR_MAGENTA, color.helpbg); color.pair.help.title = 14; attribute.help.title = A_BOLD;
+	init_pair(15, COLOR_GREEN,   color.helpbg); color.pair.help.keyword = 15; attribute.help.keyword = A_UNDERLINE;
+
+	if (flag.option.buildhelppad == true) {
+		log_debug("Buildind help to '%s'...", flag.option.helppadpath);
+		buildhelppad(flag.option.helppadpath);
+	}
 
 	if (length.pad.log.minl != CORE_DEFAULT_LOG_SCROLLBACK) {
 		int helppadcopy;
@@ -76,24 +87,9 @@ void setup(void) {
 	cbreak();
 
 	srand(time(NULL));
-
-	game.score = 0;
-
-	snake.body = (Point*)calloc(length.window.game.minl*length.window.game.minc, sizeof(Point));
-	memcheck(snake.body, length.window.game.minl*length.window.game.minc*sizeof(Point));
-
-	snake.body[1].y = -1;
-	snake.body[1].x = -1;
-
-	snake.head.y = get_random(0, length.window.game.minl - 1);
-	snake.head.x = get_random(0, length.window.game.minc - 1);
-
-	snake.body[0].y = snake.head.y;
-	snake.body[0].x = snake.head.x;
-
-	snake.length = 1;
-	snake.pause_time = 0;
-	log_debug("Snake spawned at (%d;%d).", snake.head.y, snake.head.x);
+	
+	gamesetup();
+	game.playagain = true;
 
 	// mouse fear stuff
 	color.gamebg = COLOR_BLACK;
@@ -116,18 +112,6 @@ void setup(void) {
 	mvwaddstr(window.bar, 0, length.bar.scorename + length.bar.score, "Time: ");
 	length.bar.timename = 6;
 	length.bar.time = 6; // >99.9s
-	
-
-	// help window colors
-	color.helpbg = COLOR_BLACK;
-	init_pair(13, COLOR_YELLOW,  color.helpbg); color.pair.help.key = 13; attribute.help.key = A_BOLD;
-	init_pair(14, COLOR_MAGENTA, color.helpbg); color.pair.help.title = 14; attribute.help.title = A_BOLD;
-	init_pair(15, COLOR_GREEN,   color.helpbg); color.pair.help.keyword = 15; attribute.help.keyword = A_UNDERLINE;
-
-	if (flag.option.buildhelppad == true) {
-		log_debug("Buildind help to '%s'...", flag.option.helppadpath);
-		buildhelppad(flag.option.helppadpath);
-	}
 
 	if (flag.option.help == true) {
 		help('h');

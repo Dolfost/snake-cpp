@@ -1,12 +1,22 @@
-#define GAME_DEFAUTL_KEY_TIMEOUT 100 // 100
+#define GAME_DEFAUTL_KEY_TIMEOUT 200 // 200
 #define GAME_DEFAULT_PAUSE_TIMEOUT 1000 // 1000
+
+double timediff(const struct timespec*, const struct timespec*);
+int get_random(int, int);
+
+void gamesetup(void);
 
 void gameloop(void);
 void gameinput(void);
+void gameover(void);
 
-bool gamepause(int);
+bool help(int);
 bool gamelog(int);
+bool gamepause(int);
+bool help(int);
 bool exitgame(int);
+
+void finals();
 
 
 char* fgetline(FILE*);
@@ -51,5 +61,10 @@ struct Bait {
 struct Game {
 	short score;
 	float distance; // distance beetwen rat and snake's head
+	bool playagain;
+	struct timespec time_start;
+	struct timespec time_end;
+	double time;
+	char* playername;
 };
 
