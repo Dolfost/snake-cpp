@@ -59,7 +59,7 @@ bool input_snake(int ch) {
 	}
 
 	if (previous != snake.direction)
-		log_debug("Snake turned %s at (%d;%d). [%c]", directionstr[snake.direction], snake.head.y, snake.head.x, ch);
+		log_debug("Snake turned %s at (%d;%d). [%s]", directionstr[snake.direction], snake.head.y, snake.head.x, keyname(ch));
 	
 	return interaction;
 }

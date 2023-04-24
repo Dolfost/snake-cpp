@@ -236,6 +236,8 @@ int init(void) {
 void deinit(void) {
 	log_trace("Deinit functions has started.");
 	flushinp();
-	endwin();
+
+	if (isendwin() == false)
+		endwin();
 }
 
