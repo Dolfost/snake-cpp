@@ -112,8 +112,13 @@ void drawfinals(void) {
 	box(window.finals, 0, 0);
 	center(window.finals, 3, "You ate %d mouses in %d:%dm", snake.length - 1, mins, secs);
 	center(window.finals, 5, "The score is %d points", game.score);
+
 	mvwaddstr(window.finals, 7, 3, "Who are you?");
-	mvwaddstr(window.finals, 8, 3, "I am ");
+
+	if (*game.playername != '\0')
+		mvwprintw(window.finals, 8, 3, "If you are %s - press return.", game.playername);
+
+	mvwaddstr(window.finals, 10, 3, "I am ");
 	wrefresh(window.finals);
 }
 			

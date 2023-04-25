@@ -49,7 +49,7 @@ int init(void) {
 	length.pad.log.minl = CORE_DEFAULT_LOG_SCROLLBACK;
 	length.pad.log.minc = COLS - 2;
 
-	length.window.finals.minl = 10;
+	length.window.finals.minl = 12;
 	length.window.finals.minc = length.window.game.minc / 2;
 
 	
@@ -236,7 +236,7 @@ int init(void) {
 	drawgamelines();
 
 	#if SNAKE_WINDOW_POSITIONING_DEMO == 1
-	init_pair(9, COLOR_WHITE, COLOR_RED);
+	init_paisr(9, COLOR_WHITE, COLOR_RED);
 	init_pair(10, COLOR_BLUE, COLOR_YELLOW);
 	init_pair(11, COLOR_GREEN, COLOR_BLUE);
 	
@@ -251,10 +251,23 @@ int init(void) {
 	fatal_error("This was windows positioning test.");
 	#endif /* if SNAKE_WINDOW_POSITIONING_DEMO == 1 */
 
-	length.game.maxnicknamelen = length.window.finals.minc - 1 - 2 - 5 - 2 - 1;
+	length.game.maxnicknamelen = length.window.finals.minc - 3 - 26 - 3;
 	game.playername = (char*)malloc(sizeof(char)*(length.game.maxnicknamelen + 1));
 	memcheck(game.playername, sizeof(char)*(length.game.maxnicknamelen + 1));
 
+	FILE* playerfile = fopen("data/player.dat", "r");
+//	fwrite("Imposter\0\n", sizeof(char), 10, playerfile);
+
+	if (playerfile == NULL) {
+		log_error("Could not open playerdata.");
+		log_nl(   "Maybe there is no previous player...");
+		*game.playername = '\0';
+	} else {
+		log_debug("Opened playerdata succesfully.");
+		size_t read = fread(game.playername, sizeof(char), length.game.maxnicknamelen, playerfile);
+		log_debug("Read %d/%d bytes from playerdata.", read, length.game.maxnicknamelen);
+		fclose(playerfile);
+	}
 
 	return EXIT_SUCCESS;
 }
