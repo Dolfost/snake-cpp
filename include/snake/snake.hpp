@@ -18,6 +18,7 @@ void drawhelp(void);
 void drawlog(void);
 
 int baradd(const char*);
+short setled(short);
 
 void move(void);
 

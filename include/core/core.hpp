@@ -60,6 +60,7 @@ struct Colors {
 			short title;
 			short keyword;
 		} help;
+		short led[4];
 	} pair;
 };
 
@@ -109,4 +110,3 @@ struct Positions {
 		int x;
 	} pause;
 };
-

@@ -48,10 +48,12 @@ void gameloop(void) {
 
 	drawgame();
 
-	clock_gettime(CLOCK_MONOTONIC, &snake.time_start);
 
 
 	while (game.playagain == true) {
+		setled(3);
+
+		clock_gettime(CLOCK_MONOTONIC, &snake.time_start);
 		clock_gettime(CLOCK_MONOTONIC, &game.time_start);
 		while (snake.hit != true && snake.bit != true) {
 			draw();
@@ -103,6 +105,8 @@ void finals(void) {
 
 	wgetnstr(window.finals, input, length.game.maxnicknamelen);
 	while (*game.playername == '\0' && *input == '\0')  {
+		beep();
+		setled(0);
 		baradd("Enter a valid nickname!");
 		wrefresh(window.bar);
 		wclear(window.finals);
@@ -110,6 +114,7 @@ void finals(void) {
 		wgetnstr(window.finals, input, length.game.maxnicknamelen);
 	}
 		baradd(NULL);
+		setled(2);
 
 	noecho();
 	curs_set(0);
@@ -128,7 +133,7 @@ void finals(void) {
 }
 
 void playagain(void) {
-	log_trace("Entered playagain window.");
+	log_trace("Entered again window.");
 	drawagain();
 
 	int ch;
@@ -147,7 +152,7 @@ void playagain(void) {
 		}
 	}
 
-	log_trace("Left playagain window.");
+	log_trace("Left again window.");
 }
 
 void gameover(void) {
@@ -165,6 +170,7 @@ void gameover(void) {
 bool gamepause(int ch) {
 	if (ch == 'p' || ch == 'P') {
 		log_trace("Entered pause window. [%c]", ch);
+		setled(0);
 		
 		touchwin(window.pause);
 		wrefresh(window.pause);
@@ -199,7 +205,10 @@ bool gamepause(int ch) {
 		touchwin(window.game);
 		wrefresh(window.game);
 
-		napms(flag.option.pausetimeout);
+		for (short i = 0; i < 4; i++) {
+			setled(i);
+			napms(flag.option.pausetimeout / 4);
+		}
 
 		clock_gettime(CLOCK_MONOTONIC, &end);
 
@@ -216,6 +225,7 @@ bool gamepause(int ch) {
 
 void gamestill(void) {
 	log_trace("Entered standby mode.");
+	setled(0);
 	drawgame();
 
 	int ch;
@@ -223,8 +233,9 @@ void gamestill(void) {
 	while (true) {
 		ch = wgetch(window.stdscr);
 		if (ch == 's' || ch == 'S') {
+			log_debug("Started a new game session. [%c]", ch);
 			game.playagain = true;
-			return;
+			break;
 		} else if (exitgame(ch))
 			drawgame();	
 		else if (gamelog(ch))
@@ -256,6 +267,8 @@ bool help(int ch) {
 		if (pad.help == NULL) {
 			log_error("Could not open help pad. [%s]", keyname(ch));
 			log_nl(   "Help pad isn't initialized.");
+			baradd("Help pad isn't initialized");
+			setled(0);
 			return true;
 		}
 		log_trace("Entered help pad. [%c]", ch);

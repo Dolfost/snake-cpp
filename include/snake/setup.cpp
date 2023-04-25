@@ -105,18 +105,29 @@ void setup(void) {
 	bait.eaten = false;
 	
 	spawn_bait();
-
-	waddstr(window.bar, "Score: ");	
-	length.bar.scorename = 7; // "Score: " length
+	
+	wattrset(window.bar, A_BOLD);
+	waddstr(window.bar, " Score: ");	
+	wattroff(window.bar, A_BOLD);
+	length.bar.scorename = 8; // " Score: " length
 	length.bar.score = 4; // score number is not wider than 4 spaces
+	wattrset(window.bar, A_BOLD);
 	mvwaddstr(window.bar, 0, length.bar.scorename + length.bar.score, "Time: ");
+	wattroff(window.bar, A_BOLD);
 	length.bar.timename = 6;
 	length.bar.time = 6; // >99.9s
 
 	if (flag.option.help == true) {
-		help('h');
+		help('H');
 		drawgame();
 	}
+
+	// led colors
+	init_pair(16, COLOR_WHITE, COLOR_GREEN);   color.pair.led[3] = 16; 
+	init_pair(17, COLOR_WHITE, COLOR_YELLOW);  color.pair.led[2] = 17;
+	init_pair(18, COLOR_WHITE, COLOR_MAGENTA); color.pair.led[1] = 18;
+	init_pair(19, COLOR_WHITE, COLOR_RED);     color.pair.led[0] = 19;
+	
 
 	FILE* playerfile = fopen("data/player.dat", "r");
 //	fwrite("Imposter\0\n", sizeof(char), 10, playerfile);

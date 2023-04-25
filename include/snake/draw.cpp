@@ -101,6 +101,7 @@ void drawlog(void) {
 void drawover(void) {
 	wattrset(window.bar, A_BOLD);
 	baradd("Press return");
+	setled(1);
 	wattroff(window.bar, A_BOLD);
 	wrefresh(window.bar);
 	wrefresh(window.sidelog);
@@ -114,8 +115,9 @@ void drawfinals(void) {
 	box(window.finals, 0, 0);
 	wattrset(window.finals, A_BOLD);
 	center(window.finals, 1, "Game is over");
+	center(window.finals, 2, snake.bit ? "You bit yourself" : "You crashed into the wall");
 	wattroff(window.finals, A_BOLD);
-	center(window.finals, 3, "You ate %d mouses in %d:%dm", snake.length - 1, mins, secs);
+	center(window.finals, 4, "You ate %d mouses in %d:%dm", snake.length - 1, mins, secs);
 	center(window.finals, 5, "The score is %d points", game.score);
 
 
@@ -151,8 +153,18 @@ int baradd(const char* str) {
 	wattrset(window.bar, A_BOLD);
 	mvwaddstr(window.bar, 0, length.window.bar.minc - offset - len - 1, str);
 	wattroff(window.bar, A_BOLD);
+	wrefresh(window.bar);
 	return len;
 }
+
+short setled(short indx) {
+	wattrset(window.bar, COLOR_PAIR(color.pair.led[indx]));
+	mvwaddstr(window.bar, 0, length.window.bar.minc - 2 - 1, "  ");
+	wattroff(window.bar, COLOR_PAIR(color.pair.led[indx]));
+	wrefresh(window.bar);
+	return indx;
+}
+
 
 int center(WINDOW* window, int line, const char* fmt, ...) {
 	if (window == NULL)
