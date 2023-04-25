@@ -30,6 +30,8 @@ void gamesetup(void) {
 	snake.body[1].y = -1;
 	snake.body[1].x = -1;
 
+	snake.direction = D_NONE;
+
 	snake.head.y = get_random(0, length.window.game.minl - 1);
 	snake.head.x = get_random(0, length.window.game.minc - 1);
 
@@ -97,10 +99,22 @@ void finals(void) {
 	memcheck(input, sizeof(char)*(length.game.maxnicknamelen + 1));
 
 	curs_set(1);
+	echo();
+
 	wgetnstr(window.finals, input, length.game.maxnicknamelen);
+	while (*game.playername == '\0' && *input == '\0')  {
+		baradd("Enter a valid nickname!");
+		wrefresh(window.bar);
+		wclear(window.finals);
+		drawfinals();
+		wgetnstr(window.finals, input, length.game.maxnicknamelen);
+	}
+		baradd(NULL);
+
+	noecho();
 	curs_set(0);
 
-	if (*input == '\n') {
+	if (*input == '\0') {
 		free(input);
 		log_debug("The user has chosen an old");
 		log_nl   ("'%s' nickname.", game.playername);
@@ -116,7 +130,6 @@ void finals(void) {
 void playagain(void) {
 	log_trace("Entered playagain window.");
 	drawagain();
-	noecho();
 
 	int ch;
 
@@ -134,21 +147,19 @@ void playagain(void) {
 		}
 	}
 
-	echo();
 	log_trace("Left playagain window.");
 }
 
 void gameover(void) {
 	drawover();
 
-	noecho();
-
 	wtimeout(window.game, 0);
 	while (wgetch(window.game) != '\n');
 	wmove(window.finals, 8, 9);
 	wtimeout(window.game, flag.option.timeout);
 
-	echo();
+	baradd(NULL);
+	wrefresh(window.bar);
 }
 
 bool gamepause(int ch) {
@@ -164,7 +175,6 @@ bool gamepause(int ch) {
 		clock_gettime(CLOCK_MONOTONIC, &start);
 		
 		while (true) {
-			noecho();
 			ch = wgetch(window.pause);
 
 			if (ch == ERR)
@@ -199,7 +209,6 @@ bool gamepause(int ch) {
 
 		log_debug("Game has been paused for %0.3fs. [%c]", snake.pause_time, ch);
 
-		echo();
 		return true;
 	} else
 		return false;
@@ -208,8 +217,6 @@ bool gamepause(int ch) {
 void gamestill(void) {
 	log_trace("Entered standby mode.");
 	drawgame();
-
-	noecho();
 
 	int ch;
 
@@ -226,7 +233,6 @@ void gamestill(void) {
 			drawgame();
 	}
 
-	echo();
 	log_trace("Left standby mode.");
 }
 

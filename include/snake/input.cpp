@@ -2,7 +2,6 @@ int wkbhit(WINDOW* window) {
 	int ch,r;
 
 	nodelay(window, TRUE);
-	noecho();
 
 	ch = getch();
 	if( ch == ERR)
@@ -12,15 +11,12 @@ int wkbhit(WINDOW* window) {
 		ungetch(ch);
 	}
 
-	echo();
 	nodelay(window, FALSE);
 
 	return r;
 }
 
 void gameinput(void) {
- 	noecho();
-
 	int ch = wgetch(window.game);
 
 	if (ch == ERR)
@@ -36,8 +32,6 @@ void gameinput(void) {
 	} else if (gamelog(ch)) {
 		drawgame();
 	}
-
-	echo();
 }
 
 bool input_snake(int ch) {
@@ -65,8 +59,6 @@ bool input_snake(int ch) {
 }
 
 void input_log(void) {
-	noecho();
-
 	int ch;
 	while (true) {
 		ch = wgetch(pad.log);
@@ -108,13 +100,9 @@ void input_log(void) {
 				(ch == 's' || ch == 'S' || ch == 'w' || ch == 'W'))
 			beep();
 	}
-
-	echo();
 }
 
 void input_help(void) {
-	noecho();
-
 	int ch;
 	while (true) {
 		ch = wgetch(pad.help);
@@ -156,13 +144,9 @@ void input_help(void) {
 				(ch == 's' || ch == 'S' || ch == 'w' || ch == 'W'))
 			beep();
 	}
-
-	echo();
 }
 
 void input_exit(void) {
-	noecho();
-
 	int ch;
 
 	while (true) {
@@ -177,7 +161,5 @@ void input_exit(void) {
 			return;
 		}
 	}
-
-	echo();
 }
 

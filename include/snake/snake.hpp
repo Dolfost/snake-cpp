@@ -17,6 +17,8 @@ void drawagain(void);
 void drawhelp(void);
 void drawlog(void);
 
+int baradd(const char*);
+
 void move(void);
 
 bool input_snake(int);

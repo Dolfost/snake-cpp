@@ -100,7 +100,7 @@ void drawlog(void) {
 
 void drawover(void) {
 	wattrset(window.bar, A_BOLD);
-	mvwaddstr(window.bar, 0, length.window.bar.minc - 12 - 1, "Press return"); // -13 is the phrase length
+	baradd("Press return");
 	wattroff(window.bar, A_BOLD);
 	wrefresh(window.bar);
 	wrefresh(window.sidelog);
@@ -135,8 +135,24 @@ void drawagain(void) {
 	touchwin(window.again);
 	wrefresh(window.again);
 }
-			
-	
+
+int baradd(const char* str) {
+	static size_t len = 0;
+	int offset = 4;
+	 
+	werase(window.bar, length.window.bar.minc - offset - len - 1, length.window.bar.minc - offset - 1); 
+
+	if (str == NULL) {
+		return 0;
+	}
+
+	len = strlen(str);
+
+	wattrset(window.bar, A_BOLD);
+	mvwaddstr(window.bar, 0, length.window.bar.minc - offset - len - 1, str);
+	wattroff(window.bar, A_BOLD);
+	return len;
+}
 
 int center(WINDOW* window, int line, const char* fmt, ...) {
 	if (window == NULL)

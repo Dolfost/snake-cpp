@@ -117,6 +117,20 @@ void setup(void) {
 		help('h');
 		drawgame();
 	}
+
+	FILE* playerfile = fopen("data/player.dat", "r");
+//	fwrite("Imposter\0\n", sizeof(char), 10, playerfile);
+
+	if (playerfile == NULL) {
+		log_error("Could not open playerdata.");
+		log_nl(   "Maybe there is no previous player...");
+		*game.playername = '\0';
+	} else {
+		log_debug("Opened playerdata succesfully.");
+		size_t read = fread(game.playername, sizeof(char), length.game.maxnicknamelen, playerfile);
+		log_debug("Read %d/%d bytes from playerdata.", read, length.game.maxnicknamelen);
+		fclose(playerfile);
+	}
 }
 
 void desetup(void) {
