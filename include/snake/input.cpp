@@ -104,6 +104,9 @@ void input_log(void) {
 		} else if (help(ch)) {
 			drawlog();
 		}
+		if ((length.pad.log.vl == 0 || length.pad.log.vl + (LINES - 1) == length.pad.log.minl) &&
+				(ch == 's' || ch == 'S' || ch == 'w' || ch == 'W'))
+			beep();
 	}
 
 	echo();
@@ -149,6 +152,9 @@ void input_help(void) {
 		} else if (gamelog(ch)) {
 			drawhelp();
 		}
+		if ((length.pad.help.vl == 0 || length.pad.help.vl + (LINES - 1) == length.pad.help.minl) &&
+				(ch == 's' || ch == 'S' || ch == 'w' || ch == 'W'))
+			beep();
 	}
 
 	echo();
