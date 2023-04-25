@@ -16,6 +16,7 @@ void setup(void) {
 	init_pair(13, COLOR_YELLOW,  color.helpbg); color.pair.help.key = 13; attribute.help.key = A_BOLD;
 	init_pair(14, COLOR_MAGENTA, color.helpbg); color.pair.help.title = 14; attribute.help.title = A_BOLD;
 	init_pair(15, COLOR_GREEN,   color.helpbg); color.pair.help.keyword = 15; attribute.help.keyword = A_UNDERLINE;
+	init_pair(16, COLOR_CYAN,    color.helpbg); color.pair.help.definition = 16; attribute.help.definition = A_UNDERLINE;
 
 	if (flag.option.buildhelppad == true) {
 		log_debug("Buildind help to '%s'...", flag.option.helppadpath);
@@ -123,10 +124,10 @@ void setup(void) {
 	}
 
 	// led colors
-	init_pair(16, COLOR_WHITE, COLOR_GREEN);   color.pair.led[3] = 16; 
-	init_pair(17, COLOR_WHITE, COLOR_YELLOW);  color.pair.led[2] = 17;
-	init_pair(18, COLOR_WHITE, COLOR_MAGENTA); color.pair.led[1] = 18;
-	init_pair(19, COLOR_WHITE, COLOR_RED);     color.pair.led[0] = 19;
+	init_pair(17, COLOR_WHITE, COLOR_GREEN);   color.pair.led[3] = 17; 
+	init_pair(18, COLOR_WHITE, COLOR_YELLOW);  color.pair.led[2] = 18;
+	init_pair(19, COLOR_WHITE, COLOR_MAGENTA); color.pair.led[1] = 19;
+	init_pair(20, COLOR_WHITE, COLOR_RED);     color.pair.led[0] = 20;
 	
 
 	FILE* playerfile = fopen("data/player.dat", "r");

@@ -187,7 +187,7 @@ int center(WINDOW* window, int line, const char* fmt, ...) {
 }
 
 WINDOW* buildhelppad(const char* path) {
-	log_debug("Entered buildhelppad().");
+	log_trace("Entered buildhelp().");
 
 	FILE* padfile = fopen(path, "w+");
 	if (padfile == NULL) {
@@ -197,42 +197,70 @@ WINDOW* buildhelppad(const char* path) {
 	}
 
 	WINDOW* pad = newpad(length.pad.help.minl, length.pad.help.minc);
-	wprintw(pad, "This is help pad ");
+	hp_add(pad, "This is help pad ");
 	incolor(pad, color.pair.help.keyword, attribute.help.keyword, "v%s", SNAKE_VERSION);
-	waddstr(pad, ".\n");
+	waddstr(pad, ".");
 
-	helppad_title(pad, "Help pad controls");
-	helppad_keys(pad, "w"); helppad_keyword(pad, "Scroll"); waddstr(pad, " the help pad up by 1 line.\n");
-	helppad_keys(pad, "s"); helppad_keyword(pad, "Scroll"); waddstr(pad, " the help pad down by 1 line.\n");
-	helppad_keys(pad, "W"); helppad_keyword(pad, "Scroll"); waddstr(pad, " the help pad up by 5 lines.\n");
-	helppad_keys(pad, "S"); helppad_keyword(pad, "Scroll"); waddstr(pad, " the help pad down by 5 lines.\n");
-	helppad_keys(pad, "hH"); helppad_keyword(pad, "Exit/hide"); waddstr(pad, " the help pad.\n");
+	hp_title(pad, "Help pad controls");
+	hp_keys(pad, "w", 0); hp_keyword(pad, "Scroll"); waddstr(pad, " the help pad up by 1 line.");
+	hp_keys(pad, "s"); hp_keyword(pad, "Scroll"); waddstr(pad, " the help pad down by 1 line.");
+	hp_keys(pad, "W"); hp_keyword(pad, "Scroll"); waddstr(pad, " the help pad up by 5 lines.");
+	hp_keys(pad, "S"); hp_keyword(pad, "Scroll"); waddstr(pad, " the help pad down by 5 lines.");
+	hp_keys(pad, "hH"); hp_keyword(pad, "Exit/hide"); waddstr(pad, " the help pad.\n");
 
-	helppad_title(pad, "Global controls");
-	helppad_keys(pad, "hH"); waddstr(pad, "Show the "); helppad_keyword(pad, "help pad"); waddstr(pad, ".\n");
-	helppad_keys(pad, "q"); helppad_keyword(pad, "Quit"); waddstr(pad, " the game.\n");
-	helppad_keys(pad, "Q"); helppad_keyword(pad, "Force quit"); waddstr(pad, " the game. (exits without a prompt)\n");
-	helppad_keys(pad, "lL"); waddstr(pad, "Open the "); helppad_keyword(pad, "log pad"); waddstr(pad, ".\n");
+	hp_title(pad, "Global controls");
+	hp_add(pad, "These keystrokes work in all non-promt windows.\n\n");
+	hp_add(pad, "For example, the exit, gameover and play again windows are\n");
+	hp_add(pad, "the prompt windows, so they wont check for global keystokes.\n");
+	hp_keys(pad, "hH"); waddstr(pad, "Show the "); hp_keyword(pad, "help pad"); waddstr(pad, ".");
+	hp_keys(pad, "q"); hp_keyword(pad, "Quit"); waddstr(pad, " the game.");
+	hp_keys(pad, "Q"); hp_keyword(pad, "Force quit"); waddstr(pad, " the game. (exits without a prompt)");
+	hp_keys(pad, "lL"); waddstr(pad, "Open the "); hp_keyword(pad, "log pad"); waddstr(pad, ".\n");
 
-	helppad_title(pad, "In-game controls");
-	helppad_keys_word(pad, "arrows"); waddstr(pad, "Change snake "); helppad_keyword(pad, "direction"); waddstr(pad, ".\n");
-	helppad_keys(pad, "DWAS"); waddstr(pad, "Change snake "); helppad_keyword(pad, "direction"); waddstr(pad, ".\n");
-	helppad_keys(pad, "dwas"); waddstr(pad, "Change snake "); helppad_keyword(pad, "direction"); waddstr(pad, ".\n");
-	waddstr(pad, "\n Hold any of snake controls buttons down for "); helppad_keyword(pad, "speedup"); waddstr(pad, ".\n\n");
-	helppad_keys(pad, "pP"); helppad_keyword(pad, "Pause/unpause"); waddstr(pad, " the game.\n");
-	helppad_keys(pad, "hH"); waddstr(pad, "Show "); helppad_keyword(pad, "help"); waddstr(pad, ".\n");
+	hp_title(pad, "Game terminology");
+	hp_definition(pad, "da", 0); waddstr(pad, "Down arrow");
+	hp_definition(pad, "la"); waddstr(pad, "Left arrow");
+	hp_definition(pad, "ua"); waddstr(pad, "Up arrow");
+	hp_definition(pad, "ra"); waddstr(pad, "Right arrow\n");
+	hp_definition(pad, "score "); waddstr(pad, "Depends on your skill, time and distance to mouse.");
+	hp_definition(pad, "catch time"); waddstr(pad, "The time beetwen mouse catches.");
+	hp_definition(pad, NULL); waddstr(pad, "Inversely proportional to "); hp_keyword(pad, "score"); waddstr(pad, ".");
 
-	helppad_title(pad, "Log pad controls");
-	helppad_keys(pad, "w"); helppad_keyword(pad, "Scroll"); waddstr(pad, " the log pad up by 1 line.\n");
-	helppad_keys(pad, "s"); helppad_keyword(pad, "Scroll"); waddstr(pad, " the log pad down by 1 line.\n");
-	helppad_keys(pad, "W"); helppad_keyword(pad, "Scroll"); waddstr(pad, " the log pad up by 5 lines.\n");
-	helppad_keys(pad, "S"); helppad_keyword(pad, "Scroll"); waddstr(pad, " the log pad down by 5 lines.\n");
-	helppad_keys(pad, "lL"); helppad_keyword(pad, "Exit/hide"); waddstr(pad, " the log pad.\n");
+	hp_title(pad, "Game controls");
+	hp_keys_word(pad, "ra ua la ra", 0);
+	hp_keys(pad, "dwas"); waddstr(pad, "Change snake "); hp_keyword(pad, "direction"); waddstr(pad, ".");
+	hp_keys(pad, "DWAS"); waddstr(pad, "\n\n");
+	hp_add(pad, "Hold any of snake controls buttons down for "); hp_keyword(pad, "speedup"); waddstr(pad, ".\n");
+	hp_keys(pad, "pP"); hp_keyword(pad, "Pause/unpause"); waddstr(pad, " the game.");
+	hp_keys(pad, "hH"); waddstr(pad, "Show "); hp_keyword(pad, "help"); waddstr(pad, ".\n");
 
-	helppad_title(pad, "Exit window controls");
-	waddstr(pad, " Exit window can recognize "); helppad_keyword(pad, "ONLY"); waddstr(pad, " next keys:\n");
-	helppad_keys(pad, "cnN"); waddstr(pad, "Approve the exit. (mean, "); helppad_keyword(pad, "exit"); waddstr(pad, " the game.\n");
-	helppad_keys(pad, "qyY"); waddstr(pad, "Decline the exit and hide exit window.\n");
+	hp_title(pad, "Game logic");
+	hp_add(pad, "When you launch the %s from the terminal, the \n", execname);
+	hp_add(pad, "game session will automatically start. At the start of the game session\n");
+	hp_add(pad, "the snake has direction 'D_NONE' until any of snake controls keys \n");
+	hp_add(pad, "(see "); hp_keyword(pad, "Global controls"); waddstr(pad, " section) is pressed. The "); hp_keyword(pad, "catch time"); waddstr(pad, " is started with\n");
+	hp_add(pad, "the game session, so the time waited before first move is counted in.\n\n");
+	hp_add(pad, "When you make the first move, the game starts and the snake start moving.\n\n");
+	hp_add(pad, "Your "); hp_keyword(pad, "objective"); waddstr(pad, "is to catch as many mouses as possible without hitting the\n");
+	hp_add(pad, "wall or biting youself.\n\n");
+	hp_add(pad, "The "); hp_keyword(pad, "score"); waddstr(pad, " and "); hp_keyword(pad, "catch time"); waddstr(pad, " is displayed in left down corner of the window.\n");
+	hp_add(pad, "Score depends on the "); hp_keyword(pad, "catch time"); waddstr(pad, ", the less points you will get when you\n");
+	hp_add(pad, "catch the mouse. "); hp_keyword(pad, "Minimal score"); waddstr(pad, " that you can get from mouse catch is 4.\n");
+	hp_add(pad, "If you hit the wall or bit itself you lose and the "); hp_keyword(pad, "msgbar"); waddstr(pad, " will scream\n");
+	hp_add(pad, "\"Press return\", and the "); hp_keyword(pad, "led"); waddstr(pad, " will turn red.");
+
+
+	hp_title(pad, "Log pad controls");
+	hp_keys(pad, "w", 0); hp_keyword(pad, "Scroll"); waddstr(pad, " the log pad up by 1 line.");
+	hp_keys(pad, "s"); hp_keyword(pad, "Scroll"); waddstr(pad, " the log pad down by 1 line.");
+	hp_keys(pad, "W"); hp_keyword(pad, "Scroll"); waddstr(pad, " the log pad up by 5 lines.");
+	hp_keys(pad, "S"); hp_keyword(pad, "Scroll"); waddstr(pad, " the log pad down by 5 lines.");
+	hp_keys(pad, "lL"); hp_keyword(pad, "Exit/hide"); waddstr(pad, " the log pad.\n");
+
+	hp_title(pad, "Exit window controls");
+	hp_add(pad, "Exit window can recognize "); hp_keyword(pad, "ONLY"); waddstr(pad, " next keys:\n");
+	hp_keys(pad, "cnCN"); waddstr(pad, "Approve the exit. (mean, "); hp_keyword(pad, "exit"); waddstr(pad, " the game)");
+	hp_keys(pad, "qyQY"); waddstr(pad, "Decline the exit and hide the exit window.");
 
 
 
@@ -243,16 +271,20 @@ WINDOW* buildhelppad(const char* path) {
 	return pad;
 }
 
-void helppad_title(WINDOW* pad, const char* fmt, ...) {
+void hp_title(WINDOW* pad, const char* fmt, ...) {
 	va_list args;
 	va_start(args, fmt);
 
-	waddstr(pad, "\n    ");
+	int len = vsnprintf(NULL, 0, fmt, args);
+	char* str = (char*)malloc(sizeof(char)*(len+1));
+	memcheck(str);
+	vsnprintf(str, len + 1, fmt, args);
+
 	wattrset(pad, COLOR_PAIR(color.pair.help.key) | attribute.help.key);
-	waddch(pad, '-');
+	mvwaddch(pad, getcury(pad) + 2, (getmaxx(pad) - len - 2)/2, '-');
 
 	wattrset(pad, COLOR_PAIR(color.pair.help.title) | attribute.help.title);
-	vw_printw(pad, fmt, args);
+	waddstr(pad, str);
 	wattroff(pad, COLOR_PAIR(color.pair.help.title) | attribute.help.title);
 	wattrset(pad, COLOR_PAIR(color.pair.help.key) | attribute.help.key);
 	waddstr(pad, "-\n");
@@ -262,23 +294,73 @@ void helppad_title(WINDOW* pad, const char* fmt, ...) {
 	va_end(args);
 }
 
-void helppad_keyword(WINDOW* pad, const char* fmt, ...) {
+void hp_add(WINDOW* pad, const char* fmt, ...) {
+	va_list args;
+	va_start(args, fmt);
+
+	waddstr(pad, " "); vw_printw(pad, fmt, args);
+
+	va_end(args);
+}
+
+void hp_definition(WINDOW* pad, const char* str, short plusline) {
+	int offset = 18;
+	int shift = 2;
+	static int len = 0;
+	if (str == NULL) {
+		waddch(pad, '\n');
+		for (int i = 0; i <= offset + shift + 1; i++) {
+			waddch(pad, ' ');
+		}
+		return;
+	}
+	len = strlen(str);
+	
+	
+	wmove(pad, getcury(pad) + plusline, (offset - len) / 2 + shift);
+	wattrset(pad, COLOR_PAIR(color.pair.help.definition) | attribute.help.definition);
+	waddstr(pad, str);
+	wattroff(pad, COLOR_PAIR(color.pair.help.definition) | attribute.help.definition);
+
+	for (int i = 0; i < (offset - len)/2 + shift; i++) {
+		waddch(pad, ' ');
+	}
+//	wattrset(pad, COLOR_PAIR(color.pair.help.key) | attribute.help.key);
+//	mvwaddch(pad, getcury(pad), getcurx(pad) - 4, '-');
+//	wattroff(pad, COLOR_PAIR(color.pair.help.key) | attribute.help.key);
+//	wmove(pad, getcury(pad), getcurx(pad) + 2);
+}
+
+
+	
+
+void hp_keyword(WINDOW* pad, const char* fmt, ...) {
 	va_list args;
 	va_start(args, fmt);
 
 	wattrset(pad, COLOR_PAIR(color.pair.help.keyword) | attribute.help.keyword);
 	vw_printw(pad, fmt, args);
-
 	wattroff(pad, COLOR_PAIR(color.pair.help.keyword) | attribute.help.keyword);
 
 	va_end(args);
 }
 	
 
-void helppad_keys(WINDOW* pad, const char* keys) {
-	wprintw(pad, "  [");
-	int printed = 0;
-	for (int i = strlen(keys) - 1; i >= 0; i--, printed += 2) {
+void hp_keys(WINDOW* pad, const char* keys, short plusline) {
+	int offset = 14;
+	int shift = 2; 
+	static int len = 0;
+
+	if (keys == NULL) {
+		for (int i = 0; i < offset + shift; i++)
+			waddch(pad, ' ');
+		return;
+	}
+
+	len = 2*strlen(keys) - 1 + 2;
+	wmove(pad, getcury(pad) + plusline, (offset - len) / 2 + shift);
+	wprintw(pad, "[");
+	for (int i = strlen(keys) - 1; i >= 0; i--) {
 		wattrset(pad, COLOR_PAIR(color.pair.help.key) | attribute.help.key);
 		waddch(pad, keys[i]);
 		wattroff(pad, COLOR_PAIR(color.pair.help.key) | attribute.help.key);
@@ -286,21 +368,33 @@ void helppad_keys(WINDOW* pad, const char* keys) {
 	}
 	mvwprintw(pad, getcury(pad), getcurx(pad) - 1, "]");
 	
-	for (int i = (length.window.game.minc/8) - printed; i > 0; i--) {
+	for (int i = 0; i < (offset - len)/2 + shift; i++) {
 		waddch(pad, ' ');
 	}
 }
 
 
-void helppad_keys_word(WINDOW* pad, const char* word) {
-	wprintw(pad, "  {");
-	int printed = strlen(word) + 1;
+void hp_keys_word(WINDOW* pad, const char* word, short plusline) {
+	int offset = 14;
+	int shift = 2; 
+	static int len = 0;
+
+	if (word == NULL) {
+		for (int i = 0; i < offset + shift; i++)
+			waddch(pad, ' ');
+		return;
+	}
+
+	len = strlen(word) + 2;
+	wmove(pad, getcury(pad) + plusline, (offset - len) / 2 + shift);
+	wprintw(pad, "{");
 	wattrset(pad, COLOR_PAIR(color.pair.help.key) | attribute.help.key);
-	waddstr(pad, word);
+	wprintw(pad, "%s", word);
 	wattroff(pad, COLOR_PAIR(color.pair.help.key) | attribute.help.key);
 	wprintw(pad, "}");
+
 	
-	for (int i = (length.window.game.minc/8) - printed; i > 0; i--) {
+	for (int i = 0; i < (offset - len)/2 + shift; i++) {
 		waddch(pad, ' ');
 	}
 }

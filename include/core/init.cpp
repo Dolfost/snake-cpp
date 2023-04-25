@@ -45,7 +45,7 @@ int init(void) {
 	length.window.sidelog.minl = length.window.stdscr.minl;
 	length.window.sidelog.minc = 100;
 
-	length.pad.help.minl = 50;
+	length.pad.help.minl = 100;
 	length.pad.help.minc = length.window.game.minc;
 	length.pad.log.minl = CORE_DEFAULT_LOG_SCROLLBACK;
 	length.pad.log.minc = COLS - 2;

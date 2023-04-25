@@ -59,6 +59,7 @@ struct Colors {
 			short key;
 			short title;
 			short keyword;
+			short definition;
 		} help;
 		short led[4];
 	} pair;
@@ -69,6 +70,7 @@ struct Attributes {
 		int key;
 		int title;
 		int keyword;
+		int definition;
 	} help;
 };
 
