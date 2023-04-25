@@ -109,17 +109,31 @@ void drawover(void) {
 void drawfinals(void) {
 	int mins = game.time / 60;
 	int secs = game.time -  mins*60;
+
+	wclear(window.finals);
 	box(window.finals, 0, 0);
+	wattrset(window.finals, A_BOLD);
+	center(window.finals, 1, "Game is over");
+	wattroff(window.finals, A_BOLD);
 	center(window.finals, 3, "You ate %d mouses in %d:%dm", snake.length - 1, mins, secs);
 	center(window.finals, 5, "The score is %d points", game.score);
 
-	mvwaddstr(window.finals, 7, 3, "Who are you?");
 
-	if (*game.playername != '\0')
+	if (*game.playername == '\0') {
+		mvwaddstr(window.finals, 8, 3, "Who are you?");
+	} else {
+		mvwaddstr(window.finals, 7, 3, "Who are you?");
 		mvwprintw(window.finals, 8, 3, "If you are %s - press return.", game.playername);
+	}
 
 	mvwaddstr(window.finals, 10, 3, "I am ");
+	touchwin(window.finals);
 	wrefresh(window.finals);
+}
+
+void drawagain(void) {
+	touchwin(window.again);
+	wrefresh(window.again);
 }
 			
 	

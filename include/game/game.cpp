@@ -21,6 +21,9 @@ void spawn_bait(void) {
 void gamesetup(void) {
 	game.score = 0;
 
+	snake.bit = false;
+	snake.hit = false;
+
 	snake.body = (Point*)calloc(length.window.game.minl*length.window.game.minc, sizeof(Point));
 	memcheck(snake.body, length.window.game.minl*length.window.game.minc*sizeof(Point));
 
@@ -61,6 +64,7 @@ void gameloop(void) {
 
 			game.distance = sqrt(pow(snake.head.x - bait.position.x, 2) + pow(snake.head.y - bait.position.y, 2));
 		}
+
 		clock_gettime(CLOCK_MONOTONIC, &game.time_end);
 		game.time = timediff(&game.time_start, &game.time_end);
 		beep();
@@ -71,8 +75,14 @@ void gameloop(void) {
 
 		gameover();
 		finals();
+		playagain();
 
-		game.playagain = false;
+		if (game.playagain == false)
+			gamestill();	
+		
+		wclear(window.game);
+
+		free(snake.body);
 		gamesetup();
 	}
 
@@ -80,10 +90,52 @@ void gameloop(void) {
 }
 
 void finals(void) {
+	log_trace("Entered finals window.");
 	drawfinals();
+
+	char* input = (char*)malloc(sizeof(char)*(length.game.maxnicknamelen + 1));
+	memcheck(input, sizeof(char)*(length.game.maxnicknamelen + 1));
+
 	curs_set(1);
-	wgetnstr(window.finals, game.playername, length.game.maxnicknamelen);
+	wgetnstr(window.finals, input, length.game.maxnicknamelen);
 	curs_set(0);
+
+	if (*input == '\n') {
+		free(input);
+		log_debug("The user has chosen an old");
+		log_nl   ("'%s' nickname.", game.playername);
+	} else {
+		free(game.playername);
+		game.playername = input;
+		log_debug("The user has entered an new");
+		log_nl   ("'%s' nickname.", game.playername);
+	}
+	log_trace("Left finals window.");
+}
+
+void playagain(void) {
+	log_trace("Entered playagain window.");
+	drawagain();
+	noecho();
+
+	int ch;
+
+	while (true) {
+		ch = wgetch(window.again);
+		if (ch == 'Y' || ch == 'y') {
+			log_debug("Starting the game again. [%c]", ch);
+			game.playagain = true;
+			break;
+		}
+		if (ch == 'N' || ch == 'n') {
+			log_debug("The game session is finished. [%c]", ch);
+			game.playagain = false;
+			break;
+		}
+	}
+
+	echo();
+	log_trace("Left playagain window.");
 }
 
 void gameover(void) {
@@ -101,7 +153,7 @@ void gameover(void) {
 
 bool gamepause(int ch) {
 	if (ch == 'p' || ch == 'P') {
-		log_debug("Entered pause window. [%c]", ch);
+		log_trace("Entered pause window. [%c]", ch);
 		
 		touchwin(window.pause);
 		wrefresh(window.pause);
@@ -153,10 +205,35 @@ bool gamepause(int ch) {
 		return false;
 }
 
+void gamestill(void) {
+	log_trace("Entered standby mode.");
+	drawgame();
+
+	noecho();
+
+	int ch;
+
+	while (true) {
+		ch = wgetch(window.stdscr);
+		if (ch == 's' || ch == 'S') {
+			game.playagain = true;
+			return;
+		} else if (exitgame(ch))
+			drawgame();	
+		else if (gamelog(ch))
+			drawgame();	
+		else if (help(ch))
+			drawgame();
+	}
+
+	echo();
+	log_trace("Left standby mode.");
+}
+
 bool gamelog(int ch) {
 	length.pad.log.vl = length.pad.log.minl - (LINES - 2) - 1;
 	if (ch == 'l' || ch == 'L') {
-		log_debug("Opened log pad. [%c]", ch);
+		log_trace("Opened log pad. [%c]", ch);
 		drawlog();
 
 		input_log();
@@ -175,7 +252,7 @@ bool help(int ch) {
 			log_nl(   "Help pad isn't initialized.");
 			return true;
 		}
-		log_debug("Entered help pad. [%c]", ch);
+		log_trace("Entered help pad. [%c]", ch);
 		drawhelp();
 		
 		input_help();
@@ -188,7 +265,7 @@ bool help(int ch) {
 
 bool exitgame(int ch) {
 	if (ch == 'Q' || ch == 'q') {
-		log_debug("Entered exit window. [%c]", ch);
+		log_trace("Entered exit window. [%c]", ch);
 		if (ch == 'Q') {
 			log_debug("Force game exit. [%c]", ch);
 			exit(EXIT_SUCCESS);

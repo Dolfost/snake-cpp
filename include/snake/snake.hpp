@@ -12,6 +12,7 @@ void draw(void);
 void drawgame(void);
 void drawgamelines(void);
 void drawover(void);
+void drawagain(void);
 
 void drawhelp(void);
 void drawlog(void);

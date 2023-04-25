@@ -16,7 +16,9 @@ bool gamepause(int);
 bool help(int);
 bool exitgame(int);
 
-void finals();
+void playagain(void);
+void finals(void);
+void gamestill(void);
 
 
 char* fgetline(FILE*);

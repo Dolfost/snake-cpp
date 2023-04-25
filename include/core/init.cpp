@@ -50,7 +50,9 @@ int init(void) {
 	length.pad.log.minc = COLS - 2;
 
 	length.window.finals.minl = 12;
-	length.window.finals.minc = length.window.game.minc / 2;
+	length.window.finals.minc = 2*length.window.game.minc / 3;
+	length.window.again.minl = 6;
+	length.window.again.minc = 30;
 
 	
 	// log pad initialization
@@ -172,6 +174,19 @@ int init(void) {
 	box(window.pause, 0, 0);
 	mvwaddstr(window.pause, length.window.pause.minl / 2,
 			(length.window.pause.minc - 5 /* 5 is an word length */) / 2, "PAUSE");
+
+	// again window
+	if ((window.again = newwin(length.window.again.minl, length.window.again.minc,
+					(length.window.game.minl - length.window.again.minl ) / 2,
+					(length.window.game.minc - length.window.again.minc ) / 2)) == NULL)
+		fatal_error("Could not initialize again window.");
+	else
+		log_debug("Initialized again window succsessfully.");
+	box(window.again, 0, 0);
+	wattrset(window.again, A_BOLD);
+	center(window.again, 2, "Do you want to play again?");
+	wattroff(window.again, A_BOLD);
+	center(window.again, 3, "Y/y   N/n");
 	
 	// exit window
 	if ((window.exit = newwin(length.window.exit.minl, length.window.exit.minc,
@@ -181,8 +196,10 @@ int init(void) {
 	else
 		log_debug("Initialized exit window succsessfully.");
 	box(window.exit, 0, 0);
-	mvwaddstr(window.exit, 2, (length.window.exit.minc - 27 /* 27 is an sentetce length */) / 2, "Do you really want to exit?");
-	mvwaddstr(window.exit, 3, (length.window.exit.minc - 13 /* 13 is an sentetce length */) / 2, "Y/y/q   N/n/c");
+	wattrset(window.exit, A_BOLD);
+	center(window.exit, 2, "Do you really want to exit?");
+	wattroff(window.exit, A_BOLD);
+	center(window.exit, 3, "Q/Y/q/y   C/N/c/n");
 	
 
 	// game window initialization
