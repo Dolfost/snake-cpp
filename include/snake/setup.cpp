@@ -18,10 +18,6 @@ void setup(void) {
 	init_pair(15, COLOR_GREEN,   color.helpbg); color.pair.help.keyword = 15; attribute.help.keyword = A_UNDERLINE;
 	init_pair(16, COLOR_CYAN,    color.helpbg); color.pair.help.definition = 16; attribute.help.definition = A_UNDERLINE;
 
-	if (flag.option.buildhelppad == true) {
-		log_debug("Buildind help to '%s'...", flag.option.helppadpath);
-		buildhelppad(flag.option.helppadpath);
-	}
 
 	if (length.pad.log.minl != CORE_DEFAULT_LOG_SCROLLBACK) {
 		int helppadcopy;
@@ -36,7 +32,7 @@ void setup(void) {
 		} else
 			log_debug("Initialized new log pad succesfully. (%d lines)", length.pad.log.minl);
 
-		if (length.pad.log.minl > CORE_DEFAULT_LOG_SCROLLBACK) { // TODO fix this (new line after copying window
+		if (length.pad.log.minl > CORE_DEFAULT_LOG_SCROLLBACK) { // TODO fix this (new line after copying window)
 			log_fatal("%d %d %d", CORE_DEFAULT_LOG_SCROLLBACK, length.pad.log.minl, length.pad.log.minc);
 			helppadcopy = copywin(pad.log, newlogpad, 0, 0, // something is wrong
 					length.pad.log.minl - CORE_DEFAULT_LOG_SCROLLBACK - 1, 0,
@@ -118,20 +114,24 @@ void setup(void) {
 	length.bar.timename = 6;
 	length.bar.time = 6; // >99.9s
 
+	// led colors
+	init_pair(17, COLOR_BLACK, COLOR_GREEN);   color.pair.led[3] = 17; 
+	init_pair(18, COLOR_BLACK, COLOR_YELLOW);  color.pair.led[2] = 18;
+	init_pair(19, COLOR_BLACK, COLOR_MAGENTA); color.pair.led[1] = 19;
+	init_pair(20, COLOR_BLACK, COLOR_RED);     color.pair.led[0] = 20;
+
+	if (flag.option.buildhelppad == true) {
+		log_debug("Buildind help to '%s'...", flag.option.helppadpath);
+		buildhelppad(flag.option.helppadpath);
+		exit(EXIT_SUCCESS);
+	}
+
 	if (flag.option.help == true) {
 		help('H');
 		drawgame();
 	}
 
-	// led colors
-	init_pair(17, COLOR_WHITE, COLOR_GREEN);   color.pair.led[3] = 17; 
-	init_pair(18, COLOR_WHITE, COLOR_YELLOW);  color.pair.led[2] = 18;
-	init_pair(19, COLOR_WHITE, COLOR_MAGENTA); color.pair.led[1] = 19;
-	init_pair(20, COLOR_WHITE, COLOR_RED);     color.pair.led[0] = 20;
-	
-
 	FILE* playerfile = fopen("data/player.dat", "r");
-//	fwrite("Imposter\0\n", sizeof(char), 10, playerfile);
 
 	if (playerfile == NULL) {
 		log_error("Could not open playerdata.");

@@ -8,6 +8,7 @@ void werase(WINDOW* window, short from, short to) {
 
 void draw(void) {
 	// snake
+	log_debug("dist %f trav %d", bait.distance, snake.travelled);
 	mvwaddch(window.game, snake.tail.y, snake.tail.x, ' ');
 	mvwaddch(window.game, snake.head.y, snake.head.x, '0');
 
@@ -222,9 +223,86 @@ WINDOW* buildhelppad(const char* path) {
 	hp_definition(pad, "la"); waddstr(pad, "Left arrow");
 	hp_definition(pad, "ua"); waddstr(pad, "Up arrow");
 	hp_definition(pad, "ra"); waddstr(pad, "Right arrow\n");
-	hp_definition(pad, "score "); waddstr(pad, "Depends on your skill, time and distance to mouse.");
+	hp_definition(pad, "score"); waddstr(pad, "Depends on your skill.");
 	hp_definition(pad, "catch time"); waddstr(pad, "The time beetwen mouse catches.");
-	hp_definition(pad, NULL); waddstr(pad, "Inversely proportional to "); hp_keyword(pad, "score"); waddstr(pad, ".");
+	hp_definition(pad, "dist. travelled"); waddstr(pad, "Distance travelled beetween mouse");
+	hp_definition(pad, NULL); waddstr(pad, "catches. Inversely proportional to "); hp_keyword(pad, "score"); waddstr(pad, ".\n");
+	
+	hp_title(pad, "Interface terminology");
+	hp_definition(pad, "bar", 0); waddstr(pad, "The vedy down line under firs vertical");
+	hp_definition(pad, NULL); waddstr(pad, "line separator. Contains ");hp_keyword(pad, "score"); waddstr(pad, ",");
+	hp_definition(pad, NULL); hp_keyword(pad, "catch time");waddstr(pad, ", ");hp_keyword(pad, "msgbar");waddstr(pad, " and ");hp_keyword(pad, "led");waddstr(pad, ".");
+	hp_definition(pad, "scorebar"); waddstr(pad, "Lives in ");hp_keyword(pad, "bar");waddstr(pad, " in left down corner.");
+	hp_definition(pad, NULL);waddstr(pad, "Tells the "); hp_keyword(pad, "score"); waddstr(pad, ".");
+	hp_definition(pad, "timebar"); waddstr(pad, "Lives in ");hp_keyword(pad, "bar");waddstr(pad, " in left down corner, right");
+	hp_definition(pad, NULL);waddstr(pad, "after ");hp_keyword(pad, "scorebar"); waddstr(pad, ". Tells the ");hp_keyword(pad, "catch time"); waddstr(pad, ".");
+	hp_definition(pad, "msgbar");waddstr(pad, "Lives in the end of "); hp_keyword(pad, "bar"); waddstr(pad, " right before ");hp_keyword(pad, "led"); waddstr(pad, ".");
+	hp_definition(pad, NULL);waddstr(pad, "Shows some messages.");
+	hp_definition(pad, "led"); waddstr(pad, "Located at the very end of "); hp_keyword(pad, "bar"), waddstr(pad, " after "); hp_keyword(pad, "msgbar"); waddstr(pad, ".");
+	hp_definition(pad, NULL); waddstr(pad, "Has four colors in the next order:");
+	hp_definition(pad, NULL);
+	wattrset(pad, COLOR_PAIR(color.pair.led[0]));
+	waddstr(pad, "RED");
+	wattroff(pad, COLOR_PAIR(color.pair.led[0]));
+	waddstr(pad, "    ");
+	wattrset(pad, COLOR_PAIR(color.pair.led[1]));
+	waddstr(pad, "MAGENTA");
+	wattroff(pad, COLOR_PAIR(color.pair.led[1]));
+	waddstr(pad, "    ");
+	wattrset(pad, COLOR_PAIR(color.pair.led[2]));
+	waddstr(pad, "YELLOW");
+	wattroff(pad, COLOR_PAIR(color.pair.led[2]));
+	waddstr(pad, "    ");
+	wattrset(pad, COLOR_PAIR(color.pair.led[3]));
+	waddstr(pad, "GREEN");
+	wattroff(pad, COLOR_PAIR(color.pair.led[3]));
+	hp_definition(pad, NULL); waddstr(pad, "Led colors get less agressive with index grownth.");
+	hp_definition(pad, NULL); waddstr(pad, "For example, RED is most angry color, is used when game,");
+	hp_definition(pad, NULL); waddstr(pad, "is paused or you entered bad username, or when you try");
+	hp_definition(pad, NULL); waddstr(pad, "to open "); hp_keyword(pad, "help pad"); waddstr(pad, " while he isn't loaded.");
+	hp_definition(pad, "LINES", 2); waddstr(pad, "The lines count in opened terminal window.");
+	hp_definition(pad, "COLS"); waddstr(pad, "The columns count in opened terminal window.");
+	hp_definition(pad, "prompt window", 2); waddstr(pad, "Window that do not lisen for global keystrokes");
+	hp_definition(pad, NULL); waddstr(pad, "and want you to decide/enter something.\n");
+
+	hp_title(pad, "Windows");
+	hp_add(pad, "The game won't start if the "); hp_keyword(pad, "LINES"); wprintw(pad, " is less than %d or ", length.window.stdscr.minl); hp_keyword(pad, "COLS"); wprintw(pad, " is less than %d.\n", length.window.stdscr.minc);
+	hp_add(pad, "If so, then the "); hp_keyword(pad, "log pad"); waddstr(pad, " will open with corresponding warn and error\n");
+	hp_add(pad, "messages. Read them and resize your terminal window accordingly.");
+	hp_definition(pad, "game"); waddstr(pad, "The game "); hp_keyword(pad, "window"); waddstr(pad, ". Contains snake and mouse.");
+	hp_definition(pad, NULL); wprintw(pad, "Has the constant size %d lines by %d columns.", length.window.game.minl, length.window.game.minc);
+	hp_definition(pad, "sidelog"); waddstr(pad, "The log  "); hp_keyword(pad, "window"); waddstr(pad, ". (not "); hp_keyword(pad, "pad"); waddstr(pad, ")");
+	hp_definition(pad, NULL); hp_keyword(pad, "Sidelog"); wprintw(pad, " has size atleast "); hp_keyword(pad, "LINES"); wprintw(pad, " lines by %d columns.", length.window.sidelog.minc);
+	hp_definition(pad, NULL); wprintw(pad, "If the terminal whindow has less than %d", length.window.game.minc + 1 + length.window.sidelog.minc);
+	hp_definition(pad, NULL); waddstr(pad, "columns, sidelog won't open.");
+	hp_definition(pad, "bar"); wprintw(pad, "Has the size %d lines by %d columns.", length.window.bar.minl, length.window.bar.minc);
+	hp_definition(pad, NULL); waddstr(pad, "See "); hp_keyword(pad, "Interface terminology"); waddstr(pad, " section for more");
+	hp_definition(pad, NULL); waddstr(pad, "details about "); hp_keyword(pad, "bar"); waddstr(pad, ".\n");
+
+	hp_definition(pad, "exit"); waddstr(pad, "The exit "); hp_keyword(pad, "prompt"); waddstr(pad, " "); hp_keyword(pad, "widnow"); waddstr(pad, ".");
+	hp_definition(pad, NULL); waddstr(pad, "Appears in the center of terminal window.");
+	hp_definition(pad, NULL); wprintw(pad, "Has the size %d lines by %d columns. ", length.window.exit.minl, length.window.exit.minc);
+	hp_definition(pad, "finals"); waddstr(pad, "The finals "); hp_keyword(pad, "prompt"); waddstr(pad, " ");  hp_keyword(pad, "widnow"); waddstr(pad, ".");
+	hp_definition(pad, NULL); waddstr(pad, "Appears in the center of "); hp_keyword(pad, "game window"); 
+	hp_definition(pad, NULL); waddstr(pad, "when game ends. Requests you to enter your nickname.");
+	hp_definition(pad, NULL); wprintw(pad, "Has the size %d lines by %d columns. ", length.window.exit.minl, length.window.exit.minc);
+	hp_definition(pad, "again"); waddstr(pad, "The again "); hp_keyword(pad, "prompt"); waddstr(pad, " ");  hp_keyword(pad, "widnow"); waddstr(pad, ".");
+	hp_definition(pad, NULL); waddstr(pad, "Appears in the center of "); hp_keyword(pad, "game window"); 
+	hp_definition(pad, NULL); waddstr(pad, "after "); hp_keyword(pad, "finals"); waddstr(pad, " "); hp_keyword(pad, "prompt window"); waddstr(pad, ".");
+	hp_definition(pad, NULL); waddstr(pad, "Requests you to paly or enter the "); hp_keyword(pad, "standby mode"); waddstr(pad, ".");
+	hp_definition(pad, NULL); wprintw(pad, "Has the size %d lines by %d columns.\n", length.window.again.minl, length.window.again.minc);
+	
+	hp_title(pad, "Pads");
+	hp_definition(pad, "help", 0); waddstr(pad, "Yes. This is this "); hp_keyword(pad, "pad"); waddstr(pad, " that you are reading.");
+	hp_definition(pad, NULL); wprintw(pad, "The visible size is "); hp_keyword(pad, "LINES"); wprintw(pad, "-2 lines by %d columns.", length.pad.help.minc);
+	hp_definition(pad, NULL); wprintw(pad, "The real size is ");wprintw(pad, "%d lines by %d columns.", length.pad.help.minl, length.pad.help.minc);
+	hp_definition(pad, NULL); wprintw(pad, "Can be rebuilt with "); hp_option(pad, "--build-help-pad"); waddstr(pad, " option.");
+	hp_definition(pad, "log"); waddstr(pad, "The log ");hp_keyword(pad, "pad"); waddstr(pad, ". Simillar to "); hp_keyword(pad, "sidelog"); waddstr(pad, " but an "); hp_keyword(pad, "pad"); waddstr(pad, ".");
+	hp_definition(pad, NULL); wprintw(pad, "The visible size is "); hp_keyword(pad, "LINES"); wprintw(pad, "-2 lines by "); hp_keyword(pad, "COLS"); waddstr(pad, "-2 columns.");
+	hp_definition(pad, NULL); waddstr(pad, "The default real size is ");wprintw(pad, "%d lines by ", CORE_DEFAULT_LOG_SCROLLBACK); hp_keyword(pad, "COLS"); waddstr(pad, "-2 columns.");
+	hp_definition(pad, NULL); waddstr(pad, "The real lines count can be set with"); 
+	hp_definition(pad, NULL); waddstr(pad, "the "); hp_option(pad, "--log-scrollback"); waddstr(pad, " option.\n");
+ 
 
 	hp_title(pad, "Game controls");
 	hp_keys_word(pad, "ra ua la ra", 0);
@@ -244,10 +322,11 @@ WINDOW* buildhelppad(const char* path) {
 	hp_add(pad, "Your "); hp_keyword(pad, "objective"); waddstr(pad, "is to catch as many mouses as possible without hitting the\n");
 	hp_add(pad, "wall or biting youself.\n\n");
 	hp_add(pad, "The "); hp_keyword(pad, "score"); waddstr(pad, " and "); hp_keyword(pad, "catch time"); waddstr(pad, " is displayed in left down corner of the window.\n");
-	hp_add(pad, "Score depends on the "); hp_keyword(pad, "catch time"); waddstr(pad, ", the less points you will get when you\n");
-	hp_add(pad, "catch the mouse. "); hp_keyword(pad, "Minimal score"); waddstr(pad, " that you can get from mouse catch is 4.\n");
+	hp_add(pad, "Score depends on the "); hp_keyword(pad, "dist. travelled"); waddstr(pad, " and is inversely proportional\n");
+	hp_add(pad, "to it. "); hp_keyword(pad, "Minimal score"); waddstr(pad, " that you can get from mouse catch is 10\n");
+	hp_add(pad, "maximum score from one mouse if 25.\n");
 	hp_add(pad, "If you hit the wall or bit itself you lose and the "); hp_keyword(pad, "msgbar"); waddstr(pad, " will scream\n");
-	hp_add(pad, "\"Press return\", and the "); hp_keyword(pad, "led"); waddstr(pad, " will turn red.");
+	hp_add(pad, "\"Press return\", the "); hp_keyword(pad, "led"); waddstr(pad, " will turn red.\n");
 
 
 	hp_title(pad, "Log pad controls");
@@ -257,14 +336,20 @@ WINDOW* buildhelppad(const char* path) {
 	hp_keys(pad, "S"); hp_keyword(pad, "Scroll"); waddstr(pad, " the log pad down by 5 lines.");
 	hp_keys(pad, "lL"); hp_keyword(pad, "Exit/hide"); waddstr(pad, " the log pad.\n");
 
+	hp_title(pad, "Snake logging lore");
+	hp_add(pad, "The log has 6 levels of verbosity:\n");
+	for (int i = 0; i < 6; i++) {
+		wprintw(pad, "   %d: ", i);
+		wattrset(pad, COLOR_PAIR(g_log.levelcolor[i]) | g_log.levelattr[i]);
+		wprintw(pad, "%s\n", log_log_levelstr[i]);
+		wattroff(pad, COLOR_PAIR(g_log.levelcolor[i]) | g_log.levelattr[i]);
+	}
+	hp_add(pad, "The smaller the log message level is, the more it is verbose.\n");
+
 	hp_title(pad, "Exit window controls");
 	hp_add(pad, "Exit window can recognize "); hp_keyword(pad, "ONLY"); waddstr(pad, " next keys:\n");
 	hp_keys(pad, "cnCN"); waddstr(pad, "Approve the exit. (mean, "); hp_keyword(pad, "exit"); waddstr(pad, " the game)");
 	hp_keys(pad, "qyQY"); waddstr(pad, "Decline the exit and hide the exit window.");
-
-
-
-
 
 	putwin(pad, padfile);
 	fclose(padfile);
@@ -308,10 +393,7 @@ void hp_definition(WINDOW* pad, const char* str, short plusline) {
 	int shift = 2;
 	static int len = 0;
 	if (str == NULL) {
-		waddch(pad, '\n');
-		for (int i = 0; i <= offset + shift + 1; i++) {
-			waddch(pad, ' ');
-		}
+		wmove(pad, getcury(pad) + plusline, offset + shift);
 		return;
 	}
 	len = strlen(str);
@@ -322,9 +404,7 @@ void hp_definition(WINDOW* pad, const char* str, short plusline) {
 	waddstr(pad, str);
 	wattroff(pad, COLOR_PAIR(color.pair.help.definition) | attribute.help.definition);
 
-	for (int i = 0; i < (offset - len)/2 + shift; i++) {
-		waddch(pad, ' ');
-	}
+	wmove(pad, getcury(pad), offset + shift);
 //	wattrset(pad, COLOR_PAIR(color.pair.help.key) | attribute.help.key);
 //	mvwaddch(pad, getcury(pad), getcurx(pad) - 4, '-');
 //	wattroff(pad, COLOR_PAIR(color.pair.help.key) | attribute.help.key);
@@ -344,6 +424,18 @@ void hp_keyword(WINDOW* pad, const char* fmt, ...) {
 
 	va_end(args);
 }
+
+void hp_option(WINDOW* pad, const char* fmt, ...) {
+	va_list args;
+	va_start(args, fmt);
+
+	wattrset(pad, COLOR_PAIR(color.pair.help.definition) | attribute.help.definition);
+	vw_printw(pad, fmt, args);
+	wattroff(pad, COLOR_PAIR(color.pair.help.definition) | attribute.help.definition);
+
+	va_end(args);
+}
+
 	
 
 void hp_keys(WINDOW* pad, const char* keys, short plusline) {

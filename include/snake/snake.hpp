@@ -40,5 +40,6 @@ void hp_keys(WINDOW*, const char*, short plusline = 1);
 void hp_keys_word(WINDOW*, const char*, short plusline = 1);
 void hp_keyword(WINDOW*, const char*, ...);
 void hp_definition(WINDOW*, const char*, short plusline = 1);
+void hp_option(WINDOW* pad, const char*, ...);
 void hp_add(WINDOW*, const char*, ...);
 void incolor(WINDOW*, short, int, const char*, ...);

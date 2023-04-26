@@ -79,7 +79,7 @@ struct Lengths {
 		struct window {
 			int minl;
 			int minc;
-		} stdscr, log, sidelog, game, bar, pause, exit, finals, again;
+		} stdscr, sidelog, game, bar, pause, exit, finals, again;
 	} window;
 	struct Lengths_subwindow {
 		struct window {

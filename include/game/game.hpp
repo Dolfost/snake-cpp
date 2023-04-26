@@ -40,6 +40,7 @@ struct Snake {
 	bool hit;	// snake have hit the wall
 	bool bit;	// skake have bit itelf (hahaha what a fool)
 	int length; // snake length
+	int travelled;
 	
 	struct timespec time_start;
 	struct timespec time_end;

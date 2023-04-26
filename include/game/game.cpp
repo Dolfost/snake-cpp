@@ -14,7 +14,7 @@ void spawn_bait(void) {
 			}
 		}
 	}
-	bait.distance = game.distance;
+	bait.distance = sqrt(pow(snake.head.x - bait.position.x, 2) + pow(snake.head.y - bait.position.y, 2));
 	log_debug("Bait respawned at (%d;%d).", bait.position.y, bait.position.x);
 }
 
@@ -31,6 +31,7 @@ void gamesetup(void) {
 	snake.body[1].x = -1;
 
 	snake.direction = D_NONE;
+	snake.travelled = 0;
 
 	snake.head.y = get_random(0, length.window.game.minl - 1);
 	snake.head.x = get_random(0, length.window.game.minc - 1);

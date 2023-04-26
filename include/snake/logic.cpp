@@ -29,8 +29,14 @@ void dinner(void) {
 		snake.pause_time = 0;
 		clock_gettime(CLOCK_MONOTONIC, &snake.time_start);
 
-		game.score += (bait.distance)*3 / snake.time + 4;
+		if (snake.travelled - bait.distance >= 15)
+			game.score += 10;
+		else
+			game.score += 25 -(snake.travelled - bait.distance);
+
+
 		snake.length++;
+		snake.travelled = 0;
 		bait.eaten = true;
 		log_debug("The snake caught the mouse at (%d;%d) in %0.3fs.", snake.head.y, snake.head.x, snake.time);
 		log_debug("The score equals %d points.", game.score);
@@ -44,15 +50,19 @@ void move(void) {
 	switch(snake.direction) {
 		case D_RIGHT:
 			snake.head.x++;
+			snake.travelled++;
 			break;
 		case D_UP:
 			snake.head.y--;
+			snake.travelled++;
 			break;
 		case D_LEFT:
 			snake.head.x--;
+			snake.travelled++;
 			break;
 		case D_DOWN:
 			snake.head.y++;
+			snake.travelled++;
 			break;
 		default:
 			break;
