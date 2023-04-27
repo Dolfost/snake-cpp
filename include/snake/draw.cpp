@@ -77,7 +77,7 @@ void drawgamelines(void) {
 void drawhelp(void) {
 	wclear(window.stdscr);
 	box(window.stdscr, 0, 0);
-	mvwaddstr(window.stdscr, 0, 2, "Snake help");
+	mvwaddstr(window.stdscr, 0, 2, "Help pad");
 	wrefresh(window.stdscr);
 
 	touchwin(pad.help);
@@ -85,10 +85,21 @@ void drawhelp(void) {
 			1, 1, LINES - 2, length.window.game.minc - 2);
 }
 
+void drawscore(void) {
+	wclear(window.stdscr);
+	box(window.stdscr, 0, 0);
+	mvwaddstr(window.stdscr, 0, 2, "Scoresboard pad");
+	wrefresh(window.stdscr);
+
+	touchwin(pad.score);
+	prefresh(pad.score, length.pad.score.vl, 0, 
+			1, 1, LINES - 2, COLS - 2);
+}
+
 void drawlog(void) {
 	wclear(window.stdscr);
 	box(window.stdscr, 0, 0);
-	mvwaddstr(window.stdscr, 0, 2, "Snake log");
+	mvwaddstr(window.stdscr, 0, 2, "Log pad");
 	wrefresh(window.stdscr);
 
 	touchwin(window.stdscr);

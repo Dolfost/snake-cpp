@@ -10,16 +10,20 @@ void gameloop(void);
 void gameinput(void);
 void gameover(void);
 
+void doscores(void);
+
 bool help(int);
 bool gamelog(int);
 bool gamepause(int);
 bool help(int);
+bool score(int);
 bool exitgame(int);
 
 void playagain(void);
 void finals(void);
 void gamestill(void);
 
+void putscore(void);
 
 char* fgetline(FILE*);
 long countlines(FILE*);
@@ -33,6 +37,7 @@ struct Point {
 	short x;
 	short y;
 };
+
 
 struct Snake {
 	Point head; // point to draw at frame update
@@ -69,5 +74,8 @@ struct Game {
 	struct timespec time_end;
 	double time;
 	char* playername;
+	short* highscore;
+	short* hightime;
+	char** highplayer;
 };
 

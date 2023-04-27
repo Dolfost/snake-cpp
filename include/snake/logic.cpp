@@ -73,3 +73,21 @@ double timediff(const struct timespec* start, const struct timespec* end) {
 	return ((int64_t)end->tv_sec - (int64_t)start->tv_sec)
 		+ ((int64_t)end->tv_nsec - (int64_t)start->tv_nsec) / (double)1000000000;
 }
+
+void doscores(void) {
+	int index;
+
+	for (index = 0; index < 200 && game.score <= game.highscore[index]; index++)
+		;
+
+	for (int i = 199; i > index; i--) {
+		game.highscore[i] = game.highscore[i-1];
+		game.highplayer[i] = game.highplayer[i-1];
+		game.hightime[i] = game.hightime[i-1];
+	}
+
+	game.highscore[index] = game.score;
+	game.highplayer[index] = strdup(game.playername);
+	game.hightime[index] = game.time;
+}
+

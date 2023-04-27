@@ -28,8 +28,8 @@ int init(void) {
 	noecho();
 
 	// windows size
-// 	length.window.game.minl = 22; // lldb
-// 	length.window.game.minc = 80; // lldb
+ //	length.window.game.minl = 15; // lldb
+ //	length.window.game.minc = 80; // lldb
 	length.window.game.minl = 40; // 30
 	length.window.game.minc = 80; // 60
 	length.window.bar.minl = 1;
@@ -46,7 +46,9 @@ int init(void) {
 	length.window.sidelog.minc = 100;
 
 	length.pad.help.minl = 300;
-	length.pad.help.minc = length.window.game.minc;
+	length.pad.help.minc = length.window.game.minc - 2;
+	length.pad.score.minl = 220;
+	length.pad.score.minc = COLS - 2;
 	length.pad.log.minl = CORE_DEFAULT_LOG_SCROLLBACK;
 	length.pad.log.minc = COLS - 2;
 
@@ -215,6 +217,23 @@ int init(void) {
 		log_nl(   "Arrow keys might not work properly.");
 	} else
 		log_debug("Initialized function keys for game window successfully.");
+	
+	// scoreboard pad initialization
+	if ((pad.score = newpad(length.pad.score.minl, length.pad.score.minc)) == NULL)
+		fatal_error("Could not initialize scoreboard pad.");
+	else {	
+		wmove(pad.score, length.pad.score.minl - 1, 0);
+		scrollok(pad.score, TRUE);
+		log_debug("Initialized scoreboard pad succsessfully. (%d lines)", length.pad.score.minl);
+		log_info("Above log source do not contain all logs");
+		log_nl(  "because it is initialized too late.");
+		log_nl(  "For full log see '%s' file.", flag.core.logpath);
+	}
+	if (keypad(pad.score, TRUE) == ERR) {
+		log_error("Could not initialize function keys for scoreboard pad.");
+		log_nl(   "Arrow keys might not work properly.");
+	} else
+		log_debug("Initialized function keys for scoreboard pad successfully.");	
 
 	// finals window initialization
 	if ((window.finals = newwin(length.window.finals.minl, length.window.finals.minc,
@@ -250,7 +269,7 @@ int init(void) {
 	}
 
 	
-	// lines drawing
+	// line drawing
 	drawgamelines();
 
 	#if SNAKE_WINDOW_POSITIONING_DEMO == 1
@@ -279,9 +298,11 @@ int init(void) {
 
 void deinit(void) {
 	log_trace("Deinit functions has started.");
+	desetup();
 	flushinp();
 
 	if (isendwin() == false)
 		endwin();
+	log_trace("Deinit functions has ended.");
 }
 

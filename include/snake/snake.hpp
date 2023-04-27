@@ -7,6 +7,7 @@ void werase(WINDOW*, short, short);
 #define erase(from, to) werase(stdscr, from, to)
 
 void setup(void);
+void desetup(void);
 
 void draw(void);
 void drawgame(void);

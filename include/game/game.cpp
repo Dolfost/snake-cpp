@@ -75,12 +75,14 @@ void gameloop(void) {
 		game.time = timediff(&game.time_start, &game.time_end);
 		beep();
 
-
 		log_debug("The final score equals %d points.", game.score);
 		log_debug("The final length equals %d.", snake.length);
 
 		gameover();
 		finals();
+
+		doscores();
+
 		playagain();
 
 		if (game.playagain == false)
@@ -91,8 +93,6 @@ void gameloop(void) {
 		free(snake.body);
 		gamesetup();
 	}
-
-	desetup();
 }
 
 void finals(void) {
@@ -171,6 +171,7 @@ void gameover(void) {
 
 bool gamepause(int ch) {
 	if (ch == 'p' || ch == 'P') {
+		baradd("Paused");
 		log_trace("Entered pause window. [%c]", ch);
 		setled(0);
 		
@@ -201,6 +202,10 @@ bool gamepause(int ch) {
 				drawgame();
 				touchwin(window.pause);
 				wrefresh(window.pause);
+			} else if (score(ch)) {
+				drawgame();
+				touchwin(window.pause);
+				wrefresh(window.pause);
 			}
 		}
 
@@ -219,6 +224,7 @@ bool gamepause(int ch) {
 		flushinp(); // clear garbage
 
 		log_debug("Game has been paused for %0.3fs. [%c]", snake.pause_time, ch);
+		baradd(NULL);
 
 		return true;
 	} else
@@ -227,7 +233,8 @@ bool gamepause(int ch) {
 
 void gamestill(void) {
 	log_trace("Entered standby mode.");
-	setled(0);
+	setled(2);
+	baradd("Standby. [S | s] to restart the game");
 	drawgame();
 
 	int ch;
@@ -244,9 +251,12 @@ void gamestill(void) {
 			drawgame();	
 		else if (help(ch))
 			drawgame();
+		 else if (score(ch))
+			drawgame();
 	}
 
 	log_trace("Left standby mode.");
+	baradd(NULL);
 }
 
 bool gamelog(int ch) {
@@ -283,6 +293,36 @@ bool help(int ch) {
 	} else
 		return false;
 }
+
+bool score(int ch) {
+	length.pad.score.vl = 0;
+	if (ch == 'b' || ch == 'B') { 
+		log_trace("Entered scoreboard pad. [%c]", ch);
+		putscore();
+		drawscore();
+		
+		input_score();
+
+		wborder(window.stdscr, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
+		return true;
+	} else
+		return false;
+}
+
+void putscore(void) {
+	wclear(pad.score);
+	// center(pad.score, 0, "<-< HISCORES >->");
+	mvwprintw(pad.score, 0, 1, "Nickname");
+	mvwprintw(pad.score, 0, 3*COLS/5, "Score");
+	mvwprintw(pad.score, 0, 6*COLS/7, "Time");
+
+	for (int i = 0; game.highscore[i] > 0; i++) {
+		mvwprintw(pad.score, i+1, 1, "%s", game.highplayer[i]);
+		mvwprintw(pad.score, i+1, 3*COLS/5, "%d", game.highscore[i]);
+		mvwprintw(pad.score, i+1, 6*COLS/7, "%d:%dm", game.hightime[i]/60, game.hightime[i]%60);
+	}
+}
+	
 
 bool exitgame(int ch) {
 	if (ch == 'Q' || ch == 'q') {

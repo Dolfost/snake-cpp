@@ -33,7 +33,7 @@ void setup(void) {
 			log_debug("Initialized new log pad succesfully. (%d lines)", length.pad.log.minl);
 
 		if (length.pad.log.minl > CORE_DEFAULT_LOG_SCROLLBACK) { // TODO fix this (new line after copying window)
-			log_fatal("%d %d %d", CORE_DEFAULT_LOG_SCROLLBACK, length.pad.log.minl, length.pad.log.minc);
+			// log_fatal("%d %d %d", CORE_DEFAULT_LOG_SCROLLBACK, length.pad.log.minl, length.pad.log.minc);
 			helppadcopy = copywin(pad.log, newlogpad, 0, 0, // something is wrong
 					length.pad.log.minl - CORE_DEFAULT_LOG_SCROLLBACK - 1, 0,
 					length.pad.log.minl - 2, length.pad.log.minc - 1, // sould be length.pad.log.minl - 1, but is causes segfault. WTF???
@@ -107,7 +107,7 @@ void setup(void) {
 	waddstr(window.bar, " Score: ");	
 	wattroff(window.bar, A_BOLD);
 	length.bar.scorename = 8; // " Score: " length
-	length.bar.score = 4; // score number is not wider than 4 spaces
+	length.bar.score = 8; // score number is not wider than 4 spaces
 	wattrset(window.bar, A_BOLD);
 	mvwaddstr(window.bar, 0, length.bar.scorename + length.bar.score, "Time: ");
 	wattroff(window.bar, A_BOLD);
@@ -134,18 +134,84 @@ void setup(void) {
 	FILE* playerfile = fopen("data/player.dat", "r");
 
 	if (playerfile == NULL) {
-		log_error("Could not open playerdata.");
-		log_nl(   "Maybe there is no previous player...");
+		log_error("Could not open 'data/player.dat' for reading.");
+		log_nl(   "Maybe there is no previous player.");
 		*game.playername = '\0';
 	} else {
-		log_debug("Opened playerdata succesfully.");
+		log_debug("Opened 'data/payer.dat' for reading succesfully.");
 		size_t read = fread(game.playername, sizeof(char), length.game.maxnicknamelen, playerfile);
-		log_debug("Read %d/%d bytes from playerdata.", read, length.game.maxnicknamelen);
+		log_debug("Read %d/%d bytes from 'data/payer.dat'.", read, length.game.maxnicknamelen);
 		fclose(playerfile);
 	}
+
+	game.highscore = (short*)calloc(200, sizeof(short));
+	memcheck(game.highscore, 200*sizeof(short));
+	game.highplayer = (char**)calloc(200, sizeof(char*));
+	memcheck(game.highplayer, 200*sizeof(char*));
+	game.hightime = (short*)calloc(200, sizeof(short));
+	memcheck(game.hightime, 200*sizeof(short));
+
+	FILE* scores = fopen("data/scores.dat", "r");
+
+	if (scores == NULL) {
+		log_error("Could not open 'data/scores.dat' for reading.");
+		log_nl(   "Maybe there is no saved scoreboard.");
+		flag.core.score = false;
+	} else {
+		log_debug("Opened 'data/scores.dat' for reading sucessfully.");
+		int read = 0;
+		int i = !EOF;
+		for (int idx = 0; idx < 200; idx++) {
+			game.highplayer[idx] = (char*)malloc(sizeof(char)*(length.game.maxnicknamelen + 1));
+
+			i = fread(game.highplayer[idx], sizeof(char), length.game.maxnicknamelen + 1, scores);
+			if (i < length.game.maxnicknamelen + 1)
+				break;
+			read += i;
+			i = fread(&game.highscore[idx], sizeof(short), 1, scores);
+			if (i < 1)
+				break;
+			read += i;
+			i = fread(&game.hightime[idx], sizeof(short), 1, scores);
+			if (i < 1)
+				break;
+			read += i;
+		}
+		log_debug("Read %d bytes from 'data/scores.dat'.", read);
+		fclose(scores);
+	}
+
 }
 
 void desetup(void) {
 	log_trace("Desetup function have started.");
 	free(snake.body);
+
+	// save player name
+	FILE* playerfile = fopen("data/player.dat", "w+");
+	if (playerfile == NULL) {
+		log_error("Could not open 'data/player.dat' for writing.");
+	} else {
+		log_error("Opened 'data/player.dat' for writing successfully.");
+		int written;
+		written = fwrite(game.playername, sizeof(char), length.game.maxnicknamelen, playerfile);
+		log_debug("The %d/%d bytes has been written to 'data/player.dat'.", written, length.game.maxnicknamelen);
+		fclose(playerfile);
+	}
+
+	// save score
+	FILE* scores = fopen("data/scores.dat", "w");
+	if (scores == NULL) {
+		log_error("Could not open 'data/scores.dat' for writting.");
+	} else {
+		log_error("Opened 'data/scores.dat' for writting sucessfully.");
+		int written = 0;
+		for (int idx = 0; game.highscore[idx] > 0 && idx < 200; idx++) {
+			written += fwrite(game.highplayer[idx], sizeof(char), length.game.maxnicknamelen + 1, scores);
+			written += fwrite(&game.highscore[idx], sizeof(short), 1, scores);
+			written += fwrite(&game.hightime[idx], sizeof(short), 1, scores);
+		}
+		log_debug("Written %d bytes to 'data/scores.dat'.", written);
+		fclose(scores);
+	}
 }

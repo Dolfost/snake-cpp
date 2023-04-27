@@ -31,7 +31,10 @@ void gameinput(void) {
 		drawgame();
 	} else if (gamelog(ch)) {
 		drawgame();
+	} else if (score(ch)) {
+		drawgame();
 	}
+
 }
 
 bool input_snake(int ch) {
@@ -95,6 +98,8 @@ void input_log(void) {
 			drawlog();
 		} else if (help(ch)) {
 			drawlog();
+		} else if (score(ch)) {
+			drawlog();
 		}
 		if ((length.pad.log.vl == 0 || length.pad.log.vl + (LINES - 1) == length.pad.log.minl) &&
 				(ch == 's' || ch == 'S' || ch == 'w' || ch == 'W'))
@@ -126,21 +131,70 @@ void input_help(void) {
 				if ((length.pad.help.vl -= 4) < 0)
 					length.pad.help.vl = 1;
 				prefresh(pad.help, --length.pad.help.vl, 0, 
-						1, 1, LINES - 2, COLS - 2);
+						1, 1, LINES - 2, length.window.game.minc - 2);
 			}
 		} else if (ch == 'S') {
 			if (length.pad.help.vl + (LINES - 1) < length.pad.help.minl ) {
 				if ((length.pad.help.vl += 4) + (LINES - 1) >= length.pad.help.minl)
 					length.pad.help.vl = length.pad.help.minl - (LINES);
 				prefresh(pad.help, ++length.pad.help.vl, 0, 
-						1, 1, LINES - 2, COLS - 2);
+						1, 1, LINES - 2, length.pad.help.minc - 2);
 			}
 		} else if (exitgame(ch)) {
 			drawhelp();
 		} else if (gamelog(ch)) {
 			drawhelp();
+		} else if (score(ch)) {
+			drawhelp();
 		}
 		if ((length.pad.help.vl == 0 || length.pad.help.vl + (LINES - 1) == length.pad.help.minl) &&
+				(ch == 's' || ch == 'S' || ch == 'w' || ch == 'W'))
+			beep();
+	}
+}
+
+void input_score(void) {
+	int ch;
+	while (true) {
+		ch = wgetch(pad.score);
+		if (ch == ERR)
+			continue;
+		if (ch == 'b' || ch == 'B') {
+			log_debug("Left scoreboard pad. [%c]", ch);
+			break;
+		} else if (ch == KEY_UP || ch == 'w') {
+			if (length.pad.score.vl > 0) {
+				prefresh(pad.score, --length.pad.score.vl, 0, 
+						1, 1, LINES - 2, COLS - 2);
+			}
+		} else if (ch == KEY_DOWN || ch == 's') {
+			if (length.pad.score.vl + (LINES - 1) < length.pad.score.minl ) {
+				prefresh(pad.score, ++length.pad.score.vl, 0, 
+						1, 1, LINES - 2, COLS - 2);
+			}
+		} else if (ch == 'W') {
+			if (length.pad.score.vl > 0) {
+				if ((length.pad.score.vl -= 4) < 0)
+					length.pad.score.vl = 1;
+				prefresh(pad.score, --length.pad.score.vl, 0, 
+						1, 1, LINES - 2, COLS - 2);
+			}
+		} else if (ch == 'S') {
+			if (length.pad.score.vl + (LINES - 1) < length.pad.score.minl ) {
+				if ((length.pad.score.vl += 4) + (LINES - 1) >= length.pad.score.minl)
+					length.pad.score.vl = length.pad.score.minl - (LINES);
+				prefresh(pad.score, ++length.pad.score.vl, 0, 
+						1, 1, LINES - 2, COLS - 2);
+			}
+		} else if (exitgame(ch)) {
+			drawscore();
+		} else if (gamelog(ch)) {
+			drawscore();
+		} else if (help(ch)) {
+			drawscore();
+		}
+
+		if ((length.pad.score.vl == 0 || length.pad.score.vl + (LINES - 1) == length.pad.score.minl) &&
 				(ch == 's' || ch == 'S' || ch == 'w' || ch == 'W'))
 			beep();
 	}

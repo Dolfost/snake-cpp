@@ -24,6 +24,7 @@ struct Subwindows {
 struct Pads {
 	WINDOW* help = NULL;
 	WINDOW* log = NULL;
+	WINDOW* score = NULL;
 };
 
 struct Flags {
@@ -45,6 +46,7 @@ struct Flags {
 	struct Flags_core {
 		const char* logpath;
 		FILE* logfile = NULL;
+		bool score = true;
 	} core;
 	struct Flags_window {
 		bool two = false;
@@ -99,7 +101,7 @@ struct Lengths {
 			int minl;
 			int minc;
 			int vl; // visible line
-		} help, log;
+		} help, log, score;
 	} pad;
 	struct Lengths_game {
 		short maxnicknamelen;
