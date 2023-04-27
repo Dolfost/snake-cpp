@@ -187,31 +187,34 @@ void desetup(void) {
 	log_trace("Desetup function have started.");
 	free(snake.body);
 
-	// save player name
-	FILE* playerfile = fopen("data/player.dat", "w+");
-	if (playerfile == NULL) {
-		log_error("Could not open 'data/player.dat' for writing.");
-	} else {
-		log_error("Opened 'data/player.dat' for writing successfully.");
-		int written;
-		written = fwrite(game.playername, sizeof(char), length.game.maxnicknamelen, playerfile);
-		log_debug("The %d/%d bytes has been written to 'data/player.dat'.", written, length.game.maxnicknamelen);
-		fclose(playerfile);
+	if (game.game == true) {
+		// save player name
+		FILE* playerfile = fopen("data/player.dat", "w+");
+		if (playerfile == NULL) {
+			log_error("Could not open 'data/player.dat' for writing.");
+		} else {
+			log_error("Opened 'data/player.dat' for writing successfully.");
+			int written;
+			written = fwrite(game.playername, sizeof(char), length.game.maxnicknamelen, playerfile);
+			log_debug("The %d/%d bytes has been written to 'data/player.dat'.", written, length.game.maxnicknamelen);
+			fclose(playerfile);
+		}
+
+		// save score
+		FILE* scores = fopen("data/scores.dat", "w");
+		if (scores == NULL) {
+			log_error("Could not open 'data/scores.dat' for writting.");
+		} else {
+			log_debug("Opened 'data/scores.dat' for writting sucessfully.");
+			int written = 0;
+			for (int idx = 0; game.highscore[idx] > 0 && idx < 200; idx++) {
+				written += fwrite(game.highplayer[idx], sizeof(char), length.game.maxnicknamelen + 1, scores);
+				written += fwrite(&game.highscore[idx], sizeof(short), 1, scores);
+				written += fwrite(&game.hightime[idx], sizeof(short), 1, scores);
+			}
+			log_debug("Written %d bytes to 'data/scores.dat'.", written);
+			fclose(scores);
+		}
 	}
 
-	// save score
-	FILE* scores = fopen("data/scores.dat", "w");
-	if (scores == NULL) {
-		log_error("Could not open 'data/scores.dat' for writting.");
-	} else {
-		log_error("Opened 'data/scores.dat' for writting sucessfully.");
-		int written = 0;
-		for (int idx = 0; game.highscore[idx] > 0 && idx < 200; idx++) {
-			written += fwrite(game.highplayer[idx], sizeof(char), length.game.maxnicknamelen + 1, scores);
-			written += fwrite(&game.highscore[idx], sizeof(short), 1, scores);
-			written += fwrite(&game.hightime[idx], sizeof(short), 1, scores);
-		}
-		log_debug("Written %d bytes to 'data/scores.dat'.", written);
-		fclose(scores);
-	}
 }

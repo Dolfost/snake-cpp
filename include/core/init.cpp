@@ -28,10 +28,10 @@ int init(void) {
 	noecho();
 
 	// windows size
- //	length.window.game.minl = 15; // lldb
- //	length.window.game.minc = 80; // lldb
-	length.window.game.minl = 40; // 30
-	length.window.game.minc = 80; // 60
+ 	length.window.game.minl = 15; // lldb
+ 	length.window.game.minc = 80; // lldb
+//	length.window.game.minl = 40; // 30
+//	length.window.game.minc = 80; // 60
 	length.window.bar.minl = 1;
 	length.window.bar.minc = length.window.game.minc;
 

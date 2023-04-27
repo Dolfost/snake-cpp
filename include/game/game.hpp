@@ -77,5 +77,6 @@ struct Game {
 	short* highscore;
 	short* hightime;
 	char** highplayer;
+	bool game = false;
 };
 

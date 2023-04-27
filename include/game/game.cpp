@@ -46,6 +46,7 @@ void gamesetup(void) {
 
 void gameloop(void) {
 	log_trace("Game loop have started.");
+	game.game = true;
 
 	drawgame();
 
