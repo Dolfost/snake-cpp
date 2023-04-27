@@ -49,6 +49,7 @@ void gameloop(void) {
 
 	drawgame();
 
+	baradd("Press [H | h] for help");
 
 
 	while (game.playagain == true) {

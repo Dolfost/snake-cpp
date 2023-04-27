@@ -8,7 +8,6 @@ void werase(WINDOW* window, short from, short to) {
 
 void draw(void) {
 	// snake
-	log_debug("dist %f trav %d", bait.distance, snake.travelled);
 	mvwaddch(window.game, snake.tail.y, snake.tail.x, ' ');
 	mvwaddch(window.game, snake.head.y, snake.head.x, '0');
 
