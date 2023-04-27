@@ -204,10 +204,12 @@ WINDOW* buildhelppad(const char* path) {
 
 	hp_title(pad, "Help pad controls");
 	hp_keys(pad, "w", 0); hp_keyword(pad, "Scroll"); waddstr(pad, " the help pad up by 1 line.");
+	hp_keys_word(pad, "ua", 0); hp_keyword(pad, "Scroll"); waddstr(pad, " the help pad up by 1 line.");
 	hp_keys(pad, "s"); hp_keyword(pad, "Scroll"); waddstr(pad, " the help pad down by 1 line.");
+	hp_keys_word(pad, "da"); hp_keyword(pad, "Scroll"); waddstr(pad, " the help pad down by 1 line.");
 	hp_keys(pad, "W"); hp_keyword(pad, "Scroll"); waddstr(pad, " the help pad up by 5 lines.");
 	hp_keys(pad, "S"); hp_keyword(pad, "Scroll"); waddstr(pad, " the help pad down by 5 lines.");
-	hp_keys(pad, "hH"); hp_keyword(pad, "Exit/hide"); waddstr(pad, " the help pad.\n");
+	hp_keys(pad, "hH"); hp_keyword(pad, "Exit/hide"); waddstr(pad, " the help pad.");
 
 	hp_title(pad, "Global controls");
 	hp_add(pad, "These keystrokes work in all non-promt windows.\n\n");
@@ -216,7 +218,7 @@ WINDOW* buildhelppad(const char* path) {
 	hp_keys(pad, "hH"); waddstr(pad, "Show the "); hp_keyword(pad, "help pad"); waddstr(pad, ".");
 	hp_keys(pad, "q"); hp_keyword(pad, "Quit"); waddstr(pad, " the game.");
 	hp_keys(pad, "Q"); hp_keyword(pad, "Force quit"); waddstr(pad, " the game. (exits without a prompt)");
-	hp_keys(pad, "lL"); waddstr(pad, "Open the "); hp_keyword(pad, "log pad"); waddstr(pad, ".\n");
+	hp_keys(pad, "lL"); waddstr(pad, "Open the "); hp_keyword(pad, "log pad"); waddstr(pad, ".");
 
 	hp_title(pad, "Game terminology");
 	hp_definition(pad, "da", 0); waddstr(pad, "Down arrow");
@@ -226,7 +228,7 @@ WINDOW* buildhelppad(const char* path) {
 	hp_definition(pad, "score"); waddstr(pad, "Depends on your skill.");
 	hp_definition(pad, "catch time"); waddstr(pad, "The time beetwen mouse catches.");
 	hp_definition(pad, "dist. travelled"); waddstr(pad, "Distance travelled beetween mouse");
-	hp_definition(pad, NULL); waddstr(pad, "catches. Inversely proportional to "); hp_keyword(pad, "score"); waddstr(pad, ".\n");
+	hp_definition(pad, NULL); waddstr(pad, "catches. Inversely proportional to "); hp_keyword(pad, "score"); waddstr(pad, ".");
 	
 	hp_title(pad, "Interface terminology");
 	hp_definition(pad, "bar", 0); waddstr(pad, "The vedy down line under firs vertical");
@@ -262,8 +264,11 @@ WINDOW* buildhelppad(const char* path) {
 	hp_definition(pad, NULL); waddstr(pad, "to open "); hp_keyword(pad, "help pad"); waddstr(pad, " while he isn't loaded.");
 	hp_definition(pad, "LINES", 2); waddstr(pad, "The lines count in opened terminal window.");
 	hp_definition(pad, "COLS"); waddstr(pad, "The columns count in opened terminal window.");
-	hp_definition(pad, "prompt window", 2); waddstr(pad, "Window that do not lisen for global keystrokes");
+	hp_definition(pad, "window", 2); waddstr(pad, "The any window.");
+	hp_definition(pad, "pad"); waddstr(pad, "Like window, but you can scroll it.");
+	hp_definition(pad, "prompt window"); waddstr(pad, "Window that do not lisen for global keystrokes");
 	hp_definition(pad, NULL); waddstr(pad, "and want you to decide/enter something.\n");
+	hp_add(pad, "For example "); hp_keyword(pad, "windows"); waddstr(pad, " and "); hp_keyword(pad, "pads"); waddstr(pad, " see the "); hp_keyword(pad, "Windows"); waddstr(pad, " and "); hp_keyword(pad, "Pads"); waddstr(pad, " sections.");
 
 	hp_title(pad, "Windows");
 	hp_add(pad, "The game won't start if the "); hp_keyword(pad, "LINES"); wprintw(pad, " is less than %d or ", length.window.stdscr.minl); hp_keyword(pad, "COLS"); wprintw(pad, " is less than %d.\n", length.window.stdscr.minc);
@@ -290,7 +295,7 @@ WINDOW* buildhelppad(const char* path) {
 	hp_definition(pad, NULL); waddstr(pad, "Appears in the center of "); hp_keyword(pad, "game window"); 
 	hp_definition(pad, NULL); waddstr(pad, "after "); hp_keyword(pad, "finals"); waddstr(pad, " "); hp_keyword(pad, "prompt window"); waddstr(pad, ".");
 	hp_definition(pad, NULL); waddstr(pad, "Requests you to paly or enter the "); hp_keyword(pad, "standby mode"); waddstr(pad, ".");
-	hp_definition(pad, NULL); wprintw(pad, "Has the size %d lines by %d columns.\n", length.window.again.minl, length.window.again.minc);
+	hp_definition(pad, NULL); wprintw(pad, "Has the size %d lines by %d columns.", length.window.again.minl, length.window.again.minc);
 	
 	hp_title(pad, "Pads");
 	hp_definition(pad, "help", 0); waddstr(pad, "Yes. This is this "); hp_keyword(pad, "pad"); waddstr(pad, " that you are reading.");
@@ -301,7 +306,7 @@ WINDOW* buildhelppad(const char* path) {
 	hp_definition(pad, NULL); wprintw(pad, "The visible size is "); hp_keyword(pad, "LINES"); wprintw(pad, "-2 lines by "); hp_keyword(pad, "COLS"); waddstr(pad, "-2 columns.");
 	hp_definition(pad, NULL); waddstr(pad, "The default real size is ");wprintw(pad, "%d lines by ", CORE_DEFAULT_LOG_SCROLLBACK); hp_keyword(pad, "COLS"); waddstr(pad, "-2 columns.");
 	hp_definition(pad, NULL); waddstr(pad, "The real lines count can be set with"); 
-	hp_definition(pad, NULL); waddstr(pad, "the "); hp_option(pad, "--log-scrollback"); waddstr(pad, " option.\n");
+	hp_definition(pad, NULL); waddstr(pad, "the "); hp_option(pad, "--log-scrollback"); waddstr(pad, " option.");
  
 
 	hp_title(pad, "Game controls");
@@ -310,7 +315,38 @@ WINDOW* buildhelppad(const char* path) {
 	hp_keys(pad, "DWAS"); waddstr(pad, "\n\n");
 	hp_add(pad, "Hold any of snake controls buttons down for "); hp_keyword(pad, "speedup"); waddstr(pad, ".\n");
 	hp_keys(pad, "pP"); hp_keyword(pad, "Pause/unpause"); waddstr(pad, " the game.");
-	hp_keys(pad, "hH"); waddstr(pad, "Show "); hp_keyword(pad, "help"); waddstr(pad, ".\n");
+	hp_keys(pad, "hH"); waddstr(pad, "Show "); hp_keyword(pad, "help"); waddstr(pad, ".");
+
+	hp_title(pad, "Finals window controls");
+	hp_add(pad, "Finals window only want you to insert your nickname or press return\n");
+	hp_add(pad, "if the old nickname had been loaded.");
+
+
+	hp_title(pad, "Again window controls");
+	hp_add(pad, "Again window can recognize "); hp_keyword(pad, "ONLY"); waddstr(pad, " next keys:\n");
+	hp_keys(pad, "yY"); waddstr(pad, "Play again.");
+	hp_keys(pad, "nN"); waddstr(pad, "Do not play again and enter the "); hp_keyword(pad, "standby mode"); waddstr(pad, ".");
+
+	hp_title(pad, "Standby mode");
+	hp_add(pad, "This mode is entered when you ansver N/n in the "); hp_keyword(pad, "again window"); waddstr(pad, ".\n");
+	hp_add(pad, "This is like regular game, only difference is there is no game going.\n");
+	hp_add(pad, "When you enter it, the "); hp_keyword(pad, "led"); waddstr(pad, " turns red.\n");
+	hp_add(pad, "Also it has one special keystroke:");
+	hp_keys(pad, "sS"); waddstr(pad, "Leave the "); hp_keyword(pad, "standby mode"); waddstr(pad, " and start the game again.");
+
+	hp_title(pad, "Exit window controls");
+	hp_add(pad, "Exit window can recognize "); hp_keyword(pad, "ONLY"); waddstr(pad, " next keys:\n");
+	hp_keys(pad, "cnCN"); waddstr(pad, "Approve the exit. (mean, "); hp_keyword(pad, "exit"); waddstr(pad, " the game)");
+	hp_keys(pad, "qyQY"); waddstr(pad, "Decline the exit and hide the exit window.");
+
+	hp_title(pad, "Log pad controls");
+	hp_keys(pad, "w", 0); hp_keyword(pad, "Scroll"); waddstr(pad, " the log pad up by 1 line.");
+	hp_keys_word(pad, "ua", 0); hp_keyword(pad, "Scroll"); waddstr(pad, " the log pad up by 1 line.");
+	hp_keys(pad, "s"); hp_keyword(pad, "Scroll"); waddstr(pad, " the log pad down by 1 line.");
+	hp_keys_word(pad, "da"); hp_keyword(pad, "Scroll"); waddstr(pad, " the log pad down by 1 line.");
+	hp_keys(pad, "W"); hp_keyword(pad, "Scroll"); waddstr(pad, " the log pad up by 5 lines.");
+	hp_keys(pad, "S"); hp_keyword(pad, "Scroll"); waddstr(pad, " the log pad down by 5 lines.");
+	hp_keys(pad, "lL"); hp_keyword(pad, "Exit/hide"); waddstr(pad, " the log pad.");
 
 	hp_title(pad, "Game logic");
 	hp_add(pad, "When you launch the %s from the terminal, the \n", execname);
@@ -325,16 +361,12 @@ WINDOW* buildhelppad(const char* path) {
 	hp_add(pad, "Score depends on the "); hp_keyword(pad, "dist. travelled"); waddstr(pad, " and is inversely proportional\n");
 	hp_add(pad, "to it. "); hp_keyword(pad, "Minimal score"); waddstr(pad, " that you can get from mouse catch is 10\n");
 	hp_add(pad, "maximum score from one mouse if 25.\n");
-	hp_add(pad, "If you hit the wall or bit itself you lose and the "); hp_keyword(pad, "msgbar"); waddstr(pad, " will scream\n");
-	hp_add(pad, "\"Press return\", the "); hp_keyword(pad, "led"); waddstr(pad, " will turn red.\n");
-
-
-	hp_title(pad, "Log pad controls");
-	hp_keys(pad, "w", 0); hp_keyword(pad, "Scroll"); waddstr(pad, " the log pad up by 1 line.");
-	hp_keys(pad, "s"); hp_keyword(pad, "Scroll"); waddstr(pad, " the log pad down by 1 line.");
-	hp_keys(pad, "W"); hp_keyword(pad, "Scroll"); waddstr(pad, " the log pad up by 5 lines.");
-	hp_keys(pad, "S"); hp_keyword(pad, "Scroll"); waddstr(pad, " the log pad down by 5 lines.");
-	hp_keys(pad, "lL"); hp_keyword(pad, "Exit/hide"); waddstr(pad, " the log pad.\n");
+	hp_add(pad, "If you hit the wall or bit itself you lose, the "); hp_keyword(pad, "msgbar"); waddstr(pad, " will scream\n");
+	hp_add(pad, "\"Press return\", the "); hp_keyword(pad, "led"); waddstr(pad, " will turn red.\n\n");
+	hp_add(pad, "Then you will be asked to enter your nickname or press return if\n");
+	hp_add(pad, "there is prefious nickname loaded.\n");
+	hp_add(pad, "Then the "); hp_keyword(pad, "again window"); waddstr(pad, " will popup and ask you to play again or\n");
+	hp_add(pad, "go to "); hp_keyword(pad, "standby mode"); waddstr(pad, ". The cycle countinues.\n");
 
 	hp_title(pad, "Snake logging lore");
 	hp_add(pad, "The log has 6 levels of verbosity:\n");
@@ -345,11 +377,30 @@ WINDOW* buildhelppad(const char* path) {
 		wattroff(pad, COLOR_PAIR(g_log.levelcolor[i]) | g_log.levelattr[i]);
 	}
 	hp_add(pad, "The smaller the log message level is, the more it is verbose.\n");
+	hp_add(pad, "Logs are written to "); hp_keyword(pad, "log pad"); waddstr(pad, ", "); hp_keyword(pad, "sidelog"); waddstr(pad, " and "); hp_keyword(pad, "log file"); waddstr(pad, ".\n");
+	hp_add(pad, "The log file path is %s. It can't be changed with options.\n", flag.core.logpath); 
+	hp_add(pad, "The default "); hp_keyword(pad, "log pad"); waddstr(pad, " scrollback is "); wprintw(pad,  "%d lines.\n", CORE_DEFAULT_LOG_SCROLLBACK);
+	hp_add(pad, "The "); hp_keyword(pad, "log pad"); waddstr(pad, " scrollback lines can be set with"); waddstr(pad, " the "); hp_option(pad, "--log-scrollback"); waddstr(pad, " option.\n");
+	hp_add(pad, "You can't set the "); hp_option(pad, "--log-scrollback"); waddstr(pad, " to be less than "); hp_keyword(pad, "LINES"); waddstr(pad, "-2.");
 
-	hp_title(pad, "Exit window controls");
-	hp_add(pad, "Exit window can recognize "); hp_keyword(pad, "ONLY"); waddstr(pad, " next keys:\n");
-	hp_keys(pad, "cnCN"); waddstr(pad, "Approve the exit. (mean, "); hp_keyword(pad, "exit"); waddstr(pad, " the game)");
-	hp_keys(pad, "qyQY"); waddstr(pad, "Decline the exit and hide the exit window.");
+
+	hp_title(pad, "Options"); 
+	hp_add(pad, "This is the terminal snake options.\n");
+	hp_add(pad, ""); wprintw(pad, "%s [-h] [-l] [-p <uint>] [-l <uint>] [-t <uint>]", execname);
+	hp_definition(pad, NULL, -25);
+	hp_definition(pad, "--help"); 
+	hp_definition(pad, "-h"); waddstr(pad, "Open "); hp_keyword(pad, "help window"); waddstr(pad, " at start.");
+	hp_definition(pad, "--open-log"); 
+	hp_definition(pad, "-l"); waddstr(pad, "Open "); hp_keyword(pad, "log pad"); waddstr(pad, " at exit.");
+	hp_definition(pad, "--pause-timeout <uint>"); 
+	hp_definition(pad, "-p <uint>"); waddstr(pad, "Set the "); hp_keyword(pad, "pause timeout"); waddstr(pad, " with <uint>ms.");
+	hp_definition(pad, "--log-scrolback <uint>"); 
+	hp_definition(pad, "-l <uint>"); waddstr(pad, "Set the "); hp_keyword(pad, "log pad"); waddstr(pad, " scrollback <uint> lines.");
+	hp_definition(pad, "--timeout <uint>"); 
+	hp_definition(pad, "-t <uint>"); waddstr(pad, "Set the "); hp_keyword(pad, "timeout"); waddstr(pad, " (game speed) with <uint>ms.");
+	hp_definition(pad, "--build-help-pad", 2); waddstr(pad, "Build the "); hp_keyword(pad, "help pad"); waddstr(pad, " and exit.");
+	hp_definition(pad, "--help-pad-path <str>"); waddstr(pad, "Set the built "); hp_keyword(pad, "help pad"); waddstr(pad, " window path to load.");
+
 
 	putwin(pad, padfile);
 	fclose(padfile);
@@ -366,7 +417,7 @@ void hp_title(WINDOW* pad, const char* fmt, ...) {
 	vsnprintf(str, len + 1, fmt, args);
 
 	wattrset(pad, COLOR_PAIR(color.pair.help.key) | attribute.help.key);
-	mvwaddch(pad, getcury(pad) + 2, (getmaxx(pad) - len - 2)/2, '-');
+	mvwaddch(pad, getcury(pad) + 3, (getmaxx(pad) - len - 2)/2, '-');
 
 	wattrset(pad, COLOR_PAIR(color.pair.help.title) | attribute.help.title);
 	waddstr(pad, str);
@@ -389,7 +440,11 @@ void hp_add(WINDOW* pad, const char* fmt, ...) {
 }
 
 void hp_definition(WINDOW* pad, const char* str, short plusline) {
-	int offset = 18;
+	static int offset = 18;
+	if (plusline < 0) {
+		offset = -plusline;
+		return;
+	}
 	int shift = 2;
 	static int len = 0;
 	if (str == NULL) {
@@ -486,7 +541,7 @@ void hp_keys_word(WINDOW* pad, const char* word, short plusline) {
 	wprintw(pad, "}");
 
 	
-	for (int i = 0; i < (offset - len)/2 + shift; i++) {
+	for (int i = 0; i < (offset - len)/2 + shift - 1; i++) {
 		waddch(pad, ' ');
 	}
 }

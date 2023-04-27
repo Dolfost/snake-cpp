@@ -1,4 +1,4 @@
-#define SNAKE_VERSION "1.1.3"
+#define SNAKE_VERSION "1.1.4"
 
 int wkbhit(WINDOW*);
 #define kbhit() wkbhit(stdscr)
