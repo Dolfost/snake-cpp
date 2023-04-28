@@ -23,6 +23,8 @@ void playagain(void);
 void finals(void);
 void gamestill(void);
 
+bool scrollbpad(WINDOW*, int, int, int*, int);
+																
 void putscore(void);
 
 char* fgetline(FILE*);
@@ -68,7 +70,7 @@ struct Bait {
 
 struct Game {
 	short score;
-	float distance; // distance beetwen rat and snake's head
+	double distance; // distance beetwen rat and snake's head
 	bool playagain;
 	struct timespec time_start;
 	struct timespec time_end;
@@ -78,5 +80,6 @@ struct Game {
 	short* hightime;
 	char** highplayer;
 	bool game = false;
+	short scoreentry;
 };
 

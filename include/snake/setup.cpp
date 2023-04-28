@@ -19,6 +19,7 @@ void setup(void) {
 	init_pair(16, COLOR_CYAN,    color.helpbg); color.pair.help.definition = 16; attribute.help.definition = A_UNDERLINE;
 
 
+	// --log-scrollback
 	if (length.pad.log.minl != CORE_DEFAULT_LOG_SCROLLBACK) {
 		int helppadcopy;
 		WINDOW* newlogpad = NULL;
@@ -160,14 +161,18 @@ void setup(void) {
 	} else {
 		log_debug("Opened 'data/scores.dat' for reading sucessfully.");
 		int read = 0;
-		int i = !EOF;
+		int i, j;
 		for (int idx = 0; idx < 200; idx++) {
 			game.highplayer[idx] = (char*)malloc(sizeof(char)*(length.game.maxnicknamelen + 1));
+			j = -1;
+			do {
+				j++;
+				i = fread(game.highplayer[idx] + j, sizeof(char), 1, scores);
+				if (i < 1)
+					break;
+				read += i;
+			} while (*(game.highplayer[idx] + j) != '\0');
 
-			i = fread(game.highplayer[idx], sizeof(char), length.game.maxnicknamelen + 1, scores);
-			if (i < length.game.maxnicknamelen + 1)
-				break;
-			read += i;
 			i = fread(&game.highscore[idx], sizeof(short), 1, scores);
 			if (i < 1)
 				break;
@@ -176,11 +181,20 @@ void setup(void) {
 			if (i < 1)
 				break;
 			read += i;
+
+			game.scoreentry++;
 		}
 		log_debug("Read %d bytes from 'data/scores.dat'.", read);
 		fclose(scores);
 	}
 
+	for (int i = 0; i < game.scoreentry; i++) {
+		char* highplayer = (char*)malloc((strlen(game.highplayer[i]) + 1)*sizeof(char));
+		memcheck(game.highplayer, (strlen(game.highplayer[i]) + 1)*sizeof(char));
+		memcpy(highplayer, game.highplayer[i], strlen(game.highplayer[i]) + 1);
+		free(game.highplayer[i]);
+		game.highplayer[i] = highplayer;
+	}
 }
 
 void desetup(void) {
@@ -207,8 +221,8 @@ void desetup(void) {
 		} else {
 			log_debug("Opened 'data/scores.dat' for writting sucessfully.");
 			int written = 0;
-			for (int idx = 0; game.highscore[idx] > 0 && idx < 200; idx++) {
-				written += fwrite(game.highplayer[idx], sizeof(char), length.game.maxnicknamelen + 1, scores);
+			for (int idx = 0; idx < game.scoreentry; idx++) {
+				written += fwrite(game.highplayer[idx], sizeof(char), strlen(game.highplayer[idx]) + 1, scores);
 				written += fwrite(&game.highscore[idx], sizeof(short), 1, scores);
 				written += fwrite(&game.hightime[idx], sizeof(short), 1, scores);
 			}

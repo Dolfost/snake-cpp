@@ -77,14 +77,20 @@ double timediff(const struct timespec* start, const struct timespec* end) {
 void doscores(void) {
 	int index;
 
-	for (index = 0; index < 200 && game.score <= game.highscore[index]; index++)
+	for (index = 0; index < game.scoreentry && game.score <= game.highscore[index]; index++)
 		;
 
-	for (int i = 199; i > index; i--) {
+	if (index == 200)
+		index = 199;
+	
+
+	for (int i = game.scoreentry; i > index; i--) {
 		game.highscore[i] = game.highscore[i-1];
 		game.highplayer[i] = game.highplayer[i-1];
 		game.hightime[i] = game.hightime[i-1];
 	}
+
+	game.scoreentry = index + 1;
 
 	game.highscore[index] = game.score;
 	game.highplayer[index] = strdup(game.playername);

@@ -20,6 +20,8 @@ void spawn_bait(void) {
 
 void gamesetup(void) {
 	game.score = 0;
+	game.time = 0;
+	snake.time = 0;
 
 	snake.bit = false;
 	snake.hit = false;
@@ -42,6 +44,8 @@ void gamesetup(void) {
 	snake.length = 1;
 	snake.pause_time = 0;
 	log_debug("Snake spawned at (%d;%d).", snake.head.y, snake.head.x);
+
+	spawn_bait();
 }
 
 void gameloop(void) {
@@ -82,7 +86,8 @@ void gameloop(void) {
 		gameover();
 		finals();
 
-		doscores();
+		if (game.score > 0)
+			doscores();
 
 		playagain();
 
@@ -312,15 +317,19 @@ bool score(int ch) {
 
 void putscore(void) {
 	wclear(pad.score);
-	// center(pad.score, 0, "<-< HISCORES >->");
-	mvwprintw(pad.score, 0, 1, "Nickname");
+//	center(pad.score, 0, "<-< HISCORES >->");
+	wattrset(pad.score, A_BOLD);
+	mvwprintw(pad.score, 0, 1, "No");
+	mvwprintw(pad.score, 0, 5, "Nickname");
 	mvwprintw(pad.score, 0, 3*COLS/5, "Score");
 	mvwprintw(pad.score, 0, 6*COLS/7, "Time");
+	wattroff(pad.score, A_BOLD);
 
-	for (int i = 0; game.highscore[i] > 0; i++) {
-		mvwprintw(pad.score, i+1, 1, "%s", game.highplayer[i]);
+	for (int i = 0; i < game.scoreentry; i++) {
+		mvwprintw(pad.score, i+1, 1, "%d", i+1);
+		mvwprintw(pad.score, i+1, 5, "%s", game.highplayer[i]);
 		mvwprintw(pad.score, i+1, 3*COLS/5, "%d", game.highscore[i]);
-		mvwprintw(pad.score, i+1, 6*COLS/7, "%d:%dm", game.hightime[i]/60, game.hightime[i]%60);
+		mvwprintw(pad.score, i+1, 6*COLS/7, "%02dm:%02ds", game.hightime[i]/60, game.hightime[i]%60);
 	}
 }
 	

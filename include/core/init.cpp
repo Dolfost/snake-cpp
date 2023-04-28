@@ -28,10 +28,10 @@ int init(void) {
 	noecho();
 
 	// windows size
- 	length.window.game.minl = 15; // lldb
- 	length.window.game.minc = 80; // lldb
-//	length.window.game.minl = 40; // 30
-//	length.window.game.minc = 80; // 60
+ //	length.window.game.minl = 15; // lldb
+ //	length.window.game.minc = 80; // lldb
+	length.window.game.minl = 40; // 30
+	length.window.game.minc = 80; // 60
 	length.window.bar.minl = 1;
 	length.window.bar.minc = length.window.game.minc;
 
@@ -83,7 +83,7 @@ int init(void) {
 		log_debug("Terminal window is large enough");
 		log_nl(   "to fit game and log windows in it.");
 
-		if ((window.sidelog = newwin(LINES + 1, COLS - length.window.game.minc - 1, 0, length.window.game.minc + 2 - 1)) == NULL) {
+		if ((window.sidelog = newwin(LINES, COLS - length.window.game.minc - 1, 0, length.window.game.minc + 2 - 1)) == NULL) {
 			log_fatal("Could not initialize sidelog window.");
 			fatal_error("Could not initialize sidelog window.");
 		} else {
