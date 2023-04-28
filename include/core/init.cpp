@@ -45,7 +45,7 @@ int init(void) {
 	length.window.sidelog.minl = length.window.stdscr.minl;
 	length.window.sidelog.minc = 100;
 
-	length.pad.help.minl = 300;
+	length.pad.help.minl = 270;
 	length.pad.help.minc = length.window.game.minc - 2;
 	length.pad.score.minl = 220;
 	length.pad.score.minc = COLS - 2;

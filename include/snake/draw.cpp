@@ -210,7 +210,7 @@ WINDOW* buildhelppad(const char* path) {
 	WINDOW* pad = newpad(length.pad.help.minl, length.pad.help.minc);
 	hp_add(pad, "This is help pad ");
 	incolor(pad, color.pair.help.keyword, attribute.help.keyword, "v%s", SNAKE_VERSION);
-	waddstr(pad, ".");
+	waddstr(pad, ".\n");
 
 	hp_title(pad, "Help pad controls");
 	hp_keys(pad, "w", 0); hp_keyword(pad, "Scroll"); waddstr(pad, " the help pad up by 1 line.");
@@ -240,6 +240,8 @@ WINDOW* buildhelppad(const char* path) {
 	hp_definition(pad, "catch time"); waddstr(pad, "The time beetwen mouse catches.");
 	hp_definition(pad, "dist. travelled"); waddstr(pad, "Distance travelled beetween mouse");
 	hp_definition(pad, NULL); waddstr(pad, "catches. Inversely proportional to "); hp_keyword(pad, "score"); waddstr(pad, ".");
+	hp_definition(pad, "timeout"); waddstr(pad, "The time beetwen game cycles.");
+	hp_definition(pad, "pause timeout"); waddstr(pad, "The pause time after you leave "); hp_keyword(pad, "pause window"); waddstr(pad, ".");
 	
 	hp_title(pad, "Interface terminology");
 	hp_definition(pad, "bar", 0); waddstr(pad, "The vedy down line under firs vertical");
@@ -424,10 +426,27 @@ WINDOW* buildhelppad(const char* path) {
 	hp_definition(pad, "--build-help-pad", 2); waddstr(pad, "Build the "); hp_keyword(pad, "help pad"); waddstr(pad, " and exit.");
 	hp_definition(pad, "--help-pad-path <str>"); waddstr(pad, "Set the built "); hp_keyword(pad, "help pad"); waddstr(pad, " window path to load.");
 
+	hp_title(pad, "Portability notes");
+	hp_add(pad, "The "); hp_keyword(pad, "help pad"); waddstr(pad, " is terminal-specific. It is being built for your terminal\n");
+	hp_add(pad, "especially when compiling with build.sh. If you builded ");  hp_keyword(pad, "help pad"); waddstr(pad, " in one\n");
+	hp_add(pad, "terminal and launching the game from other one, please,\n");
+	hp_add(pad, "consider adding "); hp_option(pad, "--build-help-pad"); waddstr(pad, " to options.\n\n");
+
+	hp_add(pad, "All the files in the \\data folder exept log.txt are system-specific.\n");
+	hp_add(pad, "They may not have any sense on other system.");
+
+	hp_title(pad, "Contacts, contributing  and issue reporting");
+	hp_add(pad, "If You find any bugs or unexpected behaivors or just want to\n");
+	hp_add(pad, "contribute to the snake-cpp, You are welcome at projecth github homepage.\n");
+	hp_add(pad, "This project lives at "); hp_keyword(pad, "snake-cpp - github.com/Dolfost/snake-cpp"); waddstr(pad, ".\n");
+	hp_add(pad, "Made by "); hp_keyword(pad, "Dolfost - github.com/Dolfost"); waddstr(pad, ".\n");
+
+	
+
 
 
 	wattrset(pad, A_BOLD | A_UNDERLINE);
-	center(pad, length.pad.help.minl - 1, "BOTTOM");
+	center(pad, length.pad.help.minl - 1, "Glory to Ukraine!");
 	wattroff(pad, A_BOLD | A_UNDERLINE);
 
 	putwin(pad, padfile);
