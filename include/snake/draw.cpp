@@ -214,7 +214,7 @@ WINDOW* buildhelppad(const char* path) {
 
 	hp_title(pad, "Help pad controls");
 	hp_keys(pad, "w", 0); hp_keyword(pad, "Scroll"); waddstr(pad, " the help pad up by 1 line.");
-	hp_keys_word(pad, "ua", 0); hp_keyword(pad, "Scroll"); waddstr(pad, " the help pad up by 1 line.");
+	hp_keys_word(pad, "ua"); hp_keyword(pad, "Scroll"); waddstr(pad, " the help pad up by 1 line.");
 	hp_keys(pad, "s"); hp_keyword(pad, "Scroll"); waddstr(pad, " the help pad down by 1 line.");
 	hp_keys_word(pad, "da"); hp_keyword(pad, "Scroll"); waddstr(pad, " the help pad down by 1 line.");
 	hp_keys(pad, "W"); hp_keyword(pad, "Scroll"); waddstr(pad, " the help pad up by 5 lines.");
@@ -357,7 +357,7 @@ WINDOW* buildhelppad(const char* path) {
 
 	hp_title(pad, "Log pad controls");
 	hp_keys(pad, "w", 0); hp_keyword(pad, "Scroll"); waddstr(pad, " the log pad up by 1 line.");
-	hp_keys_word(pad, "ua", 0); hp_keyword(pad, "Scroll"); waddstr(pad, " the log pad up by 1 line.");
+	hp_keys_word(pad, "ua"); hp_keyword(pad, "Scroll"); waddstr(pad, " the log pad up by 1 line.");
 	hp_keys(pad, "s"); hp_keyword(pad, "Scroll"); waddstr(pad, " the log pad down by 1 line.");
 	hp_keys_word(pad, "da"); hp_keyword(pad, "Scroll"); waddstr(pad, " the log pad down by 1 line.");
 	hp_keys(pad, "W"); hp_keyword(pad, "Scroll"); waddstr(pad, " the log pad up by 5 lines.");
@@ -386,7 +386,7 @@ WINDOW* buildhelppad(const char* path) {
 	
 	hp_title(pad, "Scoreboard pad controls");
 	hp_keys(pad, "w", 0); hp_keyword(pad, "Scroll"); waddstr(pad, " the scoreboard pad up by 1 line.");
-	hp_keys_word(pad, "ua", 0); hp_keyword(pad, "Scroll"); waddstr(pad, " the scoreboard pad up by 1 line.");
+	hp_keys_word(pad, "ua"); hp_keyword(pad, "Scroll"); waddstr(pad, " the scoreboard pad up by 1 line.");
 	hp_keys(pad, "s"); hp_keyword(pad, "Scroll"); waddstr(pad, " the scoreboard pad down by 1 line.");
 	hp_keys_word(pad, "da"); hp_keyword(pad, "Scroll"); waddstr(pad, " the scoreboard pad down by 1 line.");
 	hp_keys(pad, "W"); hp_keyword(pad, "Scroll"); waddstr(pad, " the scoreboard pad up by 5 lines.");
