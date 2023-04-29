@@ -42,7 +42,7 @@ If You say _I use Arch btw_ often, You can try
 
     $ sudo pacman -S ncurses
 
-If You'y distro isn't mentioned here, try to use [google](google.com):
+If You'r distro isn't mentioned here, try to use [google](google.com):
 
     how to install ncurses in *put your distro name here*
 
@@ -55,15 +55,15 @@ Enter desired directory and run
 It will create the directory with name `snake-cpp` and enter it. Then You have to compile the game.
 
 ### Compiling the game
-To build the game You can use `build.sh` script. He is located in the root of git repository. 
+To build the game You can use `build.sh` script. It is located in the root of git repository. 
 To run it, use:
 
     $ ./build.sh
 
-It will create the game executable `snake.out` and build the help pad for crrent terminal.
+It will create the game executable `snake.out` and build the help pad for current terminal.
 
 ## Running the game
-To start the game You can do
+To start the game You can exexute
 
     $ ./shanke.out
 
@@ -79,9 +79,7 @@ contribute to the snake-cpp, You are welcome at the [issues tab][issue].
 
 
 
-
-
 [nvim]: https://github.com/neovim/neovim "Go to nvim github page"
 [ncurses]: https://en.wikipedia.org/wiki/Ncurses "Go to ncurses wikipedia page"
-[brew]: https://brew.sh "Visit https://brew.sh"
+[brew]: https://brew.sh "Visit homebrew homepage"
 [issue]: https://github.com/Dolfost/snake-cpp/issues "Go to issues tab"
