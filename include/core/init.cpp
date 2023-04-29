@@ -155,17 +155,18 @@ int init(void) {
 		log_nl("It has %d columns that is %d less tnan min. req. %d columns.",
 					COLS, length.window.stdscr.minc - COLS, length.window.stdscr.minc);
 		flag.curses.small_window = true;
-	}
-	if (flag.curses.small_window == true) {
-		log_fatal("Could not fit all iterface in such small window. (%d lines by %d columns)",
-				LINES, COLS);
-		log_nl("Please, increase terminal size to at least %d lines by %d columns.", 
-				length.window.stdscr.minl, length.window.stdscr.minc);
-//  		wrefresh(window.log);
-//  		wgetch(window.log);
-  		gamelog('l');
- 		fatal_error("Terminal is too small. Resize it to at least %d lines by %d columns.", length.window.stdscr.minl, length.window.stdscr.minc);
-	}
+	} 
+
+	// moved to the setup.cpp
+	//if (flag.curses.small_window == true) {
+		//log_fatal("Could not fit all iterface in such small window. (%d lines by %d columns)",
+		//		LINES, COLS);
+		//log_nl("Please, increase terminal size to at least %d lines by %d columns.", 
+		//		length.window.stdscr.minl, length.window.stdscr.minc);
+		//log_info("Press [L | l] to close log pad.");
+   		//gamelog('l');
+  		//fatal_error("Terminal is too small. Resize it to at least %d lines by %d columns.", length.window.stdscr.minl, length.window.stdscr.minc);
+	//}
 
 	// pause window
 	if ((window.pause = newwin(length.window.pause.minl, length.window.pause.minc,

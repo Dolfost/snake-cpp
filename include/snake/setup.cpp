@@ -127,6 +127,16 @@ void setup(void) {
 		exit(EXIT_SUCCESS);
 	}
 
+	if (flag.curses.small_window == true) {
+		log_fatal("Could not fit all iterface in such small window. (%d lines by %d columns)",
+				LINES, COLS);
+		log_nl("Please, increase terminal size to at least %d lines by %d columns.", 
+				length.window.stdscr.minl, length.window.stdscr.minc);
+		log_info("Press [L | l] to close log pad.");
+  		gamelog('l');
+ 		fatal_error("Terminal is too small. Resize it to at least %d lines by %d columns.", length.window.stdscr.minl, length.window.stdscr.minc);
+	}
+
 	if (flag.option.help == true) {
 		help('H');
 		drawgame();
