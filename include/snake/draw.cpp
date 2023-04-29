@@ -88,7 +88,7 @@ void drawhelp(void) {
 void drawscore(void) {
 	wclear(window.stdscr);
 	box(window.stdscr, 0, 0);
-	mvwaddstr(window.stdscr, 0, 2, "Scoresboard pad");
+	mvwaddstr(window.stdscr, 0, 2, "Scoreboard pad");
 	wrefresh(window.stdscr);
 
 	touchwin(pad.score);
