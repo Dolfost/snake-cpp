@@ -182,9 +182,10 @@ int init(void) {
 	// again window
 	if ((window.again = newwin(length.window.again.minl, length.window.again.minc,
 					(length.window.game.minl - length.window.again.minl ) / 2,
-					(length.window.game.minc - length.window.again.minc ) / 2)) == NULL)
+					(length.window.game.minc - length.window.again.minc ) / 2)) == NULL) {
+		log_fatal("Could not initialize again window.");
 		fatal_error("Could not initialize again window.");
-	else
+	} else
 		log_debug("Initialized again window succsessfully.");
 	box(window.again, 0, 0);
 	wattrset(window.again, A_BOLD);
