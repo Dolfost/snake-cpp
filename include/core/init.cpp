@@ -224,12 +224,8 @@ int init(void) {
 	if ((pad.score = newpad(length.pad.score.minl, length.pad.score.minc)) == NULL)
 		fatal_error("Could not initialize scoreboard pad.");
 	else {	
-		wmove(pad.score, length.pad.score.minl - 1, 0);
 		scrollok(pad.score, TRUE);
 		log_debug("Initialized scoreboard pad succsessfully. (%d lines)", length.pad.score.minl);
-		log_info("Above log source do not contain all logs");
-		log_nl(  "because it is initialized too late.");
-		log_nl(  "For full log see '%s' file.", flag.core.logpath);
 	}
 	if (keypad(pad.score, TRUE) == ERR) {
 		log_error("Could not initialize function keys for scoreboard pad.");
