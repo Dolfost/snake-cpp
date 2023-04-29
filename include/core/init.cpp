@@ -175,8 +175,9 @@ int init(void) {
 	else
 		log_debug("Initialized pause window succsessfully.");
 	box(window.pause, 0, 0);
-	mvwaddstr(window.pause, length.window.pause.minl / 2,
-			(length.window.pause.minc - 5 /* 5 is an word length */) / 2, "PAUSE");
+	wattrset(window.pause, A_BOLD);
+	center(window.pause, length.window.pause.minl / 2, "PAUSE");
+	wattroff(window.pause, A_BOLD);
 
 	// again window
 	if ((window.again = newwin(length.window.again.minl, length.window.again.minc,
