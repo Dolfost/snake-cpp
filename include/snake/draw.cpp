@@ -210,7 +210,7 @@ WINDOW* buildhelppad(const char* path) {
 	WINDOW* pad = newpad(length.pad.help.minl, length.pad.help.minc);
 	hp_add(pad, "This is help pad ");
 	incolor(pad, color.pair.help.keyword, attribute.help.keyword, "v%s", SNAKE_VERSION);
-	waddstr(pad, ".\n");
+	waddstr(pad, ".");
 
 	hp_title(pad, "Help pad controls");
 	hp_keys(pad, "w", 0); hp_keyword(pad, "Scroll"); waddstr(pad, " the help pad up by 1 line.");
@@ -410,7 +410,7 @@ WINDOW* buildhelppad(const char* path) {
 
 
 	hp_title(pad, "Options"); 
-	hp_add(pad, "This is the terminal snake options.\n");
+	hp_add(pad, "This is the terminal options.\n");
 	hp_add(pad, ""); wprintw(pad, "%s [-h] [-l] [-p <uint>] [-l <uint>] [-t <uint>]", execname);
 	hp_definition(pad, NULL, -25);
 	hp_definition(pad, "--help"); 
@@ -435,11 +435,11 @@ WINDOW* buildhelppad(const char* path) {
 	hp_add(pad, "All the files in the \\data folder exept log.txt are system-specific.\n");
 	hp_add(pad, "They may not have any sense on other system.");
 
-	hp_title(pad, "Contacts, contributing  and issue reporting");
+	hp_title(pad, "Contacts, contributing and issue reporting");
 	hp_add(pad, "If You find any bugs or unexpected behaivors or just want to\n");
 	hp_add(pad, "contribute to the snake-cpp, You are welcome at projecth github homepage.\n");
-	hp_add(pad, "This project lives at "); hp_keyword(pad, "snake-cpp - github.com/Dolfost/snake-cpp"); waddstr(pad, ".\n");
-	hp_add(pad, "Made by "); hp_keyword(pad, "Dolfost - github.com/Dolfost"); waddstr(pad, ".\n");
+	hp_add(pad, "This project lives at "); hp_keyword(pad, "github.com/Dolfost/snake-cpp"); waddstr(pad, ".\n");
+	hp_add(pad, "Made by "); hp_option(pad, "Dolfost"); waddstr(pad, " - "); hp_keyword(pad, "github.com/Dolfost"); waddstr(pad, ".\n");
 
 	
 

@@ -19,6 +19,9 @@ bool help(int);
 bool score(int);
 bool exitgame(int);
 
+void readdata(void);
+void writedata(void);
+
 void playagain(void);
 void finals(void);
 void gamestill(void);
@@ -76,6 +79,7 @@ struct Game {
 	struct timespec time_end;
 	double time;
 	char* playername;
+	short* highlength;
 	short* highscore;
 	short* hightime;
 	char** highplayer;

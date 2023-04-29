@@ -132,103 +132,14 @@ void setup(void) {
 		drawgame();
 	}
 
-	FILE* playerfile = fopen("data/player.dat", "r");
+	readdata();
 
-	if (playerfile == NULL) {
-		log_error("Could not open 'data/player.dat' for reading.");
-		log_nl(   "Maybe there is no previous player.");
-		*game.playername = '\0';
-	} else {
-		log_debug("Opened 'data/payer.dat' for reading succesfully.");
-		size_t read = fread(game.playername, sizeof(char), length.game.maxnicknamelen, playerfile);
-		log_debug("Read %d/%d bytes from 'data/payer.dat'.", read, length.game.maxnicknamelen);
-		fclose(playerfile);
-	}
-
-	game.highscore = (short*)calloc(200, sizeof(short));
-	memcheck(game.highscore, 200*sizeof(short));
-	game.highplayer = (char**)calloc(200, sizeof(char*));
-	memcheck(game.highplayer, 200*sizeof(char*));
-	game.hightime = (short*)calloc(200, sizeof(short));
-	memcheck(game.hightime, 200*sizeof(short));
-
-	FILE* scores = fopen("data/scores.dat", "r");
-
-	if (scores == NULL) {
-		log_error("Could not open 'data/scores.dat' for reading.");
-		log_nl(   "Maybe there is no saved scoreboard.");
-		flag.core.score = false;
-	} else {
-		log_debug("Opened 'data/scores.dat' for reading sucessfully.");
-		int read = 0;
-		int i, j;
-		for (int idx = 0; idx < 200; idx++) {
-			game.highplayer[idx] = (char*)malloc(sizeof(char)*(length.game.maxnicknamelen + 1));
-			j = -1;
-			do {
-				j++;
-				i = fread(game.highplayer[idx] + j, sizeof(char), 1, scores);
-				if (i < 1)
-					break;
-				read += i;
-			} while (*(game.highplayer[idx] + j) != '\0');
-
-			i = fread(&game.highscore[idx], sizeof(short), 1, scores);
-			if (i < 1)
-				break;
-			read += i;
-			i = fread(&game.hightime[idx], sizeof(short), 1, scores);
-			if (i < 1)
-				break;
-			read += i;
-
-			game.scoreentry++;
-		}
-		log_debug("Read %d bytes from 'data/scores.dat'.", read);
-		fclose(scores);
-	}
-
-	for (int i = 0; i < game.scoreentry; i++) {
-		char* highplayer = (char*)malloc((strlen(game.highplayer[i]) + 1)*sizeof(char));
-		memcheck(game.highplayer, (strlen(game.highplayer[i]) + 1)*sizeof(char));
-		memcpy(highplayer, game.highplayer[i], strlen(game.highplayer[i]) + 1);
-		free(game.highplayer[i]);
-		game.highplayer[i] = highplayer;
-	}
 }
 
 void desetup(void) {
 	log_trace("Desetup function have started.");
 	free(snake.body);
 
-	if (game.game == true) {
-		// save player name
-		FILE* playerfile = fopen("data/player.dat", "w+");
-		if (playerfile == NULL) {
-			log_error("Could not open 'data/player.dat' for writing.");
-		} else {
-			log_error("Opened 'data/player.dat' for writing successfully.");
-			int written;
-			written = fwrite(game.playername, sizeof(char), length.game.maxnicknamelen, playerfile);
-			log_debug("The %d/%d bytes has been written to 'data/player.dat'.", written, length.game.maxnicknamelen);
-			fclose(playerfile);
-		}
-
-		// save score
-		FILE* scores = fopen("data/scores.dat", "w");
-		if (scores == NULL) {
-			log_error("Could not open 'data/scores.dat' for writting.");
-		} else {
-			log_debug("Opened 'data/scores.dat' for writting sucessfully.");
-			int written = 0;
-			for (int idx = 0; idx < game.scoreentry; idx++) {
-				written += fwrite(game.highplayer[idx], sizeof(char), strlen(game.highplayer[idx]) + 1, scores);
-				written += fwrite(&game.highscore[idx], sizeof(short), 1, scores);
-				written += fwrite(&game.hightime[idx], sizeof(short), 1, scores);
-			}
-			log_debug("Written %d bytes to 'data/scores.dat'.", written);
-			fclose(scores);
-		}
-	}
-
+	if (game.game == true)
+		writedata();
 }
