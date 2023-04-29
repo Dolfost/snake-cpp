@@ -49,10 +49,10 @@ void draw(void) {
 
 	
 	// window refreshing
-	wrefresh(window.game);
-	wrefresh(window.bar);
-	wrefresh(window.sidelog);
-	// wrefresh(window.stdscr);
+	wnoutrefresh(window.game);
+	wnoutrefresh(window.bar);
+	wnoutrefresh(window.sidelog);
+	doupdate();
 }
 
 void drawgame(void) {
@@ -61,11 +61,12 @@ void drawgame(void) {
 	wrefresh(window.stdscr);
 
 	touchwin(window.game);
-	wrefresh(window.game);
+	wnoutrefresh(window.game);
 	touchwin(window.sidelog);
-	wrefresh(window.sidelog);
+	wnoutrefresh(window.sidelog);
 	touchwin(window.bar);
-	wrefresh(window.bar);
+	wnoutrefresh(window.bar);
+	doupdate();
 }
 
 void drawgamelines(void) {
@@ -78,35 +79,38 @@ void drawhelp(void) {
 	wclear(window.stdscr);
 	box(window.stdscr, 0, 0);
 	mvwaddstr(window.stdscr, 0, 2, "Help pad");
-	wrefresh(window.stdscr);
+	wnoutrefresh(window.stdscr);
 
 	touchwin(pad.help);
-	prefresh(pad.help, length.pad.help.vl, 0, 
+	pnoutrefresh(pad.help, length.pad.help.vl, 0, 
 			1, 1, LINES - 2, length.window.game.minc - 2);
+	doupdate();
 }
 
 void drawscore(void) {
 	wclear(window.stdscr);
 	box(window.stdscr, 0, 0);
 	mvwaddstr(window.stdscr, 0, 2, "Scoreboard pad");
-	wrefresh(window.stdscr);
+	wnoutrefresh(window.stdscr);
 
 	touchwin(pad.score);
-	prefresh(pad.score, length.pad.score.vl, 0, 
+	pnoutrefresh(pad.score, length.pad.score.vl, 0, 
 			1, 1, LINES - 2, COLS - 2);
+	doupdate();
 }
 
 void drawlog(void) {
 	wclear(window.stdscr);
 	box(window.stdscr, 0, 0);
 	mvwaddstr(window.stdscr, 0, 2, "Log pad");
-	wrefresh(window.stdscr);
+	wnoutrefresh(window.stdscr);
 
 	touchwin(window.stdscr);
-	wrefresh(window.stdscr);
+	wnoutrefresh(window.stdscr);
 	touchwin(pad.log);
-	prefresh(pad.log, length.pad.log.vl, 0, 
+	pnoutrefresh(pad.log, length.pad.log.vl, 0, 
 			1, 1, LINES - 2, COLS - 2);
+	doupdate();
 }
 
 void drawover(void) {
@@ -114,8 +118,9 @@ void drawover(void) {
 	baradd("Press return");
 	setled(1);
 	wattroff(window.bar, A_BOLD);
-	wrefresh(window.bar);
-	wrefresh(window.sidelog);
+	wnoutrefresh(window.bar);
+	wnoutrefresh(window.sidelog);
+	doupdate();
 }
 
 void drawfinals(void) {
