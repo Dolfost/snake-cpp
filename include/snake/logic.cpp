@@ -82,6 +82,7 @@ void doscores(void) {
 	for (int i = game.scoreentry; i > index; i--) {
 		game.highscore[i] = game.highscore[i-1];
 		game.highplayer[i] = game.highplayer[i-1];
+		game.highlength[i] = game.highlength[i-1];
 		game.hightime[i] = game.hightime[i-1];
 	}
 
