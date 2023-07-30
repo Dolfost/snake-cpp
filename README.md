@@ -26,7 +26,9 @@ Hello and welcome to the home of the ncurses snake game written in [neovim][nvim
 
 ## How to install
 ### Installing dependencies
-Game relies on the [newcurses][ncurses] C library, so You have to install it on your machine.
+Game relies on the
+ - [newcurses][ncurses] C library, so You have to install it on Your machine.
+ - [make][make] program. Usually it is preinstalled.
 ##### Mac OS
 If You use MacOS You can install [newcurses][ncurses] with [homebrew][brew] simply by
     
@@ -44,7 +46,7 @@ If You say _I use Arch btw_ often, You can try
 
 If You'r distro isn't mentioned here, try to use [google](https://www.google.com):
 
-    how to install ncurses in *put your distro name here*
+    how to install ncurses in *put Your distro name here*
 
 ### Getting the sources
 Enter desired directory and run 
@@ -55,24 +57,24 @@ Enter desired directory and run
 It will create the directory with name `snake-cpp` and enter it. Then You have to compile the game.
 
 ### Compiling the game
-To build the game You can use `build.sh` script. It is located in the root of git repository. 
-To run it, use:
+To build the game You can:
 
-    $ ./build.sh
+    $ make snake
 
 It will create the game executable `snake.out` and build the help pad for current terminal.
 
 ## Running the game
-To start the game You can exexute
-
+- Open the terninal window not smaller than 40 lines by 80 columns
+- To start the game You can exexute
+    ```
     $ ./shanke.out
+    ```
+    in the git directory root. 
 
-in the git directory root. 
-
-If You are new to the game (probably You are), I recommend You to start game with the `--help` or `-h` option, so You can get used to it.
-
+    If You are new to the game (probably You are), I recommend You to start game with the `--help` or `-h` option, so You can get used to it.
+    ```
     $ ./snake.out --help
-
+    ```
 ## Contributing
 If You find any bugs or unexpected behaivors or just want to
 contribute to the snake-cpp, You are welcome at the [issues tab][issue].
@@ -82,4 +84,5 @@ contribute to the snake-cpp, You are welcome at the [issues tab][issue].
 [nvim]: https://github.com/neovim/neovim "Go to nvim github page"
 [ncurses]: https://en.wikipedia.org/wiki/Ncurses "Go to ncurses wikipedia page"
 [brew]: https://brew.sh "Visit homebrew homepage"
-[issue]: https://github.com/Dolfost/snake-cpp/issues "Go to issues tab"
+[issue]: https://github.com/Dolfost/snake-cpp/issueso "Go to issues tab"
+[make]: https://en.wikipedia.org/wiki/Make_(software) "Go to make wikipedia page"
