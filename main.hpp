@@ -3,7 +3,7 @@
 
 #define INCLUDEPATH "./include"
 
-#define SNAKE_VERSION "2.1"
+#define SNAKE_VERSION "2.2"
 
 #define SNAKE_WINDOW_POSITIONING_DEMO 0
 
