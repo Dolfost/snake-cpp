@@ -3,6 +3,7 @@
 
 #include <ncurses.h>
 
+#include "../core/init.hpp"
 void werase(WINDOW*, short, short);
 #define erase(from, to) werase(stdscr, from, to)
 

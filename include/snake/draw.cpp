@@ -1,13 +1,12 @@
 #include "draw.hpp"
 
+#include <string.h>
+#include <stdlib.h>
+
 #include <ncurses.h>
 #include "../core/init.hpp"
 #include "../core/log.hpp"
-
 #include "../../main.hpp"
-
-#include <string.h>
-#include <stdlib.h>
 
 void werase(WINDOW* window, short from, short to) {
 	short y = getcury(window);

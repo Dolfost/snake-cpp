@@ -2,6 +2,25 @@
 
 #include "main.hpp"
 
+#include "include/types.hpp"
+
+const char* execname;
+const char* directionstr[] = {"right", "up", "left", "down"};
+
+Windows window;
+Subwindows subwindow;
+Pads pad;
+Flags flag;
+Colors color;
+Lengths length;
+Positions positions;
+Attributes attribute;
+
+Game game;
+
+Snake snake;
+Bait bait;
+
 #include "include/snake/setup.hpp"
 #include "include/core/init.hpp"
 #include "include/core/options.hpp"

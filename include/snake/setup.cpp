@@ -2,6 +2,7 @@
 
 #include <stdlib.h>
 #include <ncurses.h>
+
 #include "../core/log.hpp"
 #include "../core/init.hpp"
 #include "../snake/draw.hpp"
@@ -360,12 +361,4 @@ void setup(void) {
 		help('H');
 		drawgame();
 	}
-}
-
-void desetup(void) {
-	log_trace("Desetup function have started.");
-	free(snake.body);
-
-	if (game.game == true)
-		writedata();
 }
