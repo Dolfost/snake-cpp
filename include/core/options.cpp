@@ -1,6 +1,11 @@
+#include "options.hpp"
+
 #include <unistd.h>
 #include <getopt.h>
 #include <string.h>
+#include "init.hpp"
+#include "../game/game.hpp"
+#include "log.hpp"
 
 void process_argv(int argc, char** argv) {
 	struct option long_options[] = {
