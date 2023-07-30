@@ -1,46 +1,49 @@
-#define SNAKE_VERSION "2.0.2"
+#ifndef MAIN_SNAKE
+#define MAIN_SNAKE
 
-int wkbhit(WINDOW*);
-#define kbhit() wkbhit(stdscr)
 
-void werase(WINDOW*, short, short);
-#define erase(from, to) werase(stdscr, from, to)
+/* int wkbhit(WINDOW*); */
+/* #define kbhit() wkbhit(stdscr) */
 
-void setup(void);
-void desetup(void);
+/* void werase(WINDOW*, short, short); */
+/* #define erase(from, to) werase(stdscr, from, to) */
 
-void draw(void);
-void drawgame(void);
-void drawgamelines(void);
-void drawover(void);
-void drawagain(void);
+/* void setup(void); */
+/* void desetup(void); */
 
-void drawhelp(void);
-void drawlog(void);
+/* void draw(void); */
+/* void drawgame(void); */
+/* void drawgamelines(void); */
+/* void drawover(void); */
+/* void drawagain(void); */
 
-int baradd(const char*);
-short setled(short);
+/* void drawhelp(void); */
+/* void drawlog(void); */
 
-void move(void);
+/* int baradd(const char*); */
+/* short setled(short); */
 
-bool input_snake(int);
-void input_global(void);
-void input_log(void);
-void input_help(void);
+/* void move(void); */
 
-void wallhit(void);
-void selfbit(void);
-void dinner(void);
+/* bool input_snake(int); */
+/* void input_global(void); */
+/* void input_log(void); */
+/* void input_help(void); */
 
-void spawn_bait(void);
+/* void wallhit(void); */
+/* void selfbit(void); */
+/* void dinner(void); */
 
-int center(WINDOW*, int, const char*, ...);
+/* void spawn_bait(void); */
 
-void hp_title(WINDOW*, const char*, ...);
-void hp_keys(WINDOW*, const char*, short plusline = 1);
-void hp_keys_word(WINDOW*, const char*, short plusline = 1);
-void hp_keyword(WINDOW*, const char*, ...);
-void hp_definition(WINDOW*, const char*, short plusline = 1);
-void hp_option(WINDOW* pad, const char*, ...);
-void hp_add(WINDOW*, const char*, ...);
-void incolor(WINDOW*, short, int, const char*, ...);
+/* int center(WINDOW*, int, const char*, ...); */
+
+/* void hp_title(WINDOW*, const char*, ...); */
+/* void hp_keys(WINDOW*, const char*, short plusline = 1); */
+/* void hp_keys_word(WINDOW*, const char*, short plusline = 1); */
+/* void hp_keyword(WINDOW*, const char*, ...); */
+/* void hp_definition(WINDOW*, const char*, short plusline = 1); */
+/* void hp_option(WINDOW* pad, const char*, ...); */
+/* void hp_add(WINDOW*, const char*, ...); */
+/* void incolor(WINDOW*, short, int, const char*, ...); */
+

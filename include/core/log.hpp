@@ -5,9 +5,10 @@
 #include <stdarg.h>
 #include <stdlib.h>
 #include <time.h>
+#include <ncurses.h>
 
 void fatal_error(const char* tmp, ...);
-void memcheck(void*, int);
+void memcheck(void* pointer, int size = 0);
 
 
 enum {LOG_TRACE, LOG_DEBUG, LOG_INFO, LOG_WARN, LOG_ERROR, LOG_FATAL, LOG_NL};
@@ -34,7 +35,28 @@ int log_log_add(WINDOW* window);
 int log_log_remove(WINDOW* window);
 #endif /* ifdef __NCURSES_H */
 
+const char* log_log_levelstr[] = {
+  "Trace", "Debug", "Info", "Warn", "Error", "Fatal"
+};
 
-#include "log.cpp"
+static struct Log_Log {
+	FILE* file[LOG_LOG_MAX_FILES] = {NULL};
+	short files = 0;
+	int padding = 0;
+	const char* preffixformat = "%s %-5s %s:%d:"; 
+	const char* timeformat = "%H:%M:%S";
+
+	#ifdef __NCURSES_H
+	WINDOW* window[LOG_LOG_MAX_WINDOWS] = {NULL};
+	short windows = 0;
+	short levelcolor[6];
+	int levelattr[6];
+	short filenamecolor;
+	int filenameattribute;
+	short msgcolor;
+	int msgattribute;
+	short background;
+	#endif /* ifdef __NCURSES_H */
+} g_log;
 
 #endif /* ifndef LOG_LOG_HPP */

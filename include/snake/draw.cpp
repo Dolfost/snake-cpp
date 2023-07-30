@@ -1,3 +1,14 @@
+#include "draw.hpp"
+
+#include <ncurses.h>
+#include "../core/init.hpp"
+#include "../core/log.hpp"
+
+#include "../../main.hpp"
+
+#include <string.h>
+#include <stdlib.h>
+
 void werase(WINDOW* window, short from, short to) {
 	short y = getcury(window);
 	while (from <= to) {
@@ -518,9 +529,6 @@ void hp_definition(WINDOW* pad, const char* str, short plusline) {
 //	wmove(pad, getcury(pad), getcurx(pad) + 2);
 }
 
-
-	
-
 void hp_keyword(WINDOW* pad, const char* fmt, ...) {
 	va_list args;
 	va_start(args, fmt);
@@ -542,8 +550,6 @@ void hp_option(WINDOW* pad, const char* fmt, ...) {
 
 	va_end(args);
 }
-
-	
 
 void hp_keys(WINDOW* pad, const char* keys, short plusline) {
 	int offset = 14;
@@ -571,7 +577,6 @@ void hp_keys(WINDOW* pad, const char* keys, short plusline) {
 		waddch(pad, ' ');
 	}
 }
-
 
 void hp_keys_word(WINDOW* pad, const char* word, short plusline) {
 	int offset = 14;

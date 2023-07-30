@@ -1,11 +1,14 @@
-// #include "log.hpp" 
+#include "log.hpp" 
+
+#include <ncurses.h>
 
 void fatal_error(const char* tmp, ...) {
 	#ifdef __NCURSES_H
 	endwin();
 	#endif /* ifdef __NCURSES_H */
 	
-	fprintf(stderr, "%s: Fatal: ", execname);
+	/* fprintf(stderr, "%s: Fatal: ", execname); */
+	fprintf(stderr, "Fatal: ");
 
 	va_list ap;
 	va_start(ap, tmp);
@@ -16,38 +19,13 @@ void fatal_error(const char* tmp, ...) {
 	exit(EXIT_FAILURE);
 }
 
-void memcheck(void* pointer, int size = 0) {
+void memcheck(void* pointer, int size) {
 	if (pointer == NULL)
 		fatal_error("Could not allocate memory.");
 
 	if (size != 0)
 		log_trace("Allocated %d bytes of memory.", size);
 }
-
-
-static struct Log_Log {
-	FILE* file[LOG_LOG_MAX_FILES] = {NULL};
-	short files = 0;
-	int padding = 0;
-	const char* preffixformat = "%s %-5s %s:%d:"; 
-	const char* timeformat = "%H:%M:%S";
-
-	#ifdef __NCURSES_H
-	WINDOW* window[LOG_LOG_MAX_WINDOWS] = {NULL};
-	short windows = 0;
-	short levelcolor[6];
-	int levelattr[6];
-	short filenamecolor;
-	int filenameattribute;
-	short msgcolor;
-	int msgattribute;
-	short background;
-	#endif /* ifdef __NCURSES_H */
-} g_log;
-
-const char* log_log_levelstr[] = {
-  "Trace", "Debug", "Info", "Warn", "Error", "Fatal"
-};
 
 int log_log_add(FILE* file) {
 	if (g_log.files >= LOG_LOG_MAX_FILES)

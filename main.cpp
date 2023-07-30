@@ -2,21 +2,16 @@
 
 #include "main.hpp"
 
-#include "include/core/core.hpp"
+#include "include/snake/setup.hpp"
+#include "include/core/init.hpp"
+#include "include/core/options.hpp"
 #include "include/core/log.hpp"
 #include "include/game/game.hpp"
 
-#include "include/snake/snake.hpp"
-#include "include/core/init.cpp"
-#include "include/core/getopt.cpp"
-#include "include/snake/setup.cpp"
 
-#include "include/snake/draw.cpp"
-#include "include/snake/input.cpp"
-#include "include/snake/logic.cpp"
-
-#include "include/game/game.cpp"
-
+#include "include/snake/draw.hpp"
+#include "include/snake/input.hpp"
+#include "include/snake/logic.hpp"
 
 int main(int argc, char** argv) {
 	execname = *argv;
