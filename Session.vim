@@ -13,7 +13,7 @@ if &shortmess =~ 'A'
 else
   set shortmess=aoO
 endif
-badd +8 main.cpp
+badd +1 main.cpp
 badd +1 include/core/init.cpp
 badd +1 include/core/log.cpp
 badd +1 include/game/game.cpp
@@ -33,8 +33,8 @@ badd +1 include/snake/input.hpp
 badd +1 include/snake/logic.hpp
 badd +1 include/snake/setup.hpp
 badd +1 makefile
-badd +0 include/types.hpp
-badd +0 README.md
+badd +1 include/types.hpp
+badd +1 README.md
 argglobal
 %argdel
 $argadd main.cpp
@@ -105,13 +105,14 @@ setlocal fdn=20
 setlocal fen
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 12 - ((11 * winheight(0) + 29) / 59)
+let s:l = 6 - ((5 * winheight(0) + 29) / 59)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 12
-normal! 0
+keepjumps 6
+normal! 026|
 wincmd w
+2wincmd w
 exe 'vert 1resize ' . ((&columns * 105 + 106) / 212)
 exe 'vert 2resize ' . ((&columns * 106 + 106) / 212)
 tabnext
@@ -659,12 +660,12 @@ setlocal fdl=0
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
-let s:l = 963 - ((58 * winheight(0) + 29) / 59)
+let s:l = 59 - ((58 * winheight(0) + 29) / 59)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 963
-normal! 012|
+keepjumps 59
+normal! 0
 tabnext
 edit makefile
 argglobal
