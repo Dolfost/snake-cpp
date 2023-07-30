@@ -42,7 +42,7 @@ If You say _I use Arch btw_ often, You can try
 
     $ sudo pacman -S ncurses
 
-If You'r distro isn't mentioned here, try to use [google](google.com):
+If You'r distro isn't mentioned here, try to use [google](https://www.google.com):
 
     how to install ncurses in *put your distro name here*
 
