@@ -21,19 +21,20 @@ badd +1 include/snake/draw.cpp
 badd +1 include/snake/input.cpp
 badd +1 include/snake/logic.cpp
 badd +1 include/snake/setup.cpp
-badd +1 include/core/core.hpp
 badd +1 include/game/game.hpp
-badd +1 main.hpp
+badd +10 main.hpp
 badd +1 include/core/log.hpp
 badd +1 term://~/snake-cpp//3328:/bin/zsh
 badd +1 include/core/options.hpp
-badd +0 include/core/options.cpp
-badd +0 include/core/init.hpp
-badd +0 include/snake/draw.hpp
-badd +0 include/snake/input.hpp
-badd +0 include/snake/logic.hpp
-badd +0 include/snake/setup.hpp
-badd +0 makefile
+badd +1 include/core/options.cpp
+badd +1 include/core/init.hpp
+badd +1 include/snake/draw.hpp
+badd +1 include/snake/input.hpp
+badd +1 include/snake/logic.hpp
+badd +1 include/snake/setup.hpp
+badd +1 makefile
+badd +0 include/types.hpp
+badd +0 README.md
 argglobal
 %argdel
 $argadd main.cpp
@@ -48,10 +49,29 @@ tabnew +setlocal\ bufhidden=wipe
 tabnew +setlocal\ bufhidden=wipe
 tabnew +setlocal\ bufhidden=wipe
 tabnew +setlocal\ bufhidden=wipe
+tabnew +setlocal\ bufhidden=wipe
 tabrewind
 edit main.cpp
+let s:save_splitbelow = &splitbelow
+let s:save_splitright = &splitright
+set splitbelow splitright
+wincmd _ | wincmd |
+vsplit
+1wincmd h
+wincmd w
+let &splitbelow = s:save_splitbelow
+let &splitright = s:save_splitright
+wincmd t
+let s:save_winminheight = &winminheight
+let s:save_winminwidth = &winminwidth
+set winminheight=0
+set winheight=1
+set winminwidth=0
+set winwidth=1
+exe 'vert 1resize ' . ((&columns * 105 + 106) / 212)
+exe 'vert 2resize ' . ((&columns * 106 + 106) / 212)
 argglobal
-balt include/core/options.hpp
+balt main.hpp
 setlocal fdm=manual
 setlocal fde=0
 setlocal fmr={{{,}}}
@@ -62,12 +82,58 @@ setlocal fdn=20
 setlocal fen
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 8 - ((7 * winheight(0) + 29) / 59)
+let s:l = 52 - ((51 * winheight(0) + 29) / 59)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 8
-normal! 031|
+keepjumps 52
+normal! 0
+wincmd w
+argglobal
+if bufexists(fnamemodify("main.hpp", ":p")) | buffer main.hpp | else | edit main.hpp | endif
+if &buftype ==# 'terminal'
+  silent file main.hpp
+endif
+balt main.cpp
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let &fdl = &fdl
+let s:l = 12 - ((11 * winheight(0) + 29) / 59)
+if s:l < 1 | let s:l = 1 | endif
+keepjumps exe s:l
+normal! zt
+keepjumps 12
+normal! 0
+wincmd w
+exe 'vert 1resize ' . ((&columns * 105 + 106) / 212)
+exe 'vert 2resize ' . ((&columns * 106 + 106) / 212)
+tabnext
+edit include/types.hpp
+argglobal
+balt main.cpp
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let &fdl = &fdl
+let s:l = 101 - ((48 * winheight(0) + 29) / 59)
+if s:l < 1 | let s:l = 1 | endif
+keepjumps exe s:l
+normal! zt
+keepjumps 101
+normal! 0
 tabnext
 edit include/core/options.cpp
 let s:save_splitbelow = &splitbelow
@@ -111,6 +177,7 @@ if bufexists(fnamemodify("include/core/options.hpp", ":p")) | buffer include/cor
 if &buftype ==# 'terminal'
   silent file include/core/options.hpp
 endif
+balt include/core/options.cpp
 setlocal fdm=manual
 setlocal fde=0
 setlocal fmr={{{,}}}
@@ -126,7 +193,7 @@ if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 4
-normal! 02|
+normal! 0
 wincmd w
 exe 'vert 1resize ' . ((&columns * 106 + 106) / 212)
 exe 'vert 2resize ' . ((&columns * 105 + 106) / 212)
@@ -162,12 +229,12 @@ setlocal fdn=20
 setlocal fen
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 1 - ((0 * winheight(0) + 29) / 59)
+let s:l = 17 - ((8 * winheight(0) + 29) / 59)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 1
-normal! 08|
+keepjumps 17
+normal! 05|
 wincmd w
 argglobal
 if bufexists(fnamemodify("include/core/init.hpp", ":p")) | buffer include/core/init.hpp | else | edit include/core/init.hpp | endif
@@ -185,12 +252,12 @@ setlocal fdn=20
 setlocal fen
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 4 - ((3 * winheight(0) + 29) / 59)
+let s:l = 3 - ((2 * winheight(0) + 29) / 59)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 4
-normal! 022|
+keepjumps 3
+normal! 0
 wincmd w
 exe 'vert 1resize ' . ((&columns * 105 + 106) / 212)
 exe 'vert 2resize ' . ((&columns * 106 + 106) / 212)
@@ -212,8 +279,8 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 94 + 106) / 212)
-exe 'vert 2resize ' . ((&columns * 117 + 106) / 212)
+exe 'vert 1resize ' . ((&columns * 125 + 106) / 212)
+exe 'vert 2resize ' . ((&columns * 86 + 106) / 212)
 argglobal
 balt include/core/log.hpp
 setlocal fdm=manual
@@ -231,7 +298,7 @@ if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 1
-normal! 019|
+normal! 09|
 wincmd w
 argglobal
 if bufexists(fnamemodify("include/core/log.hpp", ":p")) | buffer include/core/log.hpp | else | edit include/core/log.hpp | endif
@@ -249,15 +316,15 @@ setlocal fdn=20
 setlocal fen
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 1 - ((0 * winheight(0) + 29) / 59)
+let s:l = 51 - ((50 * winheight(0) + 29) / 59)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 1
-normal! 019|
+keepjumps 51
+normal! 026|
 wincmd w
-exe 'vert 1resize ' . ((&columns * 94 + 106) / 212)
-exe 'vert 2resize ' . ((&columns * 117 + 106) / 212)
+exe 'vert 1resize ' . ((&columns * 125 + 106) / 212)
+exe 'vert 2resize ' . ((&columns * 86 + 106) / 212)
 tabnext
 edit include/game/game.cpp
 let s:save_splitbelow = &splitbelow
@@ -290,11 +357,11 @@ setlocal fdn=20
 setlocal fen
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 1 - ((0 * winheight(0) + 29) / 59)
+let s:l = 2 - ((1 * winheight(0) + 29) / 59)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 1
+keepjumps 2
 normal! 0
 wincmd w
 argglobal
@@ -313,12 +380,12 @@ setlocal fdn=20
 setlocal fen
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 1 - ((0 * winheight(0) + 29) / 59)
+let s:l = 45 - ((44 * winheight(0) + 29) / 59)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 1
-normal! 018|
+keepjumps 45
+normal! 0
 wincmd w
 exe 'vert 1resize ' . ((&columns * 106 + 106) / 212)
 exe 'vert 2resize ' . ((&columns * 105 + 106) / 212)
@@ -354,11 +421,11 @@ setlocal fdn=20
 setlocal fen
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 1 - ((0 * winheight(0) + 29) / 59)
+let s:l = 3 - ((2 * winheight(0) + 29) / 59)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 1
+keepjumps 3
 normal! 0
 wincmd w
 argglobal
@@ -377,12 +444,12 @@ setlocal fdn=20
 setlocal fen
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 5 - ((4 * winheight(0) + 29) / 59)
+let s:l = 6 - ((5 * winheight(0) + 29) / 59)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 5
-normal! 0
+keepjumps 6
+normal! 027|
 wincmd w
 exe 'vert 1resize ' . ((&columns * 144 + 106) / 212)
 exe 'vert 2resize ' . ((&columns * 67 + 106) / 212)
@@ -418,12 +485,12 @@ setlocal fdn=20
 setlocal fen
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 1 - ((0 * winheight(0) + 29) / 59)
+let s:l = 3 - ((2 * winheight(0) + 29) / 59)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 1
-normal! 0
+keepjumps 3
+normal! 020|
 wincmd w
 argglobal
 if bufexists(fnamemodify("include/snake/input.hpp", ":p")) | buffer include/snake/input.hpp | else | edit include/snake/input.hpp | endif
@@ -441,12 +508,12 @@ setlocal fdn=20
 setlocal fen
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 22 - ((21 * winheight(0) + 29) / 59)
+let s:l = 9 - ((8 * winheight(0) + 29) / 59)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 22
-normal! 0
+keepjumps 9
+normal! 033|
 wincmd w
 exe 'vert 1resize ' . ((&columns * 105 + 106) / 212)
 exe 'vert 2resize ' . ((&columns * 106 + 106) / 212)
@@ -482,11 +549,11 @@ setlocal fdn=20
 setlocal fen
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 1 - ((0 * winheight(0) + 29) / 59)
+let s:l = 8 - ((7 * winheight(0) + 29) / 59)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 1
+keepjumps 8
 normal! 0
 wincmd w
 argglobal
@@ -546,12 +613,12 @@ setlocal fdn=20
 setlocal fen
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 1 - ((0 * winheight(0) + 29) / 59)
+let s:l = 75 - ((8 * winheight(0) + 29) / 59)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 1
-normal! 0
+keepjumps 75
+normal! 020|
 wincmd w
 argglobal
 if bufexists(fnamemodify("include/snake/setup.hpp", ":p")) | buffer include/snake/setup.hpp | else | edit include/snake/setup.hpp | endif
@@ -569,79 +636,15 @@ setlocal fdn=20
 setlocal fen
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 51 - ((50 * winheight(0) + 29) / 59)
+let s:l = 6 - ((5 * winheight(0) + 29) / 59)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 51
-normal! 014|
+keepjumps 6
+normal! 0
 wincmd w
 exe 'vert 1resize ' . ((&columns * 125 + 106) / 212)
 exe 'vert 2resize ' . ((&columns * 86 + 106) / 212)
-tabnext
-edit main.hpp
-let s:save_splitbelow = &splitbelow
-let s:save_splitright = &splitright
-set splitbelow splitright
-wincmd _ | wincmd |
-split
-1wincmd k
-wincmd w
-let &splitbelow = s:save_splitbelow
-let &splitright = s:save_splitright
-wincmd t
-let s:save_winminheight = &winminheight
-let s:save_winminwidth = &winminwidth
-set winminheight=0
-set winheight=1
-set winminwidth=0
-set winwidth=1
-exe '1resize ' . ((&lines * 13 + 31) / 62)
-exe '2resize ' . ((&lines * 45 + 31) / 62)
-argglobal
-balt include/core/core.hpp
-setlocal fdm=manual
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=0
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
-silent! normal! zE
-let &fdl = &fdl
-let s:l = 8 - ((7 * winheight(0) + 6) / 13)
-if s:l < 1 | let s:l = 1 | endif
-keepjumps exe s:l
-normal! zt
-keepjumps 8
-normal! 0
-wincmd w
-argglobal
-if bufexists(fnamemodify("include/core/core.hpp", ":p")) | buffer include/core/core.hpp | else | edit include/core/core.hpp | endif
-if &buftype ==# 'terminal'
-  silent file include/core/core.hpp
-endif
-balt main.hpp
-setlocal fdm=manual
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=0
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
-silent! normal! zE
-let &fdl = &fdl
-let s:l = 4 - ((3 * winheight(0) + 22) / 45)
-if s:l < 1 | let s:l = 1 | endif
-keepjumps exe s:l
-normal! zt
-keepjumps 4
-normal! 0
-wincmd w
-exe '1resize ' . ((&lines * 13 + 31) / 62)
-exe '2resize ' . ((&lines * 45 + 31) / 62)
 tabnext
 argglobal
 if bufexists(fnamemodify("term://~/snake-cpp//3328:/bin/zsh", ":p")) | buffer term://~/snake-cpp//3328:/bin/zsh | else | edit term://~/snake-cpp//3328:/bin/zsh | endif
@@ -656,11 +659,11 @@ setlocal fdl=0
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
-let s:l = 10059 - ((58 * winheight(0) + 29) / 59)
+let s:l = 963 - ((58 * winheight(0) + 29) / 59)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 10059
+keepjumps 963
 normal! 012|
 tabnext
 edit makefile
@@ -682,6 +685,24 @@ keepjumps exe s:l
 normal! zt
 keepjumps 1
 normal! 012|
+tabnext
+edit README.md
+argglobal
+balt makefile
+setlocal fdm=expr
+setlocal fde=Foldexpr_markdown(v:lnum)
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=5
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+let s:l = 1 - ((0 * winheight(0) + 29) / 59)
+if s:l < 1 | let s:l = 1 | endif
+keepjumps exe s:l
+normal! zt
+keepjumps 1
+normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
