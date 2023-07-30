@@ -83,6 +83,7 @@ struct Flags {
 		long int timeout;
 		long int pausetimeout;
 		bool openlog = false;
+		bool nologcolor = false;
 	} option;
 	struct Flags_curses {
 		bool color = false;

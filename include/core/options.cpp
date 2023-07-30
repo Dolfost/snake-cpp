@@ -14,6 +14,7 @@ void process_argv(int argc, char** argv) {
 		{"pause-timeout", required_argument, 0, 'p'},
 		{"log-scrollback", required_argument, 0, 's'},
 		{"timeout", required_argument, 0, 't'},
+		{"no-log-color", no_argument, 0, 'c'},
 
 		{"build-help-pad", no_argument, 0, 1000},
 		{"help-pad-path", required_argument, 0, 1001},
@@ -28,7 +29,7 @@ void process_argv(int argc, char** argv) {
 	flag.option.timeout = GAME_DEFAUTL_KEY_TIMEOUT;
 	flag.option.pausetimeout = GAME_DEFAULT_PAUSE_TIMEOUT;
 
-	while ((opt = getopt_long(argc, argv, ":hlp:t:s:", long_options, &option_index)) != -1) {
+	while ((opt = getopt_long(argc, argv, ":chlp:t:s:", long_options, &option_index)) != -1) {
 		switch(opt) {
 			case '?': // unknown option
 				if (optopt == 0)
@@ -50,6 +51,10 @@ void process_argv(int argc, char** argv) {
 			case 'l': // --open-log | -l
 				flag.option.openlog = true;
 				log_debug("Recieved [--open-log | -l] option.");
+				break;
+			case 'c': // --no-log-color | -c
+				flag.option.nologcolor = true;
+				log_debug("Recieved [--no-log-color | -c] option.");
 				break;
 			case 't': // --timeout | -t
 				log_debug("Recieved [--timeout | -t] option");
