@@ -5,7 +5,7 @@
 #include <stdarg.h>
 #include <stdlib.h>
 #include <time.h>
-#include <ncurses.h>
+#include <ncurses.h> // TODO remove this here & in .cpp
 
 void fatal_error(const char* tmp, ...);
 void memcheck(void* pointer, int size = 0);
@@ -35,11 +35,7 @@ int log_log_add(WINDOW* window);
 int log_log_remove(WINDOW* window);
 #endif /* ifdef __NCURSES_H */
 
-const char* log_log_levelstr[] = {
-  "Trace", "Debug", "Info", "Warn", "Error", "Fatal"
-};
-
-static struct Log_Log {
+struct Log_Log {
 	FILE* file[LOG_LOG_MAX_FILES] = {NULL};
 	short files = 0;
 	int padding = 0;
@@ -57,6 +53,10 @@ static struct Log_Log {
 	int msgattribute;
 	short background;
 	#endif /* ifdef __NCURSES_H */
-} g_log;
+};
+
+extern const char* log_log_levelstr[];
+extern Log_Log g_log;
+
 
 #endif /* ifndef LOG_LOG_HPP */

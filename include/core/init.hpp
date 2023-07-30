@@ -1,23 +1,27 @@
 #ifndef INIT_SNAKE
 #define INIT_SNAKE
 
-#include "../snake/setup.hpp"
-
 int init(void);
+void desetup(void);
+void deinit(void);
 
-Windows window;
-Subwindows subwindow;
-Pads pad;
-Flags flag;
-Colors color;
-Lengths length;
-Positions positions;
-Attributes attribute;
+#include "../types.hpp"
+#include "../game/game.hpp"
+#include "log.hpp"
+#define CORE_DEFAULT_LOG_SCROLLBACK 100
 
-Game game;
 
-Snake snake;
-Bait bait;
+extern Windows window;
+extern Subwindows subwindow;
+extern Pads pad;
+extern Flags flag;
+extern Colors color;
+extern Lengths length;
+extern Positions positions;
+extern Attributes attribute;
+extern Game game;
+extern Snake snake;
+extern Bait bait;
 
 #endif /* ifndef INIT_SNAKE */
 

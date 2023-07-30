@@ -6,7 +6,6 @@
 #include "../core/init.hpp"
 #include "../core/log.hpp"
 
-
 void wallhit(void) {
 	if (snake.head.y < 0 || snake.head.x < 0 ||
 	snake.head.y > length.window.game.minl - 1 ||

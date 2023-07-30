@@ -1,6 +1,12 @@
 #include "log.hpp" 
 
-#include <ncurses.h>
+#include <ncurses.h> // TODO remove this here & in .hpp
+
+const char* log_log_levelstr[] = {
+  "Trace", "Debug", "Info", "Warn", "Error", "Fatal"
+};
+
+Log_Log g_log;
 
 void fatal_error(const char* tmp, ...) {
 	#ifdef __NCURSES_H
@@ -115,12 +121,15 @@ void log_log(int level, const char* filename, int line, const char* fmt, ...) {
 			fprintf(g_log.file[i], "%s\n", msgstr);
 		}
 
+		#ifdef __NCURSES_H
 		for (int i = 0; i < LOG_LOG_MAX_WINDOWS && g_log.window[i] != NULL; i++) {
 			wattrset(g_log.window[i], COLOR_PAIR(g_log.msgcolor) | g_log.msgattribute);
 			mvwaddstr(g_log.window[i], getcury(g_log.window[i]), g_log.padding, msgstr);
 			wattroff(g_log.window[i], COLOR_PAIR(g_log.msgcolor) | g_log.msgattribute);
 			waddstr(g_log.window[i], "\n");
 		}
+		#endif /* ifdef __NCURSES_H */
+		
 
 		free(msgstr);
 		return;

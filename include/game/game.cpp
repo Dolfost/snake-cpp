@@ -3,7 +3,6 @@
 #include <math.h>
 #include <string.h>
 
-
 #include "../core/init.hpp"
 #include "../core/log.hpp"
 #include "../snake/draw.hpp"
