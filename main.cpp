@@ -2,21 +2,35 @@
 
 #include "main.hpp"
 
-#include "include/core/core.hpp"
+#include "include/types.hpp"
+
+const char* execname;
+const char* directionstr[] = {"right", "up", "left", "down"};
+
+Windows window;
+Subwindows subwindow;
+Pads pad;
+Flags flag;
+Colors color;
+Lengths length;
+Positions positions;
+Attributes attribute;
+
+Game game;
+
+Snake snake;
+Bait bait;
+
+#include "include/snake/setup.hpp"
+#include "include/core/init.hpp"
+#include "include/core/options.hpp"
 #include "include/core/log.hpp"
 #include "include/game/game.hpp"
 
-#include "include/snake/snake.hpp"
-#include "include/core/init.cpp"
-#include "include/core/getopt.cpp"
-#include "include/snake/setup.cpp"
 
-#include "include/snake/draw.cpp"
-#include "include/snake/input.cpp"
-#include "include/snake/logic.cpp"
-
-#include "include/game/game.cpp"
-
+#include "include/snake/draw.hpp"
+#include "include/snake/input.hpp"
+#include "include/snake/logic.hpp"
 
 int main(int argc, char** argv) {
 	execname = *argv;

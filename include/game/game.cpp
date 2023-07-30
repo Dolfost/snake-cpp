@@ -1,4 +1,13 @@
+#include "game.hpp"
+
 #include <math.h>
+#include <string.h>
+
+#include "../core/init.hpp"
+#include "../core/log.hpp"
+#include "../snake/draw.hpp"
+#include "../snake/logic.hpp"
+#include "../snake/input.hpp"
 
 void spawn_bait(void) {
 	bool is_taken = true;

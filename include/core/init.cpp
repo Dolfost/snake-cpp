@@ -1,15 +1,10 @@
+#include "init.hpp"
+
 #include <stdlib.h>
 
-Windows window;
-Subwindows subwindow;
-Pads pad;
-Flags flag;
-Colors color;
-Lengths length;
-Positions positions;
-Attributes attribute;
 
-Game game;
+#include "log.hpp"
+
 
 int init(void) {
 	atexit(deinit);
@@ -28,8 +23,8 @@ int init(void) {
 	noecho();
 
 	// windows size
- //	length.window.game.minl = 15; // lldb
- //	length.window.game.minc = 80; // lldb
+ //	length.window.game.minl = 15; // lldb window
+ //	length.window.game.minc = 80; // lldb window
 	length.window.game.minl = 40; // 30
 	length.window.game.minc = 80; // 60
 	length.window.bar.minl = 1;
@@ -76,6 +71,15 @@ int init(void) {
 	} else
 		log_debug("Initialized function keys for log pad successfully.");	
 	return EXIT_SUCCESS;
+}
+
+
+void desetup(void) {
+	log_trace("Desetup function have started.");
+	free(snake.body);
+
+	if (game.game == true)
+		writedata();
 }
 
 

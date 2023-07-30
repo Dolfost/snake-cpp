@@ -1,4 +1,10 @@
+#include "logic.hpp"
+
 #include <stdlib.h>
+#include <string.h>
+
+#include "../core/init.hpp"
+#include "../core/log.hpp"
 
 void wallhit(void) {
 	if (snake.head.y < 0 || snake.head.x < 0 ||
