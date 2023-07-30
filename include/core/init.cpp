@@ -1,15 +1,9 @@
+#include "init.hpp"
+
 #include <stdlib.h>
 
-Windows window;
-Subwindows subwindow;
-Pads pad;
-Flags flag;
-Colors color;
-Lengths length;
-Positions positions;
-Attributes attribute;
+#include "log.hpp"
 
-Game game;
 
 int init(void) {
 	atexit(deinit);

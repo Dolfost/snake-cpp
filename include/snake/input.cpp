@@ -1,3 +1,13 @@
+#include "input.hpp"
+
+#include <ncurses.h>
+
+#include "draw.hpp"
+#include "../game/game.hpp"
+#include "../core/init.hpp"
+#include "../core/log.hpp"
+
+
 int wkbhit(WINDOW* window) {
 	int ch,r;
 
