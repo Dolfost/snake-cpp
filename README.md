@@ -1,12 +1,12 @@
 # snake-cpp
 
-Hello and welcome to the home of the ncurses snake game written in [neovim][nvim] by one entusiast in his spare time!
+Hello and welcome to the home of the ncurses snake game written in [neovim][nvim] by one enthusiast in his spare time!
 
 ### Game features
 - [x] Speed
 - [x] Performance
 - [x] Beauty
-- [x] Portabilty
+- [x] Portability
 - [x] Tries to be *POSIX-compliant*
 - [x] "Window" system
 - [x] Game itself
@@ -35,8 +35,8 @@ If You use MacOS You can install [newcurses][ncurses] with [homebrew][brew] simp
     $ brew install ncurses
 
 ##### Unix-like OS
-Short ansver: _It depends._  
-For examle, if You are using Ubuntu You can install [newcurses][ncurses] by
+Short answer: _It depends._  
+For example, if You are using Ubuntu You can install [newcurses][ncurses] by
 
     $ sudo apt-get install libncurses5-dev libncursesw5-dev
 
@@ -44,7 +44,7 @@ If You say _I use Arch btw_ often, You can try
 
     $ sudo pacman -S ncurses
 
-If You'r distro isn't mentioned here, try to use [google](https://www.google.com):
+If Your distro isn't mentioned here, try to use [google](https://www.google.com):
 
     how to install ncurses in *put Your distro name here*
 
@@ -64,8 +64,8 @@ To build the game You can:
 It will create the game executable `snake.out` and build the help pad for current terminal.
 
 ## Running the game
-- Open the terninal window not smaller than 40 lines by 80 columns
-- To start the game You can exexute
+- Open the terminal window not smaller than 42 lines by 80 columns
+- To start the game You can execute
     ```
     $ ./shanke.out
     ```
@@ -76,7 +76,7 @@ It will create the game executable `snake.out` and build the help pad for curren
     $ ./snake.out --help
     ```
 ## Contributing
-If You find any bugs or unexpected behaivors or just want to
+If You find any bugs or unexpected behaviors or just want to
 contribute to the snake-cpp, You are welcome at the [issues tab][issue].
 
 
