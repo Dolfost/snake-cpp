@@ -441,7 +441,7 @@ WINDOW* buildhelppad(const char* path) {
 	hp_definition(pad, "-l <uint>"); waddstr(pad, "Set the "); hp_keyword(pad, "log pad"); waddstr(pad, " scrollback <uint> lines.");
 	hp_definition(pad, "--timeout <uint>"); 
 	hp_definition(pad, "-t <uint>"); waddstr(pad, "Set the "); hp_keyword(pad, "timeout"); waddstr(pad, " (game speed) with <uint>ms.");
-	hp_definition(pad, "--no-log-colors");
+	hp_definition(pad, "--no-log-color");
 	hp_definition(pad, "-c"); waddstr(pad, "Turn off the "); hp_keyword(pad, "log pad"); waddstr(pad, " colors. Increases performance.\n");
 		waddstr(pad, "Worth noting, that -c option can intefier with --build-help-pad option. Dont use them together");
 	hp_definition(pad, "--build-help-pad", 2); waddstr(pad, "Build the "); hp_keyword(pad, "help pad"); waddstr(pad, " and exit.");
