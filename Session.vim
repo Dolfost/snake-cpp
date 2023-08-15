@@ -105,7 +105,7 @@ setlocal fdn=20
 setlocal fen
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 6 - ((1 * winheight(0) + 30) / 60)
+let s:l = 6 - ((5 * winheight(0) + 30) / 60)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -421,12 +421,12 @@ setlocal fdn=20
 setlocal fen
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 526 - ((48 * winheight(0) + 30) / 60)
+let s:l = 1 - ((0 * winheight(0) + 30) / 60)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 526
-normal! 0
+keepjumps 1
+normal! 010|
 wincmd w
 argglobal
 if bufexists(fnamemodify("include/game/game.hpp", ":p")) | buffer include/game/game.hpp | else | edit include/game/game.hpp | endif
@@ -485,12 +485,12 @@ setlocal fdn=20
 setlocal fen
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 253 - ((13 * winheight(0) + 30) / 60)
+let s:l = 444 - ((23 * winheight(0) + 30) / 60)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 253
-normal! 060|
+keepjumps 444
+normal! 039|
 wincmd w
 argglobal
 if bufexists(fnamemodify("include/snake/draw.hpp", ":p")) | buffer include/snake/draw.hpp | else | edit include/snake/draw.hpp | endif
@@ -664,7 +664,7 @@ if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 29
-normal! 012|
+normal! 0
 tabnext
 edit makefile
 argglobal
@@ -711,7 +711,7 @@ keepjumps exe s:l
 normal! zt
 keepjumps 75
 normal! 07|
-tabnext 1
+tabnext 8
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
 endif
@@ -723,6 +723,7 @@ if filereadable(s:sx)
   exe "source " . fnameescape(s:sx)
 endif
 let &g:so = s:so_save | let &g:siso = s:siso_save
+set hlsearch
 let g:this_session = v:this_session
 let g:this_obsession = v:this_session
 doautoall SessionLoadPost
