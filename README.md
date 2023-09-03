@@ -29,6 +29,7 @@ Hello and welcome to the home of the ncurses snake game written in [neovim][nvim
 Game relies on the
  - [newcurses][ncurses] C library, so You have to install it on Your machine.
  - [make][make] program. Usually it is preinstalled.
+ - [g++][compiler] compiler. 
 ##### Mac OS
 If You use MacOS You can install [newcurses][ncurses] with [homebrew][brew] simply by
     
@@ -36,17 +37,19 @@ If You use MacOS You can install [newcurses][ncurses] with [homebrew][brew] simp
 
 ##### Unix-like OS
 Short answer: _It depends._  
-For example, if You are using Ubuntu You can install [newcurses][ncurses] by
+For example, if You are using Ubuntu You can install [newcurses][ncurses] and [g++][compiler] by
 
-    $ sudo apt-get install libncurses5-dev libncursesw5-dev
+    $ sudo apt-get install libncurses5-dev libncursesw5-dev clang
 
 If You say _I use Arch btw_ often, You can try
 
-    $ sudo pacman -S ncurses
+    $ sudo pacman -S ncurses g++
 
 If Your distro isn't mentioned here, try to use [google](https://www.google.com):
 
     how to install ncurses in *put Your distro name here*
+
+    how to install g++ in *put Your distro name here*
 
 ### Getting the sources
 Enter desired directory and run 
@@ -86,3 +89,4 @@ contribute to the snake-cpp, You are welcome at the [issues tab][issue].
 [brew]: https://brew.sh "Visit homebrew homepage"
 [issue]: https://github.com/Dolfost/snake-cpp/issueso "Go to issues tab"
 [make]: https://en.wikipedia.org/wiki/Make_(software) "Go to make wikipedia page"
+[compiler]: https://en.wikipedia.org/wiki/GNU_Compiler_Collection "Go to GNU compiler collection wikipedia page"
