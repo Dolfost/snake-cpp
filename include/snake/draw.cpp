@@ -443,10 +443,10 @@ WINDOW* buildhelppad(const char* path) {
 	hp_definition(pad, "-t <uint>"); waddstr(pad, "Set the "); hp_keyword(pad, "timeout"); waddstr(pad, " (game speed) with <uint>ms.");
 	hp_definition(pad, "--no-log-color");
 	hp_definition(pad, "-c"); waddstr(pad, "Turn off the "); hp_keyword(pad, "log pad"); waddstr(pad, " colors. Increases performance.\n");
-		waddstr(pad, "Worth noting, that -c option can intefier with --build-help-pad option. Dont use them together");
 	hp_definition(pad, "--build-help-pad", 2); waddstr(pad, "Build the "); hp_keyword(pad, "help pad"); waddstr(pad, " and exit.");
+	hp_definition(pad, NULL); waddstr(pad, "Note that -c option can intefier with");
+	hp_definition(pad, NULL); waddstr(pad, "--build-help-pad option. Dont use them together.");
 	hp_definition(pad, "--help-pad-path <str>"); waddstr(pad, "Set the built "); hp_keyword(pad, "help pad"); waddstr(pad, " window path to load.\n");
-		waddstr(pad, "Note that -c option can intefier with --build-help-pad option. Dont use them together");
 
 	hp_title(pad, "Portability notes");
 	hp_add(pad, "The "); hp_keyword(pad, "help pad"); waddstr(pad, " is terminal-specific. It is being built for Your terminal\n");
@@ -459,7 +459,7 @@ WINDOW* buildhelppad(const char* path) {
 
 	hp_title(pad, "Contacts, contributing and issue reporting");
 	hp_add(pad, "If You find any bugs or unexpected behaivors or just want to\n");
-	hp_add(pad, "contribute to the snake-cpp, You are welcome at projecth github homepage.\n");
+	hp_add(pad, "contribute to the snake-cpp, You are welcome at project github homepage.\n");
 	hp_add(pad, "This project lives at "); hp_keyword(pad, "github.com/Dolfost/snake-cpp"); waddstr(pad, ".\n");
 	hp_add(pad, "Made by "); hp_option(pad, "Dolfost"); waddstr(pad, " - "); hp_keyword(pad, "github.com/Dolfost"); waddstr(pad, ".\n");
 
