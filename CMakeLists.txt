@@ -1,27 +1,26 @@
 cmake_minimum_required(VERSION 3.12)
 
+# project setup
 project(snake
 	LANGUAGES CXX)
+set (CMAKE_CXX_STANDARD 11)
 
+# make target
 add_executable(snake
-	main.cpp)
+	./src/main.cpp)
 
-file(GLOB coreSrc CONFIGURE_DEPENDS "./include/core/*.cpp")
+# libraries
+file(GLOB coreSrc CONFIGURE_DEPENDS "./src/include/core/*.cpp")
 add_library(coreLib
 	${coreSrc})
-target_link_libraries(coreLib
-	PUBLIC ncurses)
 
-file(GLOB gameSrc CONFIGURE_DEPENDS "./include/game/*.cpp")
+file(GLOB gameSrc CONFIGURE_DEPENDS "./src/include/game/*.cpp")
 add_library(gameLib
 	${gameSrc})
-target_link_libraries(gameLib
-	PUBLIC ncurses)
 
-file(GLOB snakeSrc CONFIGURE_DEPENDS "./include/snake/*.cpp")
+file(GLOB snakeSrc CONFIGURE_DEPENDS "./src/include/snake/*.cpp")
 add_library(snakeLib
 	${snakeSrc})
-target_link_libraries(snake
-	PUBLIC ncurses)
 
+# linking libs to game
 target_link_libraries(snake PRIVATE coreLib gameLib snakeLib ncurses)
