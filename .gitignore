@@ -2,10 +2,7 @@
 .DS_Store
 
 # Result files
-*.out
-*.o
-*.out
-*.dSYM
+build/
 
 # Game
 !/data/.gitkeep
