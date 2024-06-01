@@ -5,6 +5,8 @@ project(snake
 	LANGUAGES CXX)
 set (CMAKE_CXX_STANDARD 11)
 
+set(datafolder "./data")
+
 # make target
 add_executable(snake
 	./src/main.cpp)
@@ -24,3 +26,11 @@ add_library(snakesnake
 
 # linking libs to game
 target_link_libraries(snake PRIVATE snakecore snakegame snakesnake ncurses)
+
+
+if (EXISTS ${datafolder})
+	message("Data folder (${datafolder}) exists")
+else()
+	message("Creating data folder (${datafolder})")
+	file(MAKE_DIRECTORY ${datafolder})
+endif()
