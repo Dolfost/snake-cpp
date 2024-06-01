@@ -5,22 +5,22 @@ project(snake
 	LANGUAGES CXX)
 set (CMAKE_CXX_STANDARD 11)
 
-set(datafolder "./data")
+set(datafolder "${CMAKE_SOURCE_DIR}/data")
 
 # make target
 add_executable(snake
 	./src/main.cpp)
 
 # libraries
-file(GLOB coreSrc CONFIGURE_DEPENDS "./src/include/core/*.cpp")
+file(GLOB coreSrc CONFIGURE_DEPENDS "${CMAKE_SOURCE_DIR}/src/include/core/*.cpp")
 add_library(snakecore
 	${coreSrc})
 
-file(GLOB gameSrc CONFIGURE_DEPENDS "./src/include/game/*.cpp")
+file(GLOB gameSrc CONFIGURE_DEPENDS "${CMAKE_SOURCE_DIR}/src/include/game/*.cpp")
 add_library(snakegame
 	${gameSrc})
 
-file(GLOB snakeSrc CONFIGURE_DEPENDS "./src/include/snake/*.cpp")
+file(GLOB snakeSrc CONFIGURE_DEPENDS "${CMAKE_SOURCE_DIR}/src/include/snake/*.cpp")
 add_library(snakesnake
 	${snakeSrc})
 
