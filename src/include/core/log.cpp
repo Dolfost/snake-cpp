@@ -102,16 +102,18 @@ void log_log(int level, const char* filename, int line, const char* fmt, ...) {
     struct tm *tmp;
     tmp = localtime(&t);
 
-	va_list ap;
+	va_list ap, ap1;
 	va_start(ap, fmt);
+	va_copy(ap1, ap);
 
 	// message string
 	int msglen = vsnprintf(NULL, 0, fmt, ap);
 	char* msgstr = (char*)malloc(sizeof(char)*msglen + 1);
  	memcheck(msgstr);
-	vsnprintf(msgstr, msglen + 1, fmt, ap);
+	vsnprintf(msgstr, msglen + 1, fmt, ap1);
 
 	va_end(ap);
+	va_end(ap1);
 
 	if (level == LOG_NL) {
 		for (int i = 0; i < LOG_LOG_MAX_FILES && g_log.file[i] != NULL; i++) {
