@@ -5,6 +5,8 @@ project(snake
 	LANGUAGES CXX)
 set (CMAKE_CXX_STANDARD 11)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 set(datafolder "${CMAKE_SOURCE_DIR}/data")
 
 # make target
