@@ -1,8 +1,10 @@
 cmake_minimum_required(VERSION 3.12)
 
 # project setup
+list(APPEND CMAKE_MESSAGE_CONTEXT "snake")
 project(snake
 	LANGUAGES CXX)
+
 set (CMAKE_CXX_STANDARD 11)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
