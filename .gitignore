@@ -12,3 +12,4 @@ build/
 tags
 tags.lock
 *.swp
+.cache
