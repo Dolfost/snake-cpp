@@ -144,7 +144,7 @@ void drawfinals(void) {
 	center(window.finals, 2, snake.bit ? "You bit Yourself" : "You crashed into the wall");
 	wattroff(window.finals, A_BOLD);
 	center(window.finals, 4, "You ate %d mouses in %d:%dm", snake.length - 1, mins, secs);
-	center(window.finals, 5, "The score is %d points", game.score);
+	center(window.finals, 5, "The score is %hd points", game.score);
 
 
 	if (*game.playername == '\0') {
