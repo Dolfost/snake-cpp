@@ -8,6 +8,9 @@
 #include "../core/log.hpp"
 #include "../../main.hpp"
 
+extern Game game;
+extern Snake snake;
+
 void werase(WINDOW* window, short from, short to) {
 	short y = getcury(window);
 	while (from <= to) {
