@@ -67,6 +67,8 @@ void gameloop(void) {
 
 
 	while (game.playagain == true) {
+		gamesetup();
+
 		setled(3);
 
 		clock_gettime(CLOCK_MONOTONIC, &snake.time_start);
@@ -106,7 +108,6 @@ void gameloop(void) {
 		wclear(window.game);
 
 		free(snake.body);
-		gamesetup();
 	}
 }
 
@@ -266,7 +267,7 @@ void gamestill(void) {
 			drawgame();	
 		else if (help(ch))
 			drawgame();
-		 else if (score(ch))
+	 else if (score(ch))
 			drawgame();
 	}
 
