@@ -1,3 +1,5 @@
+#include <ncurses.h>
+
 #define CORE_DEFAULT_LOG_SCROLLBACK 100
 int init(void);
 void deinit(void);
