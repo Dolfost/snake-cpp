@@ -199,18 +199,21 @@ int center(WINDOW* window, int y, const char* fmt, ...) {
 	if (window == NULL)
 		return -1;
 
-	va_list ap;
+	va_list ap, ap1;
 	va_start(ap, fmt);
+	va_copy(ap1, ap);
 	
 	int len = vsnprintf(NULL, 0, fmt, ap);
 	char* str = (char*)malloc(sizeof(char)*len + 1);
 	memcheck(str);
-	vsnprintf(str, len + 1, fmt, ap);
+	vsnprintf(str, len + 1, fmt, ap1);
 
 	mvwaddstr(window, y, (getmaxx(window) - len) / 2, str);
 
 	free(str);
+
 	va_end(ap);
+	va_end(ap1);
 
 	return len;
 }
