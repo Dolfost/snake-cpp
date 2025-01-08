@@ -14,8 +14,8 @@ jobs:
         include:
           - os: ubuntu-latest
             script: ubuntu.sh
-          - os: windows-latest
-            script: windows.bat
+          # - os: windows-latest
+          #   script: windows.bat
           - os: macos-latest
             script: darwin.sh
     steps:

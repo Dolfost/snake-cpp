@@ -7,6 +7,7 @@ REM install chocolatey
 
 REM figure out dependencies
 SET "chocodeps=mingw mingw-get"
+REM SET "chocodeps=%chocodeps% mingw-get"
 REM install dependencies
 IF "%chocodeps%" == "" (
 	ECHO "No packages specified to install."
@@ -14,7 +15,7 @@ IF "%chocodeps%" == "" (
 	choco install %chocodeps%
 )
 
-mingw-get install ncurses
+REM mingw-get install ncurses
 
 SET "SCRIPT_DIR=%~dp0"
 SET "REPO=%SCRIPT_DIR%.."
