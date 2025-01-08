@@ -1,8 +1,6 @@
 #include <ncurses.h>
 
-#include "main.hpp"
-
-#include "include/types.hpp"
+#include <snake/types.hpp>
 
 const char* execname;
 const char* directionstr[] = {"right", "up", "left", "down"};
@@ -21,20 +19,18 @@ Game game;
 Snake snake;
 Bait bait;
 
-#include "include/snake/setup.hpp"
-#include "include/core/init.hpp"
-#include "include/core/options.hpp"
-#include "include/core/log.hpp"
-#include "include/game/game.hpp"
+#include <snake/setup.hpp>
+#include <snake/init.hpp>
+#include <snake/options.hpp>
+#include <snake/log.hpp>
+#include <snake/game.hpp>
 
 
-#include "include/snake/draw.hpp"
-#include "include/snake/input.hpp"
-#include "include/snake/logic.hpp"
+#include <snake/draw.hpp>
+#include <snake/input.hpp>
+#include <snake/logic.hpp>
 
 int main(int argc, char** argv) {
-	execname = *argv;
-
 	init();
 
 	process_argv(argc, argv);

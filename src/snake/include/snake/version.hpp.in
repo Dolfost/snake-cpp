@@ -1,0 +1,10 @@
+#ifndef SNAKE_VERSION
+#define SNAKE_VERSION
+
+struct {
+	const char* version = "@snake_PROJECT_VERSION@";
+	const char* execname = "snake";
+} snake_version;
+
+
+#endif /* ifndef SNAKE_VERSION */
