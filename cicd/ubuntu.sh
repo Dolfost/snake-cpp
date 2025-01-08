@@ -6,7 +6,7 @@ if [ -z "$1" ]; then
 fi
 
 # installing dependencies
-sudo apt install cmake git libncurses-dev
+sudo apt install cmake git libncurses-dev libncursesw-dev
 
 SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
 export REPO="$SCRIPT_DIR/.."
