@@ -14,7 +14,8 @@ IF "%chocodeps%" == "" (
 	choco install %chocodeps%
 )
 
-pacman -S mingw-w64-x86_64-ncurses
+SET "PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin"
+bash -l -c "pacman -S mingw-w64-x86_64-ncurses"
 
 SET "SCRIPT_DIR=%~dp0"
 SET "REPO=%SCRIPT_DIR%.."
