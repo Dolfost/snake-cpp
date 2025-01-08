@@ -14,7 +14,7 @@ IF "%chocodeps%" == "" (
 	choco install %chocodeps%
 )
 
-C:\\msys64\\usr\\bin\\env MSYSTEM=MSYS /usr/bin/bash -l -c "pacman -S mingw-w64-x86_64-ncurses"
+C:\\msys64\\usr\\bin\\env MSYSTEM=MSYS /usr/bin/bash -l -c "pacman -S mingw-w64-x86_64-ncurses mingw-w64-ucrt-x86_64-gcc cmake git"
 
 SET "SCRIPT_DIR=%~dp0"
 SET "REPO=%SCRIPT_DIR%.."
