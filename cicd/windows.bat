@@ -20,4 +20,4 @@ SET "SCRIPT_DIR=%~dp0"
 SET "REPO=%SCRIPT_DIR%.."
 SET "CONFIGURATION_OPTIONS=-G MinGW Makefiles"
 
-cmake -P "%SCRIPT_DIR%cmake\%1.cmake"
+C:\\msys64\\usr\\bin\\env MSYSTEM=MSYS /usr/bin/bash -l -c "cmake -P %SCRIPT_DIR%cmake\%1.cmake"
