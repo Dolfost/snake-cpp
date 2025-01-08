@@ -14,6 +14,8 @@ IF "%chocodeps%" == "" (
 	choco install %chocodeps%
 )
 
+mingw-get install ncurses
+
 SET "SCRIPT_DIR=%~dp0"
 SET "REPO=%SCRIPT_DIR%.."
 SET "CONFIGURATION_OPTIONS=-G MinGW Makefiles"
