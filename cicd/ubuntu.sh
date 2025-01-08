@@ -5,15 +5,8 @@ if [ -z "$1" ]; then
 	exit 1
 fi
 
-aptdeps="cmake git"
-case "$1" in
-	'docs'|'pack')
-		aptdeps="$aptdeps libncurses-dev"
-		;;
-esac
-
 # installing dependencies
-sudo apt install $aptdeps
+sudo apt install cmake git libncurses-dev
 
 SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
 export REPO="$SCRIPT_DIR/.."
