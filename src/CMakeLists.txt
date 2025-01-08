@@ -28,5 +28,8 @@ target_link_libraries(snakegame
 )
 
 include(GNUInstallDirs)
+file(MAKE_DIRECTORY 
+	"${CMAKE_CURRENT_BINARY_DIR}/../${SNAKE_STATE_DIRECTORY}"
+)
 install(TARGETS snakegame)
-install(DIRECTORY DESTINATION "${CMAKE_INSTALL_LOCALSTATEDIR}")
+install(DIRECTORY DESTINATION "${SNAKE_STATE_DIRECTORY}")

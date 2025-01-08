@@ -11,8 +11,9 @@ add_library(snakesnake
 )
 
 include(GNUInstallDirs)
+set(SNAKE_STATE_DIRECTORY ${CMAKE_INSTALL_LOCALSTATEDIR})
 target_compile_definitions(snakesnake 
-	PUBLIC SNAKE_DATA_DIR="${CMAKE_INSTALL_LOCALSTATEDIR}"
+	PUBLIC SNAKE_DATA_DIR="${SNAKE_STATE_DIRECTORY}"
 )
 
 configure_file(
@@ -46,3 +47,5 @@ target_sources(snakesnake
 target_link_libraries(snakesnake
 	PRIVATE ${CURSES_LIBRARIES}
 )
+
+return(PROPAGATE SNAKE_STATE_DIRECTORY)

@@ -36,7 +36,8 @@ If You use MacOS You can install [newcurses][ncurses] with [homebrew][brew] simp
 
 ##### Unix-like OS
 Short answer: _It depends._  
-For example, if You are using Ubuntu You can install [newcurses][ncurses] and [g++][compiler] by
+For example, if You are using Ubuntu You can install [newcurses][ncurses] and
+[g++][compiler] by
 
     sudo apt-get install libncurses5-dev libncursesw5-dev clang
 
@@ -58,28 +59,33 @@ Enter desired directory and run
     git clone https://github.com/Dolfost/snake-cpp
     cd snake-cpp
 
-It will create the directory with name `snake-cpp` and enter it. Then You have to compile the game.
+It will create the directory with name `snake-cpp` and enter it. Then You have
+to compile the game.
 
 ### Compiling the game
 To build the game You can:
 
     cmake -B build; cmake --build build
-    ./build/snake --build-help-pad
+    ./build/src/snakegame
 
-It will create the game executable `snake` in the `build/` direcotry and build the help pad for current terminal.
+It will create the game executable `snakegame` in the `build/src` directory.
 
 ## Running the game
 - Open the terminal window not smaller than 42 lines by 80 columns
 - To start the game You can execute
     ```
-    ./build/shanke
+    ./build/src/snakegame
     ```
     in the git directory root. 
 
-    If You are new to the game (probably You are), I recommend You to start game with the `--help` or `-h` option, so You can get used to it.
+    If You are new to the game (probably You are), I recommend You to start
+    game with the `--help` or `-h` option, so You can get used to it.
     ```
-    ./build/snake --help
+    ./build/src/snakegame --help
     ```
+Game files will be located in `../var` relative to game executable 
+(`build/var` if following this guide).
+
 ## Contributing
 If You find any bugs or unexpected behaviors or just want to
 contribute to the snake-cpp, You are welcome at the [issues tab][issue].
