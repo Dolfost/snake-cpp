@@ -14,6 +14,8 @@ IF "%chocodeps%" == "" (
 	choco install %chocodeps%
 )
 
+pacman -S mingw-w64-x86_64-ncurses
+
 SET "SCRIPT_DIR=%~dp0"
 SET "REPO=%SCRIPT_DIR%.."
 SET "CONFIGURATION_OPTIONS=-G MinGW Makefiles"
