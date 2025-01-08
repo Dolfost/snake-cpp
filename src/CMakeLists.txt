@@ -17,10 +17,14 @@ endif()
 
 add_subdirectory(snake)
 
+target_include_directories(snakegame 
+	PRIVATE ${CURSES_INCLUDE_DIRS}
+)
+
 target_link_libraries(snakegame
 	PRIVATE 
-		Curses
 		snakesnake 
+		${CURSES_LIBRARIES}
 )
 
 include(GNUInstallDirs)

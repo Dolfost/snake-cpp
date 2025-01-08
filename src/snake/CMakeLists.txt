@@ -25,6 +25,7 @@ target_sources(snakesnake
 	PUBLIC FILE_SET HEADERS 
 	BASE_DIRS 
 		include
+		${CURSES_INCLUDE_DIRS}
 		"$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>"
 	FILES 
 		include/snake/whereami.hpp
@@ -43,5 +44,5 @@ target_sources(snakesnake
 )
 
 target_link_libraries(snakesnake
-	PUBLIC Curses
+	PRIVATE ${CURSES_LIBRARIES}
 )
