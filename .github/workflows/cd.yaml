@@ -1,6 +1,7 @@
 name: Continuous deployment
 
 on: 
+  workflow_dispatch:
   push:
     tags:
       - 'v[0-9]+.[0-9]+.?[0-9]*.?[0-9]*'
